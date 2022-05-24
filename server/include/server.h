@@ -39,30 +39,4 @@ typedef struct my_server {
     fd_set tmp_fds;
 } my_server_t;
 
-typedef struct thread {
-    char name[MAX_NAME_LENGTH];
-    char *uuid;
-    struct channel *channel;
-    struct thread *next;
-    char *comments[MAX_BODY_LENGTH];
-} thread_t;
-
-typedef struct channel {
-    char name[MAX_NAME_LENGTH];
-    char *uuid;
-    char description[MAX_DESCRIPTION_LENGTH];
-    struct team *team;
-    struct thread *threads;
-    struct channel *next;
-} channel_t;
-
-typedef struct team {
-    char name[MAX_NAME_LENGTH];
-    char *uuid;
-    char description[MAX_DESCRIPTION_LENGTH];
-    // clients_t *clients;
-    struct channel *channels;
-    struct team *next;
-} team_t;
-
 void server_loop(my_server_t *serv);
