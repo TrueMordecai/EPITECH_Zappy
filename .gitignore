@@ -1,0 +1,4 @@
+*.o
+zappy_server
+.vscode
+.clang-format

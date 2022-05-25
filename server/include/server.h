@@ -23,6 +23,16 @@
 #include <unistd.h>
 #include <uuid/uuid.h>
 
+#define USAGE_MSG "USAGE: ./zappy_server -p port -x width -y height -n name1 \
+name2 ... -c clientsNb\n\
+-f freq\n\
+\tport\t\t is the port number\n\
+\twidth\t\t is the width of the world\n\
+\theight\t\t is the height of the world\n\
+\tnameX\t\t is the name of the team X\n\
+\tclientsNb\t is the number of authorized clients per team\n\
+\tfreq\t\t is the reciprocal of time unit for execution of actions\n"
+
 #define MAX_NAME_LENGTH        32
 #define MAX_DESCRIPTION_LENGTH 255
 #define MAX_BODY_LENGTH        512
@@ -30,6 +40,12 @@
                                  MAX_BODY_LENGTH + 20)
 
 typedef struct my_server {
+    uint width;
+    uint height;
+    char **team_names;
+    uint nb_teams;
+    uint clients_nb;
+    uint freq;
     int server_fd;
     int port;
     struct protoent *proto;
@@ -38,6 +54,15 @@ typedef struct my_server {
     fd_set fds;
     fd_set tmp_fds;
 } my_server_t;
+
+typedef struct arg_checklist
+{
+    bool port;
+    bool width;
+    bool height;
+    bool names;
+    bool clientsNb;
+} arg_checklist_t;
 
 typedef struct inventory {
     int linemate;
@@ -48,5 +73,7 @@ typedef struct inventory {
     int thystame;
 } inv_t;
 
+int good_args(int argc, char **argv);
 inv_t generate_inventory(void);
 void server_loop(my_server_t *serv);
+void set_arguments(my_server_t *serv, char **argv, int argc);
