@@ -46,6 +46,7 @@ typedef struct inventory {
     int mendiane;
     int phiras;
     int thystame;
-}
+} inv_t;
 
+inv_t generate_inventory(void);
 void server_loop(my_server_t *serv);
