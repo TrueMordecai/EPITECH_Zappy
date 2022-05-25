@@ -82,7 +82,7 @@ class Parsing
     # return [Void]
     def printCommandsList()
         for c in @commandsAvailible
-            if c.argCount == -99
+            if (c.argCount != EXPECT_NO_FIXED_SIZE)
                 puts("Commands #{c.name}, #{c.argCount} are needed")
             else
                 puts("Commands #{c.name}, a lot of arguments are required")
