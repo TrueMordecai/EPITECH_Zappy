@@ -7,20 +7,26 @@ require_relative 'command.rb'
 
 class Parsing
 
-    EXPECT_NO_SIZE = -99
-    
-    def initialize()
-        @commandsList = []
+    EXPECT_NO_FIXED_SIZE = -99
+    UNKNOWN_COMMAND = Command.new("", -1)
+    attr_accessor :debug
+
+    # Initilize all the functiuns needed for the program to work
+    # @param dg [Bool] Add some debug on some functiuns. Can be change at any time thank to attr accesor
+    def initialize(dg = false)
+        @debug = dg
+        @commandsAvailible = []
         addCommand("msz", 2)
         addCommand("bct", 9)
-        addCommand("tna", EXPECT_NO_SIZE)
+        addCommand("bct", EXPECT_NO_FIXED_SIZE)
+        addCommand("tna", EXPECT_NO_FIXED_SIZE)
         addCommand("pnw", 6)
         addCommand("ppo", 4)
         addCommand("plv", 2)
         addCommand("pin", 10)
         addCommand("pex", 1)
         addCommand("pbc", 2)
-        addCommand("pic", EXPECT_NO_SIZE)
+        addCommand("pic", EXPECT_NO_FIXED_SIZE)
         addCommand("pie", 3)
         addCommand("pfk", 1)
         addCommand("pdr", 2)
@@ -42,33 +48,40 @@ class Parsing
     # @param argumentNeeded [Int] argument needed by the command.
     # return [Bool]. True if command is added false otherwise.
     def addCommand(command, argumentNeeded)
-        for c in @commandsList
-            if command == c.name
+        for c in @commandsAvailible
+            if command == c.name and argumentNeeded == c.argCount
+                if (@debug)
+                    puts ("Commands #{command.name} is already added")
+                end
                 return false
             end
         end
-
-        @commandsList.append(Command.new(command, argumentNeeded))
+        @commandsAvailible.append(Command.new(command, argumentNeeded))
+        if @debug 
+           puts ("Command n°#{@commandsAvailible.size()} [#{@commandsAvailible[-1].name}] were added.")
+        end
+        return true
     end 
     private :addCommand
 
     # Check validity of a unparsed command
     # @param unparsedCommand [String] command name, can't be empty.
-    # return [Bool]
+    # return [Command] the command found or an unknow command 
     def checkCommand(unparsedCommand)
-        command = unparsed.chomp.split
-        for c in commandsList
-            if (command[0] == c.name) and ((command.size() - 1 == c.argCount) or (c.argCount == EXPECT_NO_SIZE  ))
-                return (true)
+        command = unparsedCommand.chomp.split
+        for c in @commandsAvailible
+            if (command[0] == c.name) and ((command.size() - 1 == c.argCount) or (c.argCount == EXPECT_NO_FIXED_SIZE))
+                return (c)
             end
+            print ("#{c.name} != #{command[0]}, #{c.argCount} != #{command.size}\n")
         end
-        return (false)
+        return (UNKNOWN_COMMAND)
     end
 
     # Print commands list for debug purpose only
     # return [Void]
     def printCommandsList()
-        for c in @commandsList
+        for c in @commandsAvailible
             if !c.argCount == -99
                 puts("Commands #{c.name}, #{c.argCount} are needed")
             else
@@ -77,4 +90,21 @@ class Parsing
         end
     end
 
+    # Translate an unparsed command to an already known command and his arguments.
+    # If the command should give multiple line of date, this functiusn handle it
+    # @param unparsedCommand [String] command name, can't be empty
+    # return [Command, (Void, String, Array)] 
+    def toCommand(unparsedCommand)
+        c = checkCommand(unparsedCommand)
+        if c == UNKNOWN_COMMAND
+            return [c]
+        end
+        if c.argCount == EXPECT_NO_FIXED_SIZE
+            return (unparsedCommand.split.drop(1).join(" ").split("\n"))
+        end
+        if c.argCount == 0
+            return [c]
+        end
+        return ([c, unparsedCommand.split.drop(1)])
+    end 
 end
