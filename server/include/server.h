@@ -23,6 +23,16 @@
 #include <unistd.h>
 #include <uuid/uuid.h>
 
+#define USAGE_MSG "USAGE: ./zappy_server -p port -x width -y height -n name1 \
+name2 ... -c clientsNb\n\
+-f freq\n\
+\tport\t\t is the port number\n\
+\twidth\t\t is the width of the world\n\
+\theight\t\t is the height of the world\n\
+\tnameX\t\t is the name of the team X\n\
+\tclientsNb\t is the number of authorized clients per team\n\
+\tfreq\t\t is the reciprocal of time unit for execution of actions\n"
+
 #define MAX_NAME_LENGTH        32
 #define MAX_DESCRIPTION_LENGTH 255
 #define MAX_BODY_LENGTH        512

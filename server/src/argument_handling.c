@@ -24,7 +24,7 @@ bool check_arg(int argc, char **argv, int i)
     if (argc <= i + 1)
         return false;
     if (!(!strcmp("-c", argv[i]) || !strcmp("-p", argv[i]) ||
-        !strcmp("-x", argv[i]) || !strcmp("-y", argv[i])))
+    !strcmp("-x", argv[i]) || !strcmp("-y", argv[i])))
         return true;
     for (int j = 0; argv[i + 1][j]; j++)
         if (!isdigit(argv[i + 1][j]))
@@ -35,10 +35,10 @@ bool check_arg(int argc, char **argv, int i)
 int check_checklist(arg_checklist_t checklist)
 {
     if (!checklist.port || !checklist.width || !checklist.height ||
-        !checklist.names || !checklist.clientsNb) {
-            fprintf(stderr, "Error: Missing arguments\n");
-            return false;
-        }
+    !checklist.names || !checklist.clientsNb) {
+        fprintf(stderr, "Error: Missing arguments\n");
+        return false;
+    }
     return true;
 }
 

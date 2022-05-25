@@ -67,6 +67,10 @@ int main(int argc, char **argv)
 {
     // my_server_t *server;
 
+    if (argc == 2 && strcmp(argv[1], "-help") == 0) {
+        printf("%s", USAGE_MSG);
+        return 0;
+    }
     if (good_args(argc, argv) == 0) {
         return 84;
     }
