@@ -39,4 +39,13 @@ typedef struct my_server {
     fd_set tmp_fds;
 } my_server_t;
 
+typedef struct inventory {
+    int linemate;
+    int deraumere;
+    int sibur;
+    int mendiane;
+    int phiras;
+    int thystame;
+}
+
 void server_loop(my_server_t *serv);
