@@ -7,6 +7,7 @@
 
 SRC = 	src/main.c			\
 		src/server_loop.c	\
+		src/argument_handling.c
 
 NAME = zappy_server
 

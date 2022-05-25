@@ -18,10 +18,6 @@ void get_fd_set(my_server_t *serv)
     FD_ZERO(&serv->fds);
     FD_SET(serv->server_fd, &serv->fds);
 }
-//     FD_ZERO(&serv->fds[READ_SERVER]);
-//     FD_SET(serv->server_fd, &serv->fds[READ_SERVER]);
-//     FD_ZERO(&serv->fds[WRITE_SERVER]);
-//     FD_SET(serv->server_fd, &serv->fds[WRITE_SERVER]);
 
 my_server_t *get_server(my_server_t *serv, char **argv)
 {
@@ -52,7 +48,8 @@ int make_server(my_server_t *serv, char **argv)
     if (!serv)
         return 0;
     if (bind(serv->server_fd, (struct sockaddr *)&(serv->address),
-    serv->addr_len) < 0) {
+            serv->addr_len)
+        < 0) {
         fprintf(stderr, "Error: Bind failed\n");
         close(serv->server_fd);
         return free_and_ret(serv);
@@ -68,15 +65,15 @@ int make_server(my_server_t *serv, char **argv)
 
 int main(int argc, char **argv)
 {
-    my_server_t *server;
+    // my_server_t *server;
 
-    if (argc != 2) {
+    if (good_args(argc, argv) == 0) {
         return 84;
     }
-    server = malloc(sizeof(my_server_t));
-    if (server == NULL || !make_server(server, argv))
-        return 84;
-    server_loop(server);
-    free(server);
+    // server = malloc(sizeof(my_server_t));
+    // if (server == NULL || !make_server(server, argv))
+    //     return 84;
+    // server_loop(server);
+    // free(server);
     return 0;
 }

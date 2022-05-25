@@ -30,6 +30,11 @@
                                  MAX_BODY_LENGTH + 20)
 
 typedef struct my_server {
+    uint width;
+    uint height;
+    char *team_names;
+    uint clients_nb;
+    uint freq;
     int server_fd;
     int port;
     struct protoent *proto;
@@ -39,4 +44,14 @@ typedef struct my_server {
     fd_set tmp_fds;
 } my_server_t;
 
+typedef struct arg_checklist
+{
+    bool port;
+    bool width;
+    bool height;
+    bool names;
+    bool clientsNb;
+} arg_checklist_t;
+
+int good_args(int argc, char **argv);
 void server_loop(my_server_t *serv);
