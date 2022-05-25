@@ -29,6 +29,8 @@ bool check_arg(int argc, char **argv, int i)
     for (int j = 0; argv[i + 1][j]; j++)
         if (!isdigit(argv[i + 1][j]))
             return false;
+    if (atoi(argv[i + 1]) < 1)
+        return false;
     return true;
 }
 
