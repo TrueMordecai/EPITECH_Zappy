@@ -42,7 +42,8 @@ name2 ... -c clientsNb\n\
 typedef struct my_server {
     uint width;
     uint height;
-    char *team_names;
+    char **team_names;
+    uint nb_teams;
     uint clients_nb;
     uint freq;
     int server_fd;
@@ -65,3 +66,4 @@ typedef struct arg_checklist
 
 int good_args(int argc, char **argv);
 void server_loop(my_server_t *serv);
+void set_arguments(my_server_t *serv, char **argv, int argc);

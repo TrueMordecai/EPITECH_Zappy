@@ -7,62 +7,44 @@
 
 #include "server.h"
 
-arg_checklist_t init_checklist(void)
+void get_all_team_names(my_server_t *serv, char **argv, int argc, int i)
 {
-    arg_checklist_t checklist;
+    int tmp;
 
-    checklist.clientsNb = false;
-    checklist.names = false;
-    checklist.height = false;
-    checklist.width = false;
-    checklist.port = false;
-    return checklist;
-}
-
-bool check_arg(int argc, char **argv, int i)
-{
-    if (argc <= i + 1)
-        return false;
-    if (!(!strcmp("-c", argv[i]) || !strcmp("-p", argv[i]) ||
-    !strcmp("-x", argv[i]) || !strcmp("-y", argv[i])))
-        return true;
-    for (int j = 0; argv[i + 1][j]; j++)
-        if (!isdigit(argv[i + 1][j]))
-            return false;
-    return true;
-}
-
-int check_checklist(arg_checklist_t checklist)
-{
-    if (!checklist.port || !checklist.width || !checklist.height ||
-    !checklist.names || !checklist.clientsNb) {
-        fprintf(stderr, "Error: Missing arguments\n");
-        return false;
+    for (int j = i; j < argc; j++) {
+        if (strncmp("-", argv[j], 1) != 0) {
+            serv->nb_teams++;
+        }
+        if (!strncmp("-", argv[j], 1))
+            break;
     }
-    return true;
+    serv->team_names = malloc(sizeof(char *) * (serv->nb_teams + 1));
+    for (int j = i; j < argc; j++) {
+        if (strncmp("-", argv[j], 1) != 0) {
+            serv->team_names[tmp] = strdup(argv[j]);
+            tmp++;
+        }
+        if (!strncmp("-", argv[j], 1))
+            break;
+    }
 }
 
-int good_args(int argc, char **argv)
+void set_arguments(my_server_t *serv, char **argv, int argc)
 {
-    arg_checklist_t checklist = init_checklist();
-    int repeat = 0;
-    bool good_args = true;
-
-    for (int i = 0; i < argc; i++) {
+    serv->nb_teams = 0;
+    serv->freq = 100;
+    for (int i = 1; i < argc; i++) {
         if (!strcmp("-p", argv[i]))
-            (!checklist.port) ? (checklist.port = 1) : (repeat = 1);
+            serv->port = atoi(argv[i + 1]);
         if (!strcmp("-x", argv[i]))
-            (!checklist.height) ? (checklist.height = 1) : (repeat = 1);
+            serv->height = atoi(argv[i + 1]);
         if (!strcmp("-y", argv[i]))
-            (!checklist.width) ? (checklist.width = 1) : (repeat = 1);
+            serv->width = atoi(argv[i + 1]);
         if (!strcmp("-n", argv[i]))
-            (!checklist.names) ? (checklist.names = 1) : (repeat = 1);
+            get_all_team_names(serv, argv, argc, i + 1);
         if (!strcmp("-c", argv[i]))
-            (!checklist.clientsNb) ? (checklist.clientsNb = 1) : (repeat = 1);
-        if (!strncmp("-", argv[i], 1))
-            good_args = check_arg(argc, argv, i);
-        if (good_args == false || repeat == 1)
-            return 0;
+            serv->clients_nb = atoi(argv[i + 1]);
+        if (!strcmp("-f", argv[i]))
+            serv->freq = atoi(argv[i + 1]);
     }
-    return check_checklist(checklist);
 }
