@@ -64,6 +64,16 @@ typedef struct arg_checklist
     bool clientsNb;
 } arg_checklist_t;
 
+typedef struct inventory {
+    int linemate;
+    int deraumere;
+    int sibur;
+    int mendiane;
+    int phiras;
+    int thystame;
+} inv_t;
+
 int good_args(int argc, char **argv);
+inv_t generate_inventory(void);
 void server_loop(my_server_t *serv);
 void set_arguments(my_server_t *serv, char **argv, int argc);
