@@ -1,7 +1,7 @@
 class Command
-    attr_accessor :name, :argCount
+    attr_accessor :name, :argCount, :args
 
-    # Add a new command
+    # Initialize method
     # @param name [String] command name, can't be empty.
     # @param argumentCount [Int] argument needed by the command.
     # return [Void]
