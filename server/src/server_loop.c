@@ -7,32 +7,44 @@
 
 #include "server.h"
 
-void server_loop(my_server_t *serv)
+int client_list_count(my_client_t *clients)
+{
+    int count = 0;
+
+    for (; clients; clients = clients->next)
+        count++;
+    return count;
+}
+
+void incoming_message(my_server_t *serv, int i)
 {
     struct sockaddr_in client;
-    int client_fd;
-    char buffer;
+    int cli_fd;
+    char *buffer;
 
+    if (FD_ISSET(i, &serv->tmp_fds)) {
+        if (i == serv->server_fd) {
+            cli_fd = accept(serv->server_fd,
+            (struct sockaddr *)&client, &serv->addr_len);
+            FD_SET(cli_fd, &serv->fds);
+            add_client(serv, make_client(cli_fd, serv->width,
+            serv->height));
+        } else {
+            buffer = get_client_line(i);
+            printf("%s\n", buffer);
+            free(buffer);
+        }
+    }
+}
+
+void server_loop(my_server_t *serv)
+{
     while (1) {
         serv->tmp_fds = serv->fds;
         select(FD_SETSIZE, &serv->tmp_fds, NULL, NULL, NULL);
-        for (int i = 0; i < FD_SETSIZE; i++) {
-            if (FD_ISSET(i, &serv->tmp_fds)) {
-                if (i == serv->server_fd) {
-                    client_fd = accept(serv->server_fd,
-                        (struct sockaddr *)&client, &serv->addr_len);
-                    FD_SET(client_fd, &serv->fds);
-                } else {
-                    while (1) {
-                        read(i, &buffer, 1);
-                        write(1, &buffer, 1);
-                        if (buffer == '\n')
-                            break;
-                    }
-                }
-            }
-        }
-        (void)client_fd;
+        for (int i = 0; i < FD_SETSIZE; i++)
+            incoming_message(serv, i);
+        printf("Connected clients: %d\n", client_list_count(serv->clients));
     }
     close(serv->server_fd);
 }

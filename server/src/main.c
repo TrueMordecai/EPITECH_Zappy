@@ -48,8 +48,7 @@ int make_server(my_server_t *serv, char **argv, int argc)
     if (!serv)
         return 0;
     if (bind(serv->server_fd, (struct sockaddr *)&(serv->address),
-            serv->addr_len)
-        < 0) {
+    serv->addr_len) < 0) {
         fprintf(stderr, "Error: Bind failed\n");
         close(serv->server_fd);
         return free_and_ret(serv);
@@ -67,6 +66,7 @@ int main(int argc, char **argv)
 {
     my_server_t *server;
 
+    srand(time(NULL));
     if (argc == 2 && !strcmp(argv[1], "-help")) {
         printf("%s", USAGE_MSG);
         return 0;
