@@ -32,12 +32,14 @@ name2 ... -c clientsNb\n\
 \tnameX\t\t is the name of the team X\n\
 \tclientsNb\t is the number of authorized clients per team\n\
 \tfreq\t\t is the reciprocal of time unit for execution of actions\n"
+#define MAX_MSG_QUEUE 10
 
-#define MAX_NAME_LENGTH        32
-#define MAX_DESCRIPTION_LENGTH 255
-#define MAX_BODY_LENGTH        512
-#define MAX_MSG_LENGTH         (MAX_NAME_LENGTH + MAX_DESCRIPTION_LENGTH + \
-                                 MAX_BODY_LENGTH + 20)
+typedef enum orientation {
+    NORTH = 0,
+    EAST,
+    SOUTH,
+    WEST
+} orientation_t;
 
 typedef struct my_server {
     uint width;
@@ -53,6 +55,7 @@ typedef struct my_server {
     socklen_t addr_len;
     fd_set fds;
     fd_set tmp_fds;
+    struct my_client *clients;
 } my_server_t;
 
 typedef struct arg_checklist
@@ -73,7 +76,25 @@ typedef struct inventory {
     int thystame;
 } inv_t;
 
+typedef struct my_client {
+    int fd;
+    char *team_name;
+    uint level;
+    uint x;
+    uint y;
+    orientation_t direction;
+    uint food;
+    inv_t inventory;
+    char **message_queue;
+    uint message_queue_size;
+    uint cooldown;
+    struct my_client *next;
+} my_client_t;
+
 int good_args(int argc, char **argv);
 inv_t generate_inventory(void);
 void server_loop(my_server_t *serv);
 void set_arguments(my_server_t *serv, char **argv, int argc);
+char *get_client_line(int fd);
+my_client_t *make_client(int fd, int x, int y);
+void add_client(my_server_t *serv, my_client_t *client);
