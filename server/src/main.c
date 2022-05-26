@@ -18,16 +18,12 @@ void get_fd_set(my_server_t *serv)
     FD_ZERO(&serv->fds);
     FD_SET(serv->server_fd, &serv->fds);
 }
-//     FD_ZERO(&serv->fds[READ_SERVER]);
-//     FD_SET(serv->server_fd, &serv->fds[READ_SERVER]);
-//     FD_ZERO(&serv->fds[WRITE_SERVER]);
-//     FD_SET(serv->server_fd, &serv->fds[WRITE_SERVER]);
 
-my_server_t *get_server(my_server_t *serv, char **argv)
+my_server_t *get_server(my_server_t *serv, char **argv, int argc)
 {
     int tmp;
 
-    serv->port = atoi(argv[1]);
+    set_arguments(serv, argv, argc);
     serv->proto = getprotobyname("TCP");
     if (!serv->proto) {
         free(serv);
@@ -46,13 +42,14 @@ my_server_t *get_server(my_server_t *serv, char **argv)
     return serv;
 }
 
-int make_server(my_server_t *serv, char **argv)
+int make_server(my_server_t *serv, char **argv, int argc)
 {
-    serv = get_server(serv, argv);
+    serv = get_server(serv, argv, argc);
     if (!serv)
         return 0;
     if (bind(serv->server_fd, (struct sockaddr *)&(serv->address),
-    serv->addr_len) < 0) {
+            serv->addr_len)
+        < 0) {
         fprintf(stderr, "Error: Bind failed\n");
         close(serv->server_fd);
         return free_and_ret(serv);
@@ -70,11 +67,17 @@ int main(int argc, char **argv)
 {
     my_server_t *server;
 
-    if (argc != 2) {
+    if (argc == 2 && !strcmp(argv[1], "-help")) {
+        printf("%s", USAGE_MSG);
+        return 0;
+    }
+    if (!good_args(argc, argv)) {
+        fprintf(stderr, "Error: Bad arguments\n");
+        printf("%s", USAGE_MSG);
         return 84;
     }
     server = malloc(sizeof(my_server_t));
-    if (server == NULL || !make_server(server, argv))
+    if (server == NULL || !make_server(server, argv, argc))
         return 84;
     server_loop(server);
     free(server);
