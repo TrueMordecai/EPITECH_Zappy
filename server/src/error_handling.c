@@ -24,7 +24,7 @@ bool check_arg(int argc, char **argv, int i)
     if (argc <= i + 1)
         return false;
     if (!(!strcmp("-c", argv[i]) || !strcmp("-p", argv[i]) ||
-    !strcmp("-x", argv[i]) || !strcmp("-y", argv[i])))
+    !strcmp("-x", argv[i])|| !strcmp("-y", argv[i]) || !strcmp("-f", argv[i])))
         return true;
     for (int j = 0; argv[i + 1][j]; j++)
         if (!isdigit(argv[i + 1][j]))
@@ -34,13 +34,17 @@ bool check_arg(int argc, char **argv, int i)
     return true;
 }
 
-int check_checklist(arg_checklist_t checklist)
+int check_checklist(arg_checklist_t checklist, int argc, char **argv)
 {
+    int freq = 0;
+
     if (!checklist.port || !checklist.width || !checklist.height ||
-    !checklist.names || !checklist.clientsNb) {
-        fprintf(stderr, "Error: Missing arguments\n");
+    !checklist.names || !checklist.clientsNb)
         return false;
-    }
+    for (int i = 0; i < argc; i++)
+        (strcmp("-f", argv[i]) == 0) ? freq++ : 0;
+    if (freq > 1)
+        return false;
     return true;
 }
 
@@ -66,5 +70,5 @@ int good_args(int argc, char **argv)
         if (good_args == false || repeat == 1)
             return 0;
     }
-    return check_checklist(checklist);
+    return check_checklist(checklist, argc, argv);
 }
