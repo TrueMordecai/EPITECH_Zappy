@@ -33,6 +33,8 @@ void set_arguments(my_server_t *serv, char **argv, int argc)
 {
     serv->nb_teams = 0;
     serv->freq = 100;
+    serv->map_cooldown = 0;
+    serv->clients = NULL;
     for (int i = 1; i < argc; i++) {
         if (!strcmp("-p", argv[i]))
             serv->port = atoi(argv[i + 1]);
