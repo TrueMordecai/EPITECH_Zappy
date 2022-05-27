@@ -6,6 +6,7 @@
 */
 
 #include "server.h"
+#include <sys/ioctl.h>
 
 int client_list_count(my_client_t *clients)
 {
@@ -21,6 +22,7 @@ void incoming_message(my_server_t *serv, int i)
     struct sockaddr_in client;
     int cli_fd;
     char *buffer;
+    int nread;
 
     if (FD_ISSET(i, &serv->tmp_fds)) {
         if (i == serv->server_fd) {
@@ -30,6 +32,12 @@ void incoming_message(my_server_t *serv, int i)
             add_client(serv, make_client(cli_fd, serv->width,
             serv->height));
         } else {
+            ioctl(i, FIONREAD, &nread);
+            if (nread == 0) {
+                del_client(serv, i);
+                FD_CLR(i, &serv->fds);
+                return;
+            }
             buffer = get_client_line(i);
             printf("%s\n", buffer);
             free(buffer);

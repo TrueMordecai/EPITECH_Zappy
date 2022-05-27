@@ -98,3 +98,5 @@ void set_arguments(my_server_t *serv, char **argv, int argc);
 char *get_client_line(int fd);
 my_client_t *make_client(int fd, int x, int y);
 void add_client(my_server_t *serv, my_client_t *client);
+void decon_client(my_client_t *client);
+void del_client(my_server_t *serv, int fd);
