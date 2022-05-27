@@ -55,6 +55,7 @@ typedef struct my_server {
     socklen_t addr_len;
     fd_set fds;
     fd_set tmp_fds;
+    uint map_cooldown;
     struct my_client *clients;
 } my_server_t;
 
@@ -88,6 +89,7 @@ typedef struct my_client {
     char **message_queue;
     uint message_queue_size;
     uint cooldown;
+    bool dead;
     struct my_client *next;
 } my_client_t;
 
@@ -100,3 +102,4 @@ my_client_t *make_client(int fd, int x, int y);
 void add_client(my_server_t *serv, my_client_t *client);
 void decon_client(my_client_t *client);
 void del_client(my_server_t *serv, int fd);
+void update_clients(my_server_t *serv);
