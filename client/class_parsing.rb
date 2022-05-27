@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 
-require_relative 'command.rb'
-
-
+require_relative 'class_command.rb'
 
 class Parsing
 

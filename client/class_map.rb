@@ -1,4 +1,4 @@
-require_relative 'cell.rb'
+require_relative 'class_cell.rb'
 class String
     # colorization
     def colorize(color_code)

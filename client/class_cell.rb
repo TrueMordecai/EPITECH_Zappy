@@ -46,7 +46,7 @@ class Cell
 
     # Count the unity of food find in this cell
     # return [Int]
-    def countFoodTotal()
+    def countItemsTotal()
         return (@Food + @Linemate + @Deraumere + @Sibur + @Mendiane + @Phiras + @Thysame)
     end
 end
