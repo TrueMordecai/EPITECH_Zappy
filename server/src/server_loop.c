@@ -51,11 +51,38 @@ void incoming_message(my_server_t *serv, int i)
     }
 }
 
+void check_tick(my_server_t *serv, clock_t *time)
+{
+    clock_t current;
+
+    current = clock() - *time;
+    if ((((float)current) / CLOCKS_PER_SEC) >= (float)serv->freq) {
+        update_clients(serv);
+        if (!serv->map_cooldown) {
+            /// update map
+            serv->map_cooldown = 16;
+        } else
+            serv->map_cooldown--;
+        *time = clock();
+    }
+}
+
 void server_loop(my_server_t *serv)
 {
+    struct timeval tv;
+    clock_t time;
+    int timeout;
+
+    time = clock();
+    tv.tv_sec = 0;
+    tv.tv_usec = 1;
     while (1) {
         serv->tmp_fds = serv->fds;
-        select(FD_SETSIZE, &serv->tmp_fds, NULL, NULL, NULL);
+        timeout = select(FD_SETSIZE, &serv->tmp_fds, NULL, NULL, &tv);
+        if (timeout == 0) {
+            check_tick(serv, &time);
+            continue;
+        }
         for (int i = 0; i < FD_SETSIZE; i++)
             incoming_message(serv, i);
         printf("Connected clients: %d\n", client_list_count(serv->clients));

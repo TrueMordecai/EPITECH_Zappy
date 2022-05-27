@@ -69,6 +69,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->message_queue = malloc(sizeof(char*) * 11);
     client->message_queue_size = 0;
     client->next = NULL;
+    client->dead = false;
     write(fd, "WELCOME\n", 8);
     return client;
 }
