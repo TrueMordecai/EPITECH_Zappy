@@ -55,7 +55,7 @@ void server_loop(my_server_t *serv)
 {
     while (1) {
         serv->tmp_fds = serv->fds;
-        select(FD_SETSIZE, &serv->tmp_fds, &serv->tmp_fds, NULL, NULL);
+        select(FD_SETSIZE, &serv->tmp_fds, NULL, NULL, NULL);
         for (int i = 0; i < FD_SETSIZE; i++)
             incoming_message(serv, i);
         printf("Connected clients: %d\n", client_list_count(serv->clients));
