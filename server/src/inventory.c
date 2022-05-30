@@ -18,5 +18,17 @@ inv_t generate_inventory(void)
     new.phiras = 0;
     new.thystame = 0;
 
-    return (new);
+    return new;
+}
+
+inv_t delete_inventory(inv_t inv)
+{
+    inv.deraumere = 0;
+    inv.linemate = 0;
+    inv.sibur = 0;
+    inv.mendiane = 0;
+    inv.phiras = 0;
+    inv.thystame = 0;
+
+    return inv;
 }
