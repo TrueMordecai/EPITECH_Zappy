@@ -51,12 +51,19 @@ void incoming_message(my_server_t *serv, int i)
     }
 }
 
+void print_map(my_server_t *serv)
+{
+    for (uint i = 0; i < serv->height; i++)
+        printf("%s\n", serv->map[i]);
+}
+
 void check_tick(my_server_t *serv, clock_t *time)
 {
     clock_t current;
 
     current = clock() - *time;
-    if ((((float)current) / CLOCKS_PER_SEC) >= (float)serv->freq) {
+    if ((((float)current) / CLOCKS_PER_SEC) >= 1/(float)serv->freq) {
+        print_map(serv);
         update_clients(serv);
         if (!serv->map_cooldown) {
             /// update map
@@ -85,7 +92,7 @@ void server_loop(my_server_t *serv)
         }
         for (int i = 0; i < FD_SETSIZE; i++)
             incoming_message(serv, i);
-        printf("Connected clients: %d\n", client_list_count(serv->clients));
+        // printf("Connected clients: %d\n", client_list_count(serv->clients));
     }
     close(serv->server_fd);
 }

@@ -14,10 +14,16 @@ int free_and_ret(my_server_t *serv)
     return 0;
 }
 
-void get_fd_set(my_server_t *serv)
+void make_map(my_server_t *serv)
 {
-    FD_ZERO(&serv->fds);
-    FD_SET(serv->server_fd, &serv->fds);
+    serv->map = malloc(sizeof(char *) * serv->height);
+    for (uint i = 0; i < serv->height; i++) {
+        serv->map[i] = malloc(sizeof(char) * (serv->width + 1));
+        for (uint j = 0; j < serv->width; j++)
+            serv->map[i][j] = ' ';
+        serv->map[i][serv->width] = '\0';
+    }
+    update_map(serv);
 }
 
 my_server_t *get_server(my_server_t *serv, char **argv, int argc)
@@ -59,7 +65,9 @@ int make_server(my_server_t *serv, char **argv, int argc)
         close(serv->server_fd);
         return free_and_ret(serv);
     }
-    get_fd_set(serv);
+    FD_ZERO(&serv->fds);
+    FD_SET(serv->server_fd, &serv->fds);
+    make_map(serv);
     return 1;
 }
 
