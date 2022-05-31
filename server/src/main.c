@@ -16,14 +16,14 @@ int free_and_ret(my_server_t *serv)
 
 void make_map(my_server_t *serv)
 {
-    serv->map = malloc(sizeof(char *) * serv->height);
+    serv->map = malloc(sizeof(inv_t *) * serv->height);
     for (uint i = 0; i < serv->height; i++) {
-        serv->map[i] = malloc(sizeof(char) * (serv->width + 1));
+        serv->map[i] = malloc(sizeof(inv_t) * serv->width);
         for (uint j = 0; j < serv->width; j++)
-            serv->map[i][j] = ' ';
-        serv->map[i][serv->width] = '\0';
+            serv->map[i][j] = generate_inventory();
     }
     update_map(serv);
+    serv->map_cooldown = 16;
 }
 
 my_server_t *get_server(my_server_t *serv, char **argv, int argc)

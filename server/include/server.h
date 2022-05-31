@@ -35,7 +35,7 @@ name2 ... -c clientsNb\n\
 #define MAX_MSG_QUEUE 10
 #define FOOD 50
 #define LINEMATE 30
-#define DERAUMERE 12
+#define DERAUMERE 15
 #define SIBUR 10
 #define MENDIANE 10
 #define PHIRAS 8
@@ -62,7 +62,7 @@ typedef struct my_server {
     socklen_t addr_len;
     fd_set fds;
     fd_set tmp_fds;
-    char **map;
+    struct inventory **map;
     uint map_cooldown;
     struct my_client *clients;
 } my_server_t;
@@ -77,6 +77,7 @@ typedef struct arg_checklist
 } arg_checklist_t;
 
 typedef struct inventory {
+    int food;
     int linemate;
     int deraumere;
     int sibur;
@@ -113,3 +114,6 @@ void decon_client(my_client_t *client);
 void del_client(my_server_t *serv, int fd);
 void update_clients(my_server_t *serv);
 void update_map(my_server_t *serv);
+int check_tile(inv_t tile);
+int check_map_full(my_server_t *serv);
+int check_tile_ressource(inv_t tile, char ressource);

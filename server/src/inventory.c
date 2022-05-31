@@ -11,6 +11,7 @@ inv_t generate_inventory(void)
 {
     inv_t new;
 
+    new.food = 0;
     new.deraumere = 0;
     new.linemate = 0;
     new.sibur = 0;
@@ -23,6 +24,7 @@ inv_t generate_inventory(void)
 
 inv_t delete_inventory(inv_t inv)
 {
+    inv.food = 0;
     inv.deraumere = 0;
     inv.linemate = 0;
     inv.sibur = 0;

@@ -12,7 +12,7 @@ void update_client(my_client_t *client)
     if (!client)
         return;
     if (client->cooldown == 0) {
-        /// Do the command
+
     }
     if (client->cooldown > 0)
         client->cooldown--;

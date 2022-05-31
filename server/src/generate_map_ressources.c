@@ -7,48 +7,48 @@
 
 #include "server.h"
 
-inv_t add_ressource(inv_t map_inv, char tile, int *food)
+inv_t add_ressource(inv_t map_inv, inv_t tile)
 {
-    if (tile == 'f')
-        *food = *food + 1;
-    if (tile == 'l')
-        map_inv.linemate++;
-    if (tile == 'd')
-        map_inv.deraumere++;
-    if (tile == 's')
-        map_inv.sibur++;
-    if (tile == 'm')
-        map_inv.mendiane++;
-    if (tile == 'p')
-        map_inv.phiras++;
-    if (tile == 't')
-        map_inv.thystame++;
-    (void)food;
+    map_inv.food += tile.food;
+    map_inv.deraumere += tile.deraumere;
+    map_inv.linemate += tile.linemate;
+    map_inv.sibur += tile.sibur;
+    map_inv.mendiane += tile.mendiane;
+    map_inv.phiras += tile.phiras;
+    map_inv.thystame += tile.thystame;
     return (map_inv);
 }
 
-int check_tile(char tile, my_server_t *serv, int chance, int pos[2])
+int add_on_tile(my_server_t *serv, char tile, int chance, int vec[2])
 {
-    int pos_x = pos[0];
-    int pos_y = pos[1];
-
-    if (serv->map[pos[0]][pos[1]] == ' ' || rand() % chance == 0) {
-        serv->map[pos[0]][pos[1]] = tile;
-        return 1;
-    }
-    (void)pos_x;
-    (void)pos_y;
-    return 0;
+    if (rand() % chance != 0)
+        return 0;
+    if (check_tile_ressource(serv->map[vec[0]][vec[1]], tile) == 1)
+        return 0;
+    (tile == 'f') ? (serv->map[vec[0]][vec[1]].food++): (0);
+    (tile == 'd') ? (serv->map[vec[0]][vec[1]].deraumere++): (0);
+    (tile == 'l') ? (serv->map[vec[0]][vec[1]].linemate++): (0);
+    (tile == 's') ? (serv->map[vec[0]][vec[1]].sibur++): (0);
+    (tile == 'm') ? (serv->map[vec[0]][vec[1]].mendiane++): (0);
+    (tile == 'p') ? (serv->map[vec[0]][vec[1]].phiras++): (0);
+    (tile == 't') ? (serv->map[vec[0]][vec[1]].thystame++): (0);
+    return 1;
 }
 
 void gen_ressource(int current, my_server_t *serv, char tile, int expected)
 {
     int vec[2];
 
+    while (current < expected && check_map_full(serv) == 0) {
+        vec[0] = rand() % serv->height;
+        vec[1] = rand() % serv->width;
+        if (check_tile(serv->map[vec[0]][vec[1]]) == 0)
+            current += add_on_tile(serv, tile, expected, vec);
+    }
     while (current < expected) {
         vec[0] = rand() % serv->height;
         vec[1] = rand() % serv->width;
-        current += check_tile(tile, serv, expected, vec);
+        current += add_on_tile(serv, tile, expected, vec);
     }
 }
 
@@ -65,12 +65,11 @@ int calc_area(my_server_t *serv, int dens)
 void update_map(my_server_t *serv)
 {
     inv_t map_inv = generate_inventory();
-    int food = 0;
 
     for (uint i = 0; i < serv->height; i++)
         for (uint j = 0; j < serv->width; j++)
-            map_inv = add_ressource(map_inv, serv->map[i][j], &food);
-    gen_ressource(food, serv, 'f', calc_area(serv, FOOD));
+            map_inv = add_ressource(map_inv, serv->map[i][j]);
+    gen_ressource(map_inv.food, serv, 'f', calc_area(serv, FOOD));
     gen_ressource(map_inv.linemate, serv, 'l', calc_area(serv, LINEMATE));
     gen_ressource(map_inv.deraumere, serv, 'd', calc_area(serv, DERAUMERE));
     gen_ressource(map_inv.sibur, serv, 's', calc_area(serv, SIBUR));
