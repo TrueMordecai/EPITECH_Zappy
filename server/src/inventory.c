@@ -34,3 +34,28 @@ inv_t delete_inventory(inv_t inv)
 
     return inv;
 }
+
+int add_quantity(inv_t inv, int nb, int add)
+{
+    switch (nb) {
+        case 0:
+            inv.deraumere += add;
+            return 0;
+        case 1:
+            inv.linemate += add;
+            return 0;
+        case 2:
+            inv.sibur += add;
+            return 0;
+        case 3:
+            inv.mendiane += add;
+            return 0;
+        case 4:
+            inv.phiras += add;
+            return 0;
+        case 5:
+            inv.thystame += add;
+            return 0;
+    }
+    return -1;
+}
