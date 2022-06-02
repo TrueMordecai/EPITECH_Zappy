@@ -47,3 +47,14 @@ int check_map_full(my_server_t *serv)
             (!check_tile(serv->map[i][j])) ? (ret = 0) : (1);
     return ret;
 }
+
+void update_player_position(my_server_t *serv)
+{
+    my_client_t *tmp = serv->clients;
+
+    for (uint i = 0; i < serv->height; i++)
+        for (uint j = 0; j < serv->width; j++)
+            serv->map[i][j].player = 0;
+    for (; tmp; tmp = tmp->next)
+        serv->map[tmp->y][tmp->x].player++;
+}

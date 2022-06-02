@@ -84,6 +84,7 @@ typedef struct inventory {
     int mendiane;
     int phiras;
     int thystame;
+    int player;
 } inv_t;
 
 typedef struct my_client {
@@ -117,3 +118,4 @@ void update_map(my_server_t *serv);
 int check_tile(inv_t tile);
 int check_map_full(my_server_t *serv);
 int check_tile_ressource(inv_t tile, char ressource);
+void update_player_position(my_server_t *serv);

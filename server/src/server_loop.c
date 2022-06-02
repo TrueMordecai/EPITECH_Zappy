@@ -63,6 +63,7 @@ void check_tick(my_server_t *serv, clock_t *time)
             serv->map_cooldown = 16;
         } else
             serv->map_cooldown--;
+        update_player_position(serv);
         *time = clock();
     }
 }

@@ -18,6 +18,7 @@ inv_t generate_inventory(void)
     new.mendiane = 0;
     new.phiras = 0;
     new.thystame = 0;
+    new.player = 0;
 
     return new;
 }
