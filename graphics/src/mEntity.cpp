@@ -49,6 +49,23 @@ mEntity::mEntity(sf::String path, sf::IntRect rect, int64_t milliseconds, int nb
     }
 }
 
+mEntity::mEntity(sf::Texture texture, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir, std::string name)
+{
+    _texture = texture;
+    _sprite.setTexture(_texture);
+    _sprite.setTextureRect(rect);
+    _rect = rect;
+    _clock.restart();
+    _timingMilliseconds = milliseconds;
+    _nbFrame = nbFrame;
+    _dir = dir;
+    _name = name;
+    if (name != "DEFAULT" and name != "") {
+        mEntityAnimation toSave(name, nbFrame, milliseconds, rect);
+        _saved.push_back(toSave);
+    }    
+}
+
 
 /// Problem : last frame is slightly longer.
 int mEntity::update()
@@ -94,6 +111,8 @@ void mEntity::changeAnimationLoop(sf::IntRect rect, int64_t milliseconds, int nb
 
 void mEntity::changeAnimationLoop(std::string name)
 {
+    if (name == _name)
+        return;
     for (auto &i : _saved) {
         if (i.name() == name && _name != name) {
             _rect = i.rect();

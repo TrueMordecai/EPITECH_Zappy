@@ -1,32 +1,35 @@
 #include "Player.hpp"
+#include "Cell.hpp"
+
+#ifndef __DRAWER_HPP__
+#define __DRAWER_HPP_
+
 class Drawer
 {
 public:
     Drawer(/* args */);
     ~Drawer();
     void drawPlayer(Player &p);
+    void drawGrid();
     void display();
     void clear();
     bool loop();
+    void movePlayer(Player &p);
+    void moveCamera();
 private:
-    void drawStage2(Player &p, mEntity *curHead);
-    void drawStage3(Player &p, mEntity *curHead);
-    void drawStage4(Player &p, mEntity *curHead);
-    void drawStage5(Player &p, mEntity *curHead);
-    void drawStage6(Player &p, mEntity *curHead);
-    void drawStage7(Player &p, mEntity *curHead);
-    void drawStage8(Player &p, mEntity *curHead);
-    void drawHead(Player &p, mEntity *curHead);
-    void drawBody(Player &p, mEntity *curBody);
-    
-    mEntity *_normal;
-    mEntity *_black;
+
+
+
+    void drawStage2(Player &p);
+    void drawStage3(Player &p);
+
     sf::RenderWindow *_window;
     mEntity *_stage2;
     mEntity *_stage3;
-    mEntity *_stage4;
-    mEntity *_stage5;
-    mEntity *_stage6;
-    mEntity *_stage7;
-    mEntity *_stage8;
+    sf::RectangleShape _cell;
+    int f = 10;
+    sf::Vector2i _mapSize;
+    sf::Vector2f _camOffset;
+    std::vector<Cell*> _cells;
 };
+#endif

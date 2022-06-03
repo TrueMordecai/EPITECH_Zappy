@@ -10,8 +10,8 @@ NAME = zappy_graphical_user
 SRC =	src/main.cpp				\
 		src/Player.cpp				\
 		src/Drawer.cpp				\
-		src/mEntity.cpp
-
+		src/mEntity.cpp				\
+		src/Cell.cpp
 OBJ	=	$(SRC:.cpp=.o)
 
 CC = g++

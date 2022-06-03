@@ -37,6 +37,7 @@ class mEntity
 {
 public:
     mEntity(sf::String path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir = LEFT_TO_RIGHT, std::string NAME = "");
+    mEntity(sf::Texture texture, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir = LEFT_TO_RIGHT, std::string NAME = "");
     ~mEntity();
 
     void changeAnimationLoop(sf::IntRect rect, int64_t milliseconds, int nbFrame, std::string name = "DEFAULT");
@@ -74,7 +75,6 @@ private:
     sf::IntRect _rect;
     int _nbFrame;
     std::string _name;
-    
     std::vector<mEntityAnimation> _saved;
 };
 #endif /* !PARALLAX_HPP_ */
