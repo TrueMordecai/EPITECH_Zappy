@@ -12,7 +12,9 @@ SRC = 	src/main.c					\
 		src/inventory.c				\
 		src/client_init.c			\
 		src/get_client_line.c		\
-		src/tick_update.c
+		src/tick_update.c			\
+		src/generate_map_ressources.c	\
+		src/map_info.c
 
 NAME = zappy_server
 

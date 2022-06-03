@@ -33,6 +33,13 @@ name2 ... -c clientsNb\n\
 \tclientsNb\t is the number of authorized clients per team\n\
 \tfreq\t\t is the reciprocal of time unit for execution of actions\n"
 #define MAX_MSG_QUEUE 10
+#define FOOD 50
+#define LINEMATE 30
+#define DERAUMERE 15
+#define SIBUR 10
+#define MENDIANE 10
+#define PHIRAS 8
+#define THYSTAME 5
 
 typedef enum orientation {
     NORTH = 0,
@@ -55,6 +62,7 @@ typedef struct my_server {
     socklen_t addr_len;
     fd_set fds;
     fd_set tmp_fds;
+    struct inventory **map;
     uint map_cooldown;
     struct my_client *clients;
 } my_server_t;
@@ -69,12 +77,14 @@ typedef struct arg_checklist
 } arg_checklist_t;
 
 typedef struct inventory {
+    int food;
     int linemate;
     int deraumere;
     int sibur;
     int mendiane;
     int phiras;
     int thystame;
+    int player;
 } inv_t;
 
 typedef struct my_client {
@@ -95,6 +105,7 @@ typedef struct my_client {
 
 int good_args(int argc, char **argv);
 inv_t generate_inventory(void);
+inv_t delete_inventory(inv_t);
 void server_loop(my_server_t *serv);
 void set_arguments(my_server_t *serv, char **argv, int argc);
 char *get_client_line(int fd);
@@ -103,3 +114,8 @@ void add_client(my_server_t *serv, my_client_t *client);
 void decon_client(my_client_t *client);
 void del_client(my_server_t *serv, int fd);
 void update_clients(my_server_t *serv);
+void update_map(my_server_t *serv);
+int check_tile(inv_t tile);
+int check_map_full(my_server_t *serv);
+int check_tile_ressource(inv_t tile, char ressource);
+void update_player_position(my_server_t *serv);

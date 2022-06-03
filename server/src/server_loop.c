@@ -56,13 +56,14 @@ void check_tick(my_server_t *serv, clock_t *time)
     clock_t current;
 
     current = clock() - *time;
-    if ((((float)current) / CLOCKS_PER_SEC) >= (float)serv->freq) {
+    if ((((float)current) / CLOCKS_PER_SEC) >= 1/(float)serv->freq) {
         update_clients(serv);
         if (!serv->map_cooldown) {
-            /// update map
+            update_map(serv);
             serv->map_cooldown = 16;
         } else
             serv->map_cooldown--;
+        update_player_position(serv);
         *time = clock();
     }
 }
@@ -85,7 +86,6 @@ void server_loop(my_server_t *serv)
         }
         for (int i = 0; i < FD_SETSIZE; i++)
             incoming_message(serv, i);
-        printf("Connected clients: %d\n", client_list_count(serv->clients));
     }
     close(serv->server_fd);
 }
