@@ -60,3 +60,15 @@ int add_quantity(inv_t inv, int nb, int add)
     }
     return -1;
 }
+
+inv_t combine_inventory(inv_t inv, inv_t add)
+{
+    inv.food += add.food;
+    inv.deraumere += add.deraumere;
+    inv.linemate += add.linemate;
+    inv.sibur += add.sibur;
+    inv.mendiane += add.mendiane;
+    inv.phiras += add.phiras;
+    inv.thystame += add.thystame;
+    return (inv);
+}
