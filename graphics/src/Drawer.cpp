@@ -183,12 +183,12 @@ sf::RenderWindow &Drawer::getWindow()
     return *_window;
 }
 
-
-/// Need to handle cammera offset
 Cell Drawer::getCellFromClick()
 {
     sf::Vector2i pos = sf::Mouse::getPosition(*_window);
-    return (*_cells[pos.x / 128 + (pos.y / 128 * 20)]);
+    pos.x -= _camOffset.x;
+    pos.y -= _camOffset.y;
+    return (*_cells[(pos.x / 128) + ((pos.y / 128 * 20))]);
 }
 
 void Drawer::drawStage2(Player &p)
