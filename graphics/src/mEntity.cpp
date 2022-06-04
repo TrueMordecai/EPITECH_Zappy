@@ -8,29 +8,13 @@ mEntityAnimation::mEntityAnimation(std::string name, int nbFrame, int64_t milli,
     _name = name;
     _rect = rect;
 }
+mEntityAnimation::~mEntityAnimation() {}
+std::string mEntityAnimation::name() {return (_name);}
+sf::IntRect mEntityAnimation::rect() {return (_rect);}
+int mEntityAnimation::nbFrame() {return (_nbFrame);}
+int64_t mEntityAnimation::milliseconds() {return (_milliseconds);}
 
-mEntityAnimation::~mEntityAnimation()
-{}
 
-std::string mEntityAnimation::name()
-{
-    return (_name);
-}
-
-sf::IntRect mEntityAnimation::rect()
-{
-    return (_rect);
-}
-
-int mEntityAnimation::nbFrame()
-{
-    return (_nbFrame);
-}
-
-int64_t mEntityAnimation::milliseconds()
-{
-    return (_milliseconds);
-}
 
 mEntity::mEntity(sf::String path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir/* = LEFT_TO_RIGHT*/, std::string namee /* = "DEFAULT"*/)
 {
@@ -64,6 +48,32 @@ mEntity::mEntity(sf::Texture texture, sf::IntRect rect, int64_t milliseconds, in
         mEntityAnimation toSave(name, nbFrame, milliseconds, rect);
         _saved.push_back(toSave);
     }    
+}
+
+mEntity::mEntity(sf::Texture texture, sf::IntRect rect)
+{
+    _texture = texture;
+    _sprite.setTexture(_texture);
+    _sprite.setTextureRect(rect);
+    _rect = rect;
+    _clock.restart();
+    _timingMilliseconds = 100;
+    _nbFrame = 1;
+    _dir = LEFT_TO_RIGHT;
+    _name = "";
+}
+
+mEntity::mEntity(sf::String path, sf::IntRect rect)
+{
+    _texture.loadFromFile(path);
+    _sprite.setTexture(_texture);
+    _sprite.setTextureRect(rect);
+    _rect = rect;
+    _clock.restart();
+    _timingMilliseconds = 100;
+    _nbFrame = 1;
+    _dir = LEFT_TO_RIGHT;
+    _name = "";
 }
 
 
@@ -156,8 +166,11 @@ bool mEntity::intersect(sf::Vector2i p)
 bool mEntity::intersect(sf::Vector2u p)
 {
     sf::IntRect r = this->getHitbox();
-    if (p.x >= r.left && p.x <= r.left + r.width) {
-        if (p.y >= r.top && p.y <= r.top + r.height) {
+
+    if (r.left < 0 or r.top < 0 or r.width < 0 or r.height < 0)
+        return (false); // Shouldn't be negative for better coparison.
+    if (p.x >= (unsigned int)r.left && p.x <= (unsigned int)r.left + (unsigned int)r.width) {
+        if (p.y >= (unsigned int)r.top && p.y <= (unsigned int)r.top + (unsigned int)r.height) {
             return (true);
         }
     }

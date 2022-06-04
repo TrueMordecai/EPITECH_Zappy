@@ -16,6 +16,9 @@ public:
     bool loop();
     void movePlayer(Player &p);
     void moveCamera();
+    void drawInfo(Player &p); /// Debug olny
+    sf::RenderWindow &getWindow();
+    Cell getCellFromClick();
 private:
 
 
@@ -31,5 +34,7 @@ private:
     sf::Vector2i _mapSize;
     sf::Vector2f _camOffset;
     std::vector<Cell*> _cells;
+    sf::Text _text;
+    sf::Font _font;
 };
 #endif

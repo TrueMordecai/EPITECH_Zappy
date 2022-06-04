@@ -24,13 +24,17 @@ Drawer::Drawer(/* args */)
     _mapSize = {20, 20};
     _camOffset = {0, 0};
 
-    for (int x = 0; x != _mapSize.x; x++) {
-        for (int y = 0; y != _mapSize.y; y++) {
-            std::cout << "New one!" << x << "/" << y <<"\n";
+    for (int y = 0; y != _mapSize.x; y++) {
+        for (int x = 0; x != _mapSize.y; x++) {
             Cell *ncell = new Cell({x, y});
             _cells.push_back(ncell);
         }        
     }
+    _font.loadFromFile("assets/hud/font1.ttf");
+    _text.setFont(_font);
+    _text.setCharacterSize(32);
+    _text.setFillColor(sf::Color::Black);
+    _text.setString("TEST");
 }
 
 Drawer::~Drawer()
@@ -45,11 +49,12 @@ void Drawer::drawPlayer(Player &p)
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left));
 //        p.addMovementOffset({1, 0});
     
-    p.getBody()->getSprite().setPosition(sf::Vector2f(p.x() * 128 + _camOffset.x, p.y() * 128 + 32 + _camOffset.y));
+    p.getBody()->getSprite().setPosition(sf::Vector2f(p.x() * 128, p.y() * 128 + 32));
 
     if (!((p.getPosition().x == p.getPositionGoal().x) and (p.getPosition().y == p.getPositionGoal().y)))
         movePlayer(p);
 
+    p.getBody()->getSprite().move(_camOffset.x, _camOffset.y);
     int diff = (p.getHead()->getSprite().getGlobalBounds().width - p.getBody()->getSprite().getGlobalBounds().width) / 2;
     p.getHead()->getSprite().setPosition(sf::Vector2f(p.getBody()->getSprite().getPosition().x - diff,
                                                       p.getBody()->getSprite().getPosition().y - (p.getHead()->getSprite().getGlobalBounds().height) * 0.79));
@@ -80,13 +85,41 @@ bool Drawer::loop()
 
 void Drawer::movePlayer(Player &p)
 {
-    if (p.getPositionGoal().x * 128 + _camOffset.x > p.getBody()->getSprite().getPosition().x + _camOffset.x) {
+    if (p.getPositionGoal().x * 128 > p.getBody()->getSprite().getPosition().x) {
+            p.setOrientation(RIGHT);
             p.addMovementOffset({128.0 / (60.0 * (7.0/f)), 0});
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                p.getBody()->getSprite().move({-1, 0});
-            p.getBody()->getSprite().move(p.getMovementOffset().x, p.getMovementOffset().y);
-        if (p.getBody()->getSprite().getPosition().x + _camOffset.x >= p.getPositionGoal().x * 128 + _camOffset.x) {
-            std::cout << "IDLE!\n";
+            p.getBody()->getSprite().move(p.getMovementOffset().x, 0);
+        if (p.getBody()->getSprite().getPosition().x >= p.getPositionGoal().x * 128) {
+            p.updatePosition();
+            p.resetMovementOffset();
+        }
+        return;
+    }
+    if (p.getPositionGoal().x * 128 < p.getBody()->getSprite().getPosition().x) {
+            p.setOrientation(LEFT);
+            p.addMovementOffset({-(128.0 / (60.0 * (7.0/f))), 0});
+            p.getBody()->getSprite().move(p.getMovementOffset().x, 0);
+        if (p.getBody()->getSprite().getPosition().x <= p.getPositionGoal().x * 128) {
+            p.updatePosition();
+            p.resetMovementOffset();
+        }
+        return;
+    }
+    if (p.getPositionGoal().y * 128 < p.getBody()->getSprite().getPosition().y) {
+        p.setOrientation(UP);
+        p.addMovementOffset({0, -(128.0 / (60.0 * (7.0/f)))});
+        p.getBody()->getSprite().move(0, p.getMovementOffset().y);
+        if (p.getBody()->getSprite().getPosition().y <= p.getPositionGoal().y * 128 + 32) {
+            p.updatePosition();
+            p.resetMovementOffset();
+        }
+        return;
+    }
+    if (p.getPositionGoal().y * 128 > p.getBody()->getSprite().getPosition().y) {
+        p.setOrientation(DOWN);
+        p.addMovementOffset({0, (128.0 / (60.0 * (7.0/f)))});
+        p.getBody()->getSprite().move(0, p.getMovementOffset().y);
+        if (p.getBody()->getSprite().getPosition().y >= p.getPositionGoal().y * 128 + 32) {
             p.updatePosition();
             p.resetMovementOffset();
         }
@@ -96,13 +129,66 @@ void Drawer::movePlayer(Player &p)
 void Drawer::moveCamera()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        _camOffset.y -= 1;
+        _camOffset.y += 4;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        _camOffset.x += 1;
+        _camOffset.x += 4;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        _camOffset.x -= 1;
+        _camOffset.x -= 4;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        _camOffset.y += 1;
+        _camOffset.y -= 4;
+}
+
+void Drawer::drawInfo(Player &p)
+{
+    std::string s = "Camera offset : ";
+    s += std::to_string(_camOffset.x);
+    s += " / ";
+    s += std::to_string(_camOffset.y);
+
+    s += "\nPlayer Current Grid Position : ";
+    s += std::to_string(p.x());
+    s += " / ";
+    s += std::to_string(p.y());
+    
+    s += "\nPlayer Goal Grid Position : ";
+    s += std::to_string(p.getPositionGoal().x);
+    s += " / ";
+    s += std::to_string(p.getPositionGoal().y);
+
+    s += "\nPlayer Body Position : ";
+    s += std::to_string(p.getBody()->getSprite().getPosition().x);
+    s += " / ";
+    s += std::to_string(p.getBody()->getSprite().getPosition().y);
+
+    s += "\nBuggy condition : ";
+    s += std::to_string(p.getBody()->getSprite().getPosition().x);
+    s += " <= ";
+    s += std::to_string(p.getPositionGoal().x * 128 + _camOffset.x);
+
+    s += "\nWorking condition : ";
+    s += std::to_string(p.getBody()->getSprite().getPosition().x + _camOffset.x);
+    s += " >= ";
+    s += std::to_string(p.getPositionGoal().x * 128 + _camOffset.x);
+    // p.getBody()->getSprite().getPosition().x + _camOffset.x >= p.getPositionGoal().x * 128 + _camOffset.x
+
+
+    _text.setString(s);
+    
+    
+    _window->draw(_text);
+}
+
+sf::RenderWindow &Drawer::getWindow()
+{
+    return *_window;
+}
+
+
+/// Need to handle cammera offset
+Cell Drawer::getCellFromClick()
+{
+    sf::Vector2i pos = sf::Mouse::getPosition(*_window);
+    return (*_cells[pos.x / 128 + (pos.y / 128 * 20)]);
 }
 
 void Drawer::drawStage2(Player &p)
@@ -139,11 +225,4 @@ void Drawer::drawGrid()
         _cells[i]->getShape().setPosition(sf::Vector2f(_cells[i]->getPosition().x * 128 + _camOffset.x, _cells[i]->getPosition().y * 128 + _camOffset.y));
         _window->draw(_cells[i]->getShape());
     }
-    
-    //for (int x = 0; x != _mapSize.x; x++) {
-    //    for (int y = 0; y != _mapSize.y; y++) {
-    //        _cell.setPosition(sf::Vector2f(x * _cell.getSize().x + _camOffset.x, y * _cell.getSize().y + _camOffset.y));
-    //        _window->draw(_cell);
-    //    }        
-    //}
 }

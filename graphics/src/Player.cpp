@@ -59,6 +59,9 @@ Player::Player()
     _orientation = e_orientation::DOWN;
 
     
+    _teamName = std::string("Team Rocket");
+    _life = 65;
+
     ///// SHOULDN'T BE USEFUL
     getBody()->getSprite().setPosition(sf::Vector2f(x() * 128, y() * 128 + 32));
     /////////////////////////
@@ -91,6 +94,39 @@ mEntity* Player::getBody()
 
 void Player::update()
 {
+
+    /// TEMPORARY, ONLY FOR TESTING 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        setStage(1);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        setStage(2);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        setStage(3);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+        setStage(4);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+        setStage(5);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+        setStage(6);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+        setStage(7);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+        setStage(8);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+        setPositionGoal({x() + 1, y()});
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+        setPositionGoal({x() - 1, y()});
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+        setPositionGoal({x(), y() - 1});
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+        setPositionGoal({x(), y() + 1});
+
+    /// END ///
+    
+    
+    
+    
+    
     std::string h = "stage";
     if (_stage <= 3)
         h += std::to_string(1);
@@ -161,9 +197,9 @@ sf::Vector2f Player::getMovementOffset()
 
 void Player::setPositionGoal(sf::Vector2i np)
 {
-    if (abs(np.x - _position.x) > 1)
+    if (_position != _positionGoal)
         return;
-    if (abs(np.y - _position.y) > 1)
+    if (abs(np.x - _position.x + abs(np.y - _position.y)) > 1)
         return;
     _clock.restart();
     _positionGoal = np;
@@ -178,14 +214,12 @@ void Player::updatePosition()
 void Player::setIdle()
 {
     if (_stage <= 3) {
-        std::cout << "Should idle\n";
         if (_orientation == LEFT or _orientation == RIGHT) {
             _body->changeAnimationLoop("LRwhiteidle");
         } else {
             _body->changeAnimationLoop("UDwhiteidle");
         }
     } else {
-        std::cout << "Should idle\n";
         if (_orientation == LEFT or _orientation == RIGHT) {
             _body->changeAnimationLoop("LRblackidle");
         } else {
@@ -207,4 +241,14 @@ int Player::x()
 int Player::y()
 {
     return _position.y;    
+}
+
+std::string Player::getTeamName()
+{
+    return _teamName;
+}
+
+int Player::getLife()
+{
+    return _life;
 }
