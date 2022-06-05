@@ -58,6 +58,7 @@ int main()
                 }
             }
         }
+        
         h.drawHud(d.getWindow(), pop.getPlayerById(h.getIdToDraw()));
         d.getWindow().draw(n.getText());
         d.display();
