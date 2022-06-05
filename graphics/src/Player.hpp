@@ -72,6 +72,8 @@ class Player
 
         // return life
         int getLife();
+        // set Life
+        void setLife(int i);
     private:
         int _stage;
         int _life;

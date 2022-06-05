@@ -29,15 +29,18 @@ int main()
         bfr.clear();
         while (d.getWindow().pollEvent(event)) {
             switch (event.type) {
-                case sf::Event::TextEntered : 
+                case (sf::Event::TextEntered): 
                      bfr = n.manualCommand(event);
+                     break;
+                case (sf::Event::KeyReleased):
+                    n.manualCommand(event);
+                    break;
                 default:
                     break;
             }
         }
         if (bfr.size() > 0) {
             if (bfr[0] == "player") {
-                std::cout << "Non empty bfr '" <<bfr[0]<<"`\n"; 
                 pop.parseCommand(bfr);
             }
         }
@@ -49,7 +52,6 @@ int main()
         }
         for (unsigned int i = 0; i != pop.getPlayers().size(); i++) {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                //std::cout << pop.getPlayers()[i]->x() << " / " <<  pop.getPlayers()[i]->y() << " == " << d.getCellFromClick().getPosition().x << " / " << d.getCellFromClick().getPosition().y << "\n";
                 if (pop.getPlayers()[i]->getPosition() == d.getCellFromClick().getPosition()) {
                     h.setState(Hud::HudState::SHOW, pop.getPlayers()[i]->getId());
                     break;
@@ -58,7 +60,7 @@ int main()
                 }
             }
         }
-        
+
         h.drawHud(d.getWindow(), pop.getPlayerById(h.getIdToDraw()));
         d.getWindow().draw(n.getText());
         d.display();

@@ -51,17 +51,15 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
 
     _head->getSprite().setScale(sf::Vector2f(4, 4));
     _body->getSprite().setScale(sf::Vector2f(4, 4));
-    _stage = 7;
-
+    
+    
+    _stage = 0;
     _movementOffset = {0, 0};
-
     _position = pos;
     _positionGoal = pos;
     _orientation = o;
     _teamName = teamName;
     _id = id;
-
-
     _life = 65;
 
 
@@ -259,4 +257,9 @@ std::string Player::getId()
 int Player::getLife()
 {
     return _life;
+}
+
+void Player::setLife(int i)
+{
+    _life = i;
 }

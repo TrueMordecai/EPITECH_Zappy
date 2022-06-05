@@ -15,6 +15,8 @@ private:
     std::string _buffer;
     sf::Text _text;
     sf::Font _font;
+    std::vector<std::string> _history;
+    int _historyIndex = -1;
 };
 
 #endif
