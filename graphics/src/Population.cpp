@@ -122,6 +122,10 @@ std::vector<Player*> Population::getPlayers()
 
 void Population::addPlayer(e_orientation o, sf::Vector2i pos, std::string team, std::string id)
 {
+    if (getPlayerById(id) != nullptr) {
+        std::cout << "Error : Player " << id << " already exist\n";
+        return;
+    }
     Player *p = new Player(o, pos, team, id);
     _players.push_back(p);
 }

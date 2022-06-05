@@ -95,39 +95,6 @@ mEntity* Player::getBody()
 
 void Player::update()
 {
-
-    /// TEMPORARY, ONLY FOR TESTING 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-        setStage(1);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-        setStage(2);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-        setStage(3);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
-        setStage(4);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
-        setStage(5);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-        setStage(6);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
-        setStage(7);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
-        setStage(8);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-        setPositionGoal({x() + 1, y()});
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
-        setPositionGoal({x() - 1, y()});
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::U))
-        setPositionGoal({x(), y() - 1});
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-        setPositionGoal({x(), y() + 1});
-
-    /// END ///
-    
-    
-    
-    
-    
     std::string h = "stage";
     if (_stage <= 3)
         h += std::to_string(1);
