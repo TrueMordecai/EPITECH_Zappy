@@ -1,0 +1,56 @@
+/// GENERAL ///
+
+// Start the connection
+start [$x] [$y]
+// exemple : start 10 10 -> start the GUI client with a map of 10x10
+
+
+/// MAP ///
+
+// Spawn ressources 
+map spawn [1, 2, 3, 4, 5, 6] [$x] [$y]
+// exemple : map spawn 1 2 2 -> spawn the first ressource on the cell (2, 2)
+
+// Remove ressources
+map remove [1, 2, 3, 4, 5, 6] [$x] [$y]
+// exemple : map remove 1 2 2 -> remove one occurences of the first ressource on the cell (2, 2)
+
+
+/// PLAYER ///
+
+// Create a new player. This spawn ISN'T the reproduction system, its only for the first player of each team
+player new [N, S, W, E] [$x] [$y] [$team_name] [$id]
+// exemple : player new N 0 0 ratata ratata0 -> Create a new player ooriented to north on the cell (0, 0) in the team ratata and its id is ratata0 (meaning its the first player of the team)
+
+// Rotate a player
+player rotate [$id] [L, R]
+// exemple : player rotate ratata0 L -> Rotate ratata0 to the left
+
+// Move player
+player move [$id]
+// exemple : player move ratata0 -> ratata0 go forward
+
+// Stop the player. NOT SURE
+player stop [$id]
+// Exemple : player stop ratata0 -> ratata0 stop doing whatever he was doing. mostly usefull for egg laying, incanatation, 
+
+// Fork player
+player fork [$id]
+// exemple : player fork ratata0 -> ratata0 start laying an egg
+
+// player egg lay
+player lay [$id] [$new_id] [N, S, W, E]
+// exemple : player lay ratata0 ratata1 -> ratata0 lay down an egg. the new id is ratata1
+
+// Hatch a player
+player hatch [$id]
+// exemple : player hatch ratata1 -> The player come out of the egg
+
+// Player talk
+player talk [$id] [$message]
+// exemple : player talk ratata0 I_need_help
+
+// Player ritual
+player ritual [$id]
+// exemple : player ritual ratata0 -> ratata0 start a ritual
+

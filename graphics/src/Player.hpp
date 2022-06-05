@@ -13,7 +13,7 @@ enum e_orientation {
 class Player
 {
     public:
-        Player();
+        Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::string id);
         ~Player();
         
         // Get stage of the player
@@ -66,12 +66,16 @@ class Player
 
         // return team name
         std::string getTeamName();
-    
+
+        // return get id
+        std::string getId();
+
         // return life
         int getLife();
     private:
         int _stage;
         int _life;
+        std::string _id;
         std::string _teamName;
         sf::Vector2i _position;
         sf::Vector2i _positionGoal;

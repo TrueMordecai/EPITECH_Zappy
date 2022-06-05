@@ -8,7 +8,7 @@ class Hud
 {
 
 public:
-    typedef enum HudState {
+    enum HudState {
         HIDE = 0,
         SHOW
     };
@@ -16,11 +16,13 @@ public:
     ~Hud();
     void showHud(Player &p);
     void hideHud();
-    void drawHud(sf::RenderWindow &w, Player &p);
+    void drawHud(sf::RenderWindow &w, Player *p);
     mEntity *getHud();
-    void setState(HudState state);
+    void setState(HudState state, std::string id);
+    std::string getIdToDraw();
 private:
     void moveHud(HudState state);
+    std::string _idToShow;
     mEntity *_heart;
     mEntity *_hud;
     sf::Text _text;

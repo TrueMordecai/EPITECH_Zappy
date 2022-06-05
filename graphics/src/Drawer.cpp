@@ -87,7 +87,7 @@ void Drawer::movePlayer(Player &p)
 {
     if (p.getPositionGoal().x * 128 > p.getBody()->getSprite().getPosition().x) {
             p.setOrientation(RIGHT);
-            p.addMovementOffset({128.0 / (60.0 * (7.0/f)), 0});
+            p.addMovementOffset({float(128.0 / (60.0 * (7.0/f))), 0.0});
             p.getBody()->getSprite().move(p.getMovementOffset().x, 0);
         if (p.getBody()->getSprite().getPosition().x >= p.getPositionGoal().x * 128) {
             p.updatePosition();
@@ -97,7 +97,7 @@ void Drawer::movePlayer(Player &p)
     }
     if (p.getPositionGoal().x * 128 < p.getBody()->getSprite().getPosition().x) {
             p.setOrientation(LEFT);
-            p.addMovementOffset({-(128.0 / (60.0 * (7.0/f))), 0});
+            p.addMovementOffset({float(-(128.0 / (60.0 * (7.0/f)))), 0.0});
             p.getBody()->getSprite().move(p.getMovementOffset().x, 0);
         if (p.getBody()->getSprite().getPosition().x <= p.getPositionGoal().x * 128) {
             p.updatePosition();
@@ -107,7 +107,7 @@ void Drawer::movePlayer(Player &p)
     }
     if (p.getPositionGoal().y * 128 < p.getBody()->getSprite().getPosition().y) {
         p.setOrientation(UP);
-        p.addMovementOffset({0, -(128.0 / (60.0 * (7.0/f)))});
+        p.addMovementOffset({0.0, float(-(128.0 / (60.0 * (7.0/f))))});
         p.getBody()->getSprite().move(0, p.getMovementOffset().y);
         if (p.getBody()->getSprite().getPosition().y <= p.getPositionGoal().y * 128 + 32) {
             p.updatePosition();
@@ -117,7 +117,7 @@ void Drawer::movePlayer(Player &p)
     }
     if (p.getPositionGoal().y * 128 > p.getBody()->getSprite().getPosition().y) {
         p.setOrientation(DOWN);
-        p.addMovementOffset({0, (128.0 / (60.0 * (7.0/f)))});
+        p.addMovementOffset({0.0, float((128.0 / (60.0 * (7.0/f))))});
         p.getBody()->getSprite().move(0, p.getMovementOffset().y);
         if (p.getBody()->getSprite().getPosition().y >= p.getPositionGoal().y * 128 + 32) {
             p.updatePosition();
@@ -215,13 +215,14 @@ void Drawer::drawStage2(Player &p)
 
 void Drawer::drawStage3(Player &p)
 {
+    (void)p;
     _window->draw(_stage3->getSprite());
 }
 
 
 void Drawer::drawGrid()
 {
-    for (int i = 0; i != _cells.size(); i++) {
+    for (long unsigned int i = 0; i != _cells.size(); i++) {
         _cells[i]->getShape().setPosition(sf::Vector2f(_cells[i]->getPosition().x * 128 + _camOffset.x, _cells[i]->getPosition().y * 128 + _camOffset.y));
         _window->draw(_cells[i]->getShape());
     }

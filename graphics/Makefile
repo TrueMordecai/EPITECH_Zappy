@@ -12,7 +12,9 @@ SRC =	src/main.cpp				\
 		src/Drawer.cpp				\
 		src/mEntity.cpp				\
 		src/Hud.cpp					\
-		src/Cell.cpp
+		src/Cell.cpp				\
+		src/Network.cpp				\
+		src/Population.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 

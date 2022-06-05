@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player()
+Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::string id)
 {
     
     this->_head = new mEntity("assets/fullSheet.png", sf::IntRect(0, 0 , 0, 0), 99, 1, LEFT_TO_RIGHT, "TexLoad");
@@ -54,13 +54,16 @@ Player::Player()
     _stage = 7;
 
     _movementOffset = {0, 0};
-    _position = sf::Vector2i(4, 5);
-    _positionGoal = sf::Vector2i(5, 5);
-    _orientation = e_orientation::DOWN;
 
-    
-    _teamName = std::string("Team Rocket");
+    _position = pos;
+    _positionGoal = pos;
+    _orientation = o;
+    _teamName = teamName;
+    _id = id;
+
+
     _life = 65;
+
 
     ///// SHOULDN'T BE USEFUL
     getBody()->getSprite().setPosition(sf::Vector2f(x() * 128, y() * 128 + 32));
@@ -246,6 +249,11 @@ int Player::y()
 std::string Player::getTeamName()
 {
     return _teamName;
+}
+
+std::string Player::getId()
+{
+    return (_id);
 }
 
 int Player::getLife()

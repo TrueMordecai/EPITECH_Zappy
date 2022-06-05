@@ -7,13 +7,13 @@ Hud::Hud()
     _heart->addAnimationLoop("half", 1, 100, {16, 0, 16, 14});
     _hud = new mEntity("./assets/hud/hud.png", {0, 0, 204, 236});
     _font1.loadFromFile("./assets/hud/font1.ttf");
-    _font2.loadFromFile("./assets/hud/font1.ttf");
+    _font2.loadFromFile("./assets/hud/font2.ttf");
     _hud->getSprite().setScale(4, 4);
     _hud->getSprite().setPosition(1920, 0);
     _text.setFont(_font2);
     _text.setCharacterSize(54);
     _text.setRotation(2);
-    _text.setColor(sf::Color(54, 45, 45));
+    _text.setFillColor(sf::Color(54, 45, 45));
     _text.setOutlineThickness(1);
     _text.setOutlineColor(sf::Color::Black);
     _e_state = SHOW;
@@ -27,6 +27,7 @@ Hud::~Hud()
 
 void Hud::showHud(Player &p)
 {
+    (void)p;
     moveHud(_e_state);
 }
 
@@ -36,29 +37,32 @@ void Hud::hideHud()
     moveHud(_e_state);
 }
 
-void Hud::drawHud(sf::RenderWindow &w, Player &p)
+void Hud::drawHud(sf::RenderWindow &w, Player *p)
 {
+    if (_idToShow == "")
+        _e_state = HIDE;
     moveHud(_e_state);
     w.draw(_hud->getSprite());
-
+    if (p == nullptr)
+        return;
 
     /// Draw X
     _text.setPosition(2610, 105);
     _text.move(_offset);
-    _text.setString(std::to_string(p.getPosition().x));
+    _text.setString(std::to_string(p->getPosition().x));
     w.draw(_text);
 
     /// Draw Y
     _text.setPosition(2610, 170);
     _text.move(_offset);
-    _text.setString(std::to_string(p.getPosition().y));
+    _text.setString(std::to_string(p->getPosition().y));
     w.draw(_text);
     
     /// Draw Team Name
     _text.setRotation(7);
     _text.setPosition(2480, 235);
     _text.move(_offset);
-    _text.setString(p.getTeamName());
+    _text.setString(p->getTeamName());
     while (_text.getGlobalBounds().width > 220)
         _text.setCharacterSize(_text.getCharacterSize() - 1);
     w.draw(_text);
@@ -67,11 +71,11 @@ void Hud::drawHud(sf::RenderWindow &w, Player &p)
     _text.setPosition(2440, 350);
     _text.setCharacterSize(100);
     _text.move(_offset);
-    _text.setColor(sf::Color(54 + 10 * p.getStage(), 45, 45));
-    _text.setString(std::to_string(p.getStage()));
+    _text.setFillColor(sf::Color(54 + 10 * p->getStage(), 45, 45));
+    _text.setString(std::to_string(p->getStage()));
     w.draw(_text);
     _text.setCharacterSize(54);
-    _text.setColor(sf::Color(54, 45, 45));
+    _text.setFillColor(sf::Color(54, 45, 45));
 
     _heart->getSprite().setPosition(1950, 530);
     _heart->getSprite().move(_offset);
@@ -79,11 +83,11 @@ void Hud::drawHud(sf::RenderWindow &w, Player &p)
         _heart->getSprite().move(64, 0);
         if (i == 3)
             _heart->getSprite().move(-160, 55);
-        if (!(i * 21 + 11 < p.getLife() && (i) * 21 + 21 < p.getLife()))
+        if (!(i * 21 + 11 < p->getLife() && (i) * 21 + 21 < p->getLife()))
             _heart->changeAnimationLoop("half");
         else
             _heart->changeAnimationLoop("full");
-        if (i * 21 > p.getLife())
+        if (i * 21 > p->getLife())
             return;        
         _heart->display(w);
     }
@@ -94,9 +98,15 @@ mEntity* Hud::getHud()
     return _hud;
 }
 
-void Hud::setState(HudState state)
+void Hud::setState(HudState state, std::string id)
 {
+    _idToShow = id;
     _e_state = state;
+}
+
+std::string Hud::getIdToDraw()
+{
+    return _idToShow;
 }
 
 void Hud::moveHud(HudState state)
