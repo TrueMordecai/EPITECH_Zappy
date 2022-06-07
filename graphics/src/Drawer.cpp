@@ -44,13 +44,7 @@ Drawer::~Drawer()
 
 void Drawer::drawPlayer(Player &p)
 {        
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right));
-//        p.addMovementOffset({-1, 0});
-//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left));
-//        p.addMovementOffset({1, 0});
-    
     p.getBody()->getSprite().setPosition(sf::Vector2f(p.x() * 128, p.y() * 128 + 32));
-
     if (!((p.getPosition().x == p.getPositionGoal().x) and (p.getPosition().y == p.getPositionGoal().y)))
         movePlayer(p);
 
@@ -58,7 +52,7 @@ void Drawer::drawPlayer(Player &p)
     int diff = (p.getHead()->getSprite().getGlobalBounds().width - p.getBody()->getSprite().getGlobalBounds().width) / 2;
     p.getHead()->getSprite().setPosition(sf::Vector2f(p.getBody()->getSprite().getPosition().x - diff,
                                                       p.getBody()->getSprite().getPosition().y - (p.getHead()->getSprite().getGlobalBounds().height) * 0.79));
-        
+
     _window->draw(p.getBody()->getSprite());
     if (p.getStage() == 2)
         drawStage2(p);
@@ -66,6 +60,17 @@ void Drawer::drawPlayer(Player &p)
         drawStage3(p);
     
     _window->draw(p.getHead()->getSprite());
+    
+    p.getAccesories()->getSprite().setPosition(p.getBody()->getSprite().getPosition()); 
+    if (p.getCharacter() == C_JUDAS) {
+        p.getAccesories()->getSprite().move({0, -110}); 
+    }
+    if (p.getCharacter() == C_CAIN) {
+        p.getAccesories()->getSprite().move({0, -90}); 
+    }
+
+    if (p.getCharacter() != C_ISAAC)
+        _window->draw(p.getAccesories()->getSprite());
 }
 
 void Drawer::display()

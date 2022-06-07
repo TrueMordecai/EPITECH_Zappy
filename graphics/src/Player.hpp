@@ -10,10 +10,17 @@ enum e_orientation {
     LEFT
 };
 
+enum e_character {
+    C_ISAAC = 0,
+    C_JUDAS = 1,
+    C_CAIN = 2,
+    C_SAMSON = 3
+};
+
 class Player
 {
     public:
-        Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::string id);
+        Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::string id, e_character c);
         ~Player();
         
         // Get stage of the player
@@ -28,6 +35,9 @@ class Player
         // Getter for body mEntity
         mEntity *getBody();
         
+        // Getter for body mEntity
+        mEntity *getAccesories();
+
         // Update player, call update for head and body and change the animation loop based on orientation
         void update();
         
@@ -74,9 +84,15 @@ class Player
         int getLife();
         // set Life
         void setLife(int i);
+    
+        e_character getCharacter();
+
+
     private:
         int _stage;
         int _life;
+        e_character _character;
+        mEntity *_accesories;
         std::string _id;
         std::string _teamName;
         sf::Vector2i _position;

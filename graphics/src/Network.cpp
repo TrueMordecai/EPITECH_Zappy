@@ -9,7 +9,7 @@ Network::Network()
     _text.setOutlineThickness(1);
     _text.setOutlineColor(sf::Color::Black);
     _text.setPosition(50, 900);
-    _buffer = "";
+    _buffer = "player new S 5 5 Team Team0";
     _text.setString(_buffer);
 }
 

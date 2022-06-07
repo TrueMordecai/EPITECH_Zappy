@@ -24,7 +24,7 @@ CPPFLAGS += -std=c++20 -Wextra -Wall -Wreorder -Wshadow
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) -o $(NAME) -g -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -g -std=c++11 $(OBJ)
+	$(CC) -o $(NAME) -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -g -std=c++11 $(OBJ)
 
 re: fclean all
 

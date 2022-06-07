@@ -1,10 +1,11 @@
 #include "Player.hpp"
 
-Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::string id)
+Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::string id, e_character c)
 {
     
     this->_head = new mEntity("assets/fullSheet.png", sf::IntRect(0, 0 , 0, 0), 99, 1, LEFT_TO_RIGHT, "TexLoad");
     
+    //std::cout << e_character;
     _head->addAnimationLoop("stage1D", 2, 300, sf::IntRect(0, 0, 32, 26));
     _head->addAnimationLoop("stage1R", 2, 300, sf::IntRect(64, 0, 32, 26));
     _head->addAnimationLoop("stage1U", 2, 300, sf::IntRect(128, 0, 32, 26));
@@ -37,7 +38,16 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
     _head->addAnimationLoop("stage8L", 2, 300, sf::IntRect(348, 240, 58, 30));
 
 
-    this->_body = new mEntity("assets/fullSheet.png", sf::IntRect(0, 0, 0, 0), 99, 1, LEFT_TO_RIGHT,"TexLoad");
+    this->_character = c;
+    this->_accesories = new mEntity("assets/fullSheet.png", sf::IntRect(0, 0, 0, 0), 99, 1, LEFT_TO_RIGHT, "Texload");
+    
+    _accesories->addAnimationLoop("D", 2, 300, sf::IntRect(224, 369 + 32 * (_character - 1), 32, 26));
+    _accesories->addAnimationLoop("R", 2, 300, sf::IntRect(224 + 64, 369 + 32 * (_character - 1), 32, 26));
+    _accesories->addAnimationLoop("U", 2, 300, sf::IntRect(224 + 128, 369 + 32 * (_character - 1), 32, 26));
+    _accesories->addAnimationLoop("L", 2, 300, sf::IntRect(224 + 192, 369 + 32* (_character - 1), 32, 26));
+
+    this->_body = new mEntity("assets/fullSheet.png", sf::IntRect(0, 0, 0, 0), 99, 1, LEFT_TO_RIGHT, "TexLoad");
+
 
     _body->addAnimationLoop("UDwhiteidle", 1, 95, sf::IntRect(0, 272, 32, 16));
     _body->addAnimationLoop("UDwhite",10 , 95, sf::IntRect(0, 272, 32, 16));
@@ -51,8 +61,8 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
 
     _head->getSprite().setScale(sf::Vector2f(4, 4));
     _body->getSprite().setScale(sf::Vector2f(4, 4));
-    
-    
+    _accesories->getSprite().setScale(sf::Vector2f(4, 4));
+
     _stage = 0;
     _movementOffset = {0, 0};
     _position = pos;
@@ -62,10 +72,6 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
     _id = id;
     _life = 65;
 
-
-    ///// SHOULDN'T BE USEFUL
-    getBody()->getSprite().setPosition(sf::Vector2f(x() * 128, y() * 128 + 32));
-    /////////////////////////
 }
 
 Player::~Player()
@@ -93,21 +99,36 @@ mEntity* Player::getBody()
     return _body;
 }
 
+mEntity* Player::getAccesories()
+{
+    return _accesories;
+}
+
 void Player::update()
 {
-    std::string h = "stage";
+    _accesories->update();
+        std::string h = "stage";
     if (_stage <= 3)
         h += std::to_string(1);
     else
         h += std::to_string(_stage);
-    if (_orientation == LEFT)
+    
+    if (_orientation == LEFT) {
         h += std::string("L");
-    if (_orientation == RIGHT)
+        _accesories->changeAnimationLoop("L");
+    }
+    if (_orientation == RIGHT) {
         h += std::string("R");
-    if (_orientation == UP)
+        _accesories->changeAnimationLoop("R");
+    }
+    if (_orientation == UP) {
         h += std::string("U");
-    if (_orientation == DOWN)
+        _accesories->changeAnimationLoop("U");
+    }
+    if (_orientation == DOWN) {
         h += std::string("D");
+        _accesories->changeAnimationLoop("D");
+    }
     _head->changeAnimationLoop(h);
     _head->update();
 
@@ -229,4 +250,9 @@ int Player::getLife()
 void Player::setLife(int i)
 {
     _life = i;
+}
+
+e_character Player::getCharacter()
+{
+    return _character;
 }

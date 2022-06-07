@@ -64,6 +64,7 @@ sf::Vector2i forward(sf::Vector2i p, e_orientation o)
         return {p.x, p.y -1};
     if (o == DOWN)
         return {p.x, p.y + 1};
+    return {p.x, p.y + 1};
 }
 
 void Population::parseCommand(std::vector<std::string> c)
@@ -79,6 +80,11 @@ void Population::parseCommand(std::vector<std::string> c)
     
     if (c[1] == "life")
         getPlayerById(c[2])->setLife(std::atoi(c[3].c_str()));
+
+    if (c[1] == "up") {
+        std::cout << "AZE";
+        getPlayerById(c[2])->setStage(getPlayerById(c[2])->getStage() + 1);
+    }
 }
 
 Player *Population::getPlayerById(std::string id)
@@ -88,6 +94,16 @@ Player *Population::getPlayerById(std::string id)
             return (_players[i]);
     }
     return (nullptr);
+}
+
+bool Population::teamExist(std::string tn)
+{
+    for (unsigned int i = 0; i != _teamRegistered.size(); i++) {
+        if (_teamRegistered[i].first == tn) {
+            return true;
+        }
+    }
+    return false;
 }
 
 std::vector<Player *> Population::getPlayerByPos(sf::Vector2i pos)
@@ -112,9 +128,6 @@ std::vector<Player *> Population::getPlayerByTeam(std::string team)
     return (bfr);
 }
 
-
-
-
 std::vector<Player*> Population::getPlayers()
 {
     return _players;
@@ -126,6 +139,22 @@ void Population::addPlayer(e_orientation o, sf::Vector2i pos, std::string team, 
         std::cout << "Error : Player " << id << " already exist\n";
         return;
     }
-    Player *p = new Player(o, pos, team, id);
+    Player *p = new Player(o, pos, team, id, getNextCharacter());
+    
+    if (!teamExist(team)) {
+        _teamRegistered.push_back(std::pair<std::string, e_character>(team, p->getCharacter()));
+    }
     _players.push_back(p);
+}
+
+e_character Population::getNextCharacter()
+{
+    e_character ret = C_CAIN; 
+
+    for (unsigned int i = 0; i != _teamRegistered.size(); i++) {
+        if (_teamRegistered[i].second == ret) {
+            ret = static_cast<e_character>(static_cast<int>(ret + 1));
+        }
+    }
+    return ret;
 }
