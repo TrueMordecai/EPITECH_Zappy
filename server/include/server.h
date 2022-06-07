@@ -52,6 +52,7 @@ typedef struct my_server {
     uint width;
     uint height;
     char **team_names;
+    int *team_sizes;
     uint nb_teams;
     uint clients_nb;
     uint freq;
@@ -119,3 +120,5 @@ int check_tile(inv_t tile);
 int check_map_full(my_server_t *serv);
 int check_tile_ressource(inv_t tile, char ressource);
 void update_player_position(my_server_t *serv);
+char **str_to_strarr(char *str, char *tok);
+void free_strarr(char **arr);
