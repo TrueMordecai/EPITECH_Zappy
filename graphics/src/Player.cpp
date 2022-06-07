@@ -63,7 +63,7 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
     _body->getSprite().setScale(sf::Vector2f(4, 4));
     _accesories->getSprite().setScale(sf::Vector2f(4, 4));
 
-    _stage = 0;
+    _stage = 1;
     _movementOffset = {0, 0};
     _position = pos;
     _positionGoal = pos;
@@ -86,6 +86,8 @@ int Player::getStage()
 
 void Player::setStage(int stage)
 {
+    //_accesories->getClock().restart();
+    //_head->getClock().restart();
     _stage = stage;
 }
 
@@ -107,7 +109,8 @@ mEntity* Player::getAccesories()
 void Player::update()
 {
     _accesories->update();
-        std::string h = "stage";
+    _accesories->synchronize(*_head);
+    std::string h = "stage";
     if (_stage <= 3)
         h += std::to_string(1);
     else

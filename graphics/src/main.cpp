@@ -30,8 +30,8 @@ int main()
         while (d.getWindow().pollEvent(event)) {
             switch (event.type) {
                 case (sf::Event::TextEntered): 
-                     bfr = n.manualCommand(event);
-                     break;
+                    bfr = n.manualCommand(event);
+                    break;
                 case (sf::Event::KeyReleased):
                     n.manualCommand(event);
                     break;

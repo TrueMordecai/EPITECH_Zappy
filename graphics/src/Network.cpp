@@ -5,7 +5,7 @@ Network::Network()
     _font.loadFromFile("./assets/hud/font1.ttf");
     _text.setFont(_font);
     _text.setCharacterSize(54);
-    _text.setFillColor(sf::Color(54, 45, 45));
+    _text.setFillColor(sf::Color::Blue);
     _text.setOutlineThickness(1);
     _text.setOutlineColor(sf::Color::Black);
     _text.setPosition(50, 900);
@@ -13,7 +13,14 @@ Network::Network()
     this->_history.push_back("player new S 1 0 a a1");
     this->_history.push_back("player new S 0 1 b b0");
     this->_history.push_back("player new S 1 1 b b1");
-    
+
+    this->_preload.push_back("player new S 0 5 TeamA TeamA0");
+    this->_preload.push_back("player new S 1 5 TeamB TeamB0");
+    this->_preload.push_back("player new S 2 5 TeamC TeamC0");
+    this->_preload.push_back("player new S 3 5 TeamD TeamD0");
+    //this->_preload.push_back("player new S 4 5 TeamE TeamE0");
+
+
     _text.setString(_buffer);
 }
 
@@ -46,18 +53,29 @@ std::vector<std::string> Network::manualCommand(sf::Event e)
     char a = static_cast<char>(e.text.unicode);
     std::string save;
 
+    if (!_preload.empty() and e.type == sf::Event::TextEntered and _buffer == "") {
+        std::cout << "(" << _buffer <<")\n";
+        save = _preload[_preload.size()-1];
+        _preload.pop_back();
+        std::cout << "Return (" << save <<")\n";
+        return split(save);
+    }
     if (e.type == sf::Event::KeyReleased) {
         if (e.key.code == sf::Keyboard::Up) {
             _historyIndex++;
             if (_historyIndex < _history.size())
                 _buffer = _history[_historyIndex];
-            else 
+            else  {
+                _historyIndex = _history.size() - 1;
                 _buffer = "";
+            }
         }
         if (e.key.code == sf::Keyboard::Down) {
             _historyIndex--;
-            if (_historyIndex < 0)
+            if (_historyIndex < 0) {
                 _historyIndex = 0;
+                _buffer = "";
+            }
             if (_history.size() > 1)
                 _buffer = _history[_historyIndex];
             else 

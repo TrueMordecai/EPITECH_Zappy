@@ -81,10 +81,8 @@ void Population::parseCommand(std::vector<std::string> c)
     if (c[1] == "life")
         getPlayerById(c[2])->setLife(std::atoi(c[3].c_str()));
 
-    if (c[1] == "up") {
-        std::cout << "AZE";
+    if (c[1] == "up")
         getPlayerById(c[2])->setStage(getPlayerById(c[2])->getStage() + 1);
-    }
 }
 
 Player *Population::getPlayerById(std::string id)
@@ -98,14 +96,11 @@ Player *Population::getPlayerById(std::string id)
 
 bool Population::teamExist(std::string tn)
 {
-    std::cout << "call of Team exist(" << tn << ") - ";
     for (unsigned int i = 0; i != _teamRegistered.size(); i++) {
         if (_teamRegistered[i].first == tn) {
-            std::cout << "Team " << tn << " exist\n";
             return true;
         }
     }
-    std::cout << "Team " << tn << " dont exist\n";
     return false;
 }
 
@@ -147,8 +142,7 @@ void Population::addPlayer(e_orientation o, sf::Vector2i pos, std::string team, 
     if (!teamExist(team)) {
         _teamRegistered.push_back(std::pair<std::string, e_character>(team, p->getCharacter()));
     }
-    _players.push_back(p);
-}
+    _players.push_back(p);}
 
 e_character Population::getRightCharacter(std::string s)
 {
@@ -161,6 +155,5 @@ e_character Population::getRightCharacter(std::string s)
             ret = static_cast<e_character>(static_cast<int>(ret + 1));
         }
     }
-    std::cout << "Next character is " << ret << "\n"; 
     return ret;
 }

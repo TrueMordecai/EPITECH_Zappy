@@ -211,3 +211,18 @@ int mEntity::getNbFrame()
 {
     return (_nbFrame);
 }
+
+int64_t mEntity::getMilliseconds()
+{
+    return _timingMilliseconds;
+}
+
+sf::Clock mEntity::getClock()
+{
+    return _clock;
+}
+
+void mEntity::synchronize(mEntity toSynchronizeWith)
+{
+    this->_clock = toSynchronizeWith.getClock();
+}

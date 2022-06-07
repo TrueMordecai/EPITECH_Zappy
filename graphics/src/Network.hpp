@@ -16,6 +16,7 @@ private:
     sf::Text _text;
     sf::Font _font;
     std::vector<std::string> _history;
+    std::vector<std::string> _preload;
     int _historyIndex = -1;
 };
 

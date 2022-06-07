@@ -9,24 +9,26 @@ Drawer::Drawer(/* args */)
     _cell.setOutlineColor(sf::Color::Black);
     _cell.setOutlineThickness(1);
 
-    _stage2 = new mEntity("assets/stage2.png", sf::IntRect(0, 0, 32, 26), 100, 1, LEFT_TO_RIGHT, "DOWN");
-    _stage2->addAnimationLoop("RIGHT", 1, 100, sf::IntRect(64, 0, 32, 26));
-    _stage2->addAnimationLoop("UP", 1, 100, sf::IntRect(128, 0, 32, 26));
-    _stage2->addAnimationLoop("LEFT", 1, 100, sf::IntRect(192, 0, 32, 26));
+    _stage2 = new mEntity("assets/stage2.png", sf::IntRect(0, 0, 32, 26), 300, 2, LEFT_TO_RIGHT, "DOWN");
+    _stage2->addAnimationLoop("RIGHT", 2, 300, sf::IntRect(64, 0, 32, 26));
+    _stage2->addAnimationLoop("UP", 2, 300, sf::IntRect(128, 0, 32, 26));
+    _stage2->addAnimationLoop("LEFT", 2, 300, sf::IntRect(192, 0, 32, 26));
 
-    _stage3 = new mEntity("assets/stage3.png", sf::IntRect(0, 0, 32, 32), 100, 9, LEFT_TO_RIGHT, "DOWN");
-    _stage3->addAnimationLoop("RIGHT", 1, 100, sf::IntRect(64, 0, 32, 32));
-    _stage3->addAnimationLoop("UP", 1, 100, sf::IntRect(128, 0, 32, 32));
-    _stage3->addAnimationLoop("LEFT", 1, 100, sf::IntRect(192, 0, 32, 32));
+    _stage3 = new mEntity("assets/stage3.png", sf::IntRect(0, 0, 32, 32), 300, 2, LEFT_TO_RIGHT, "DOWN");
+    _stage3->addAnimationLoop("RIGHT", 2, 300, sf::IntRect(64, 0, 32, 32));
+    _stage3->addAnimationLoop("UP", 2, 300, sf::IntRect(128, 0, 32, 32));
+    _stage3->addAnimationLoop("LEFT", 2, 300, sf::IntRect(192, 0, 32, 32));
 
     _stage2->getSprite().setScale(sf::Vector2f(4, 4));
     _stage3->getSprite().setScale(sf::Vector2f(4, 4));
     _mapSize = {20, 20};
     _camOffset = {0, 0};
 
+    sf::Texture temp;
+    temp.loadFromFile("assets/tileset.png");
     for (int y = 0; y != _mapSize.x; y++) {
         for (int x = 0; x != _mapSize.y; x++) {
-            Cell *ncell = new Cell({x, y});
+            Cell *ncell = new Cell(temp, {x, y});
             _cells.push_back(ncell);
         }        
     }
@@ -62,15 +64,15 @@ void Drawer::drawPlayer(Player &p)
     _window->draw(p.getHead()->getSprite());
     
     p.getAccesories()->getSprite().setPosition(p.getBody()->getSprite().getPosition()); 
-    if (p.getCharacter() == C_JUDAS) {
+    if (p.getCharacter() == C_JUDAS)
         p.getAccesories()->getSprite().move({0, -110}); 
-    }
-    if (p.getCharacter() == C_CAIN) {
+    if (p.getCharacter() == C_CAIN)
         p.getAccesories()->getSprite().move({0, -90}); 
-    }
-
+    if (p.getCharacter() == C_SAMSON)
+        p.getAccesories()->getSprite().move({0, -82}); 
     if (p.getCharacter() != C_ISAAC)
         _window->draw(p.getAccesories()->getSprite());
+
 }
 
 void Drawer::display()
@@ -199,6 +201,9 @@ Cell Drawer::getCellFromClick()
 void Drawer::drawStage2(Player &p)
 {
     _stage2->getSprite().setPosition(p.getHead()->getSprite().getPosition());
+    _stage2->update();
+    _stage2->synchronize(*p.getHead());
+    std::cout << _stage2->getClock().getElapsedTime().asMilliseconds() << "\n";
     if (p.getOrientation() == e_orientation::DOWN) {
         _stage2->changeAnimationLoop("DOWN");
         _stage2->getSprite().move(0, -24);
@@ -220,15 +225,15 @@ void Drawer::drawStage2(Player &p)
 
 void Drawer::drawStage3(Player &p)
 {
-    (void)p;
     _window->draw(_stage3->getSprite());
+
 }
 
 
 void Drawer::drawGrid()
 {
     for (long unsigned int i = 0; i != _cells.size(); i++) {
-        _cells[i]->getShape().setPosition(sf::Vector2f(_cells[i]->getPosition().x * 128 + _camOffset.x, _cells[i]->getPosition().y * 128 + _camOffset.y));
-        _window->draw(_cells[i]->getShape());
+        _cells[i]->getCell()->getSprite().setPosition(sf::Vector2f(_cells[i]->getPosition().x * 128 + _camOffset.x, _cells[i]->getPosition().y * 128 + _camOffset.y));
+        _window->draw(_cells[i]->getCell()->getSprite());
     }
 }
