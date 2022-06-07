@@ -9,7 +9,11 @@ Network::Network()
     _text.setOutlineThickness(1);
     _text.setOutlineColor(sf::Color::Black);
     _text.setPosition(50, 900);
-    _buffer = "player new S 5 5 Team Team0";
+    this->_history.push_back("player new S 0 0 a a0");
+    this->_history.push_back("player new S 1 0 a a1");
+    this->_history.push_back("player new S 0 1 b b0");
+    this->_history.push_back("player new S 1 1 b b1");
+    
     _text.setString(_buffer);
 }
 

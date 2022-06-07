@@ -15,7 +15,7 @@ public:
     bool teamExist(std::string tn);
 private:
     void addPlayer(e_orientation o, sf::Vector2i pos, std::string team, std::string id);
-    e_character getNextCharacter();
+    e_character getRightCharacter(std::string s);
 
     std::vector<Player*> _players;
     std::vector<std::pair<std::string, e_character>> _teamRegistered;

@@ -98,11 +98,14 @@ Player *Population::getPlayerById(std::string id)
 
 bool Population::teamExist(std::string tn)
 {
+    std::cout << "call of Team exist(" << tn << ") - ";
     for (unsigned int i = 0; i != _teamRegistered.size(); i++) {
         if (_teamRegistered[i].first == tn) {
+            std::cout << "Team " << tn << " exist\n";
             return true;
         }
     }
+    std::cout << "Team " << tn << " dont exist\n";
     return false;
 }
 
@@ -139,7 +142,7 @@ void Population::addPlayer(e_orientation o, sf::Vector2i pos, std::string team, 
         std::cout << "Error : Player " << id << " already exist\n";
         return;
     }
-    Player *p = new Player(o, pos, team, id, getNextCharacter());
+    Player *p = new Player(o, pos, team, id, getRightCharacter(team));
     
     if (!teamExist(team)) {
         _teamRegistered.push_back(std::pair<std::string, e_character>(team, p->getCharacter()));
@@ -147,14 +150,17 @@ void Population::addPlayer(e_orientation o, sf::Vector2i pos, std::string team, 
     _players.push_back(p);
 }
 
-e_character Population::getNextCharacter()
+e_character Population::getRightCharacter(std::string s)
 {
-    e_character ret = C_CAIN; 
+    e_character ret = C_ISAAC; 
 
     for (unsigned int i = 0; i != _teamRegistered.size(); i++) {
+        if (s == _teamRegistered[i].first)
+            return (_teamRegistered[i].second);
         if (_teamRegistered[i].second == ret) {
             ret = static_cast<e_character>(static_cast<int>(ret + 1));
         }
     }
+    std::cout << "Next character is " << ret << "\n"; 
     return ret;
 }
