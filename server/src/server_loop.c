@@ -7,6 +7,7 @@
 
 #include "server.h"
 #include <sys/ioctl.h>
+void set_team(my_client_t *client, char **args, my_server_t *serv);
 
 int client_list_count(my_client_t *clients)
 {

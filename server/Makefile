@@ -5,18 +5,19 @@
 ## Makefile
 ##
 
-SRC = 	src/main.c					\
-		src/server_loop.c			\
-		src/argument_handling.c		\
-		src/error_handling.c 		\
-		src/inventory.c				\
-		src/client_init.c			\
-		src/get_client_line.c		\
-		src/tick_update.c			\
-		src/str_to_strarr.c			\
-		src/check_ritual.c 			\
+SRC = 	src/main.c						\
+		src/server_loop.c				\
+		src/argument_handling.c			\
+		src/error_handling.c 			\
+		src/inventory.c					\
+		src/client_init.c				\
+		src/get_client_line.c			\
+		src/tick_update.c				\
+		src/str_to_strarr.c				\
+		src/check_ritual.c 				\
 		src/generate_map_ressources.c	\
-		src/map_info.c
+		src/map_info.c					\
+		src/set_client_team.c
 
 NAME = zappy_server
 
