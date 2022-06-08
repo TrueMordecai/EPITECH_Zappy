@@ -53,7 +53,7 @@ std::vector<std::string> Network::manualCommand(sf::Event e)
     char a = static_cast<char>(e.text.unicode);
     std::string save;
 
-    if (!_preload.empty() and e.type == sf::Event::TextEntered and _buffer == "") {
+    if (!_preload.empty() and e.type == sf::Event::TextEntered and _buffer == "" and e.text.unicode == 13) {
         std::cout << "(" << _buffer <<")\n";
         save = _preload[_preload.size()-1];
         _preload.pop_back();

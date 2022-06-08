@@ -2,7 +2,7 @@
 
 Drawer::Drawer(/* args */)
 {
-    _window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "MyWindow");
+    _window = new sf::RenderWindow(sf::VideoMode(1920, 1024), "MyWindow");
     _window->setFramerateLimit(60);
     _cell.setSize(sf::Vector2f(128, 128));
     _cell.setFillColor(sf::Color::Cyan);
@@ -133,16 +133,32 @@ void Drawer::movePlayer(Player &p)
     }
 }
 
-void Drawer::moveCamera()
-{
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        _camOffset.y += 4;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        _camOffset.x += 4;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        _camOffset.x -= 4;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        _camOffset.y -= 4;
+void Drawer::moveCamera(Player *p)
+{    
+    if (!(_mapSize.x > 15 && _mapSize.y > 8))
+        return;
+    if (!p) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            _camOffset.y += 4;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            _camOffset.x += 4;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            _camOffset.x -= 4;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            _camOffset.y -= 4;
+    } else {
+        _camOffset.x = 896 - 128 * p->getPosition().x - p->getMovementOffset().x;
+        _camOffset.y = 512 - 128 * p->getPosition().y - p->getMovementOffset().y;
+    }
+    if (_camOffset.x > 0)
+        _camOffset.x = 0;
+    if (_camOffset.y > 0)
+        _camOffset.y = 0;
+    if (_camOffset.x < -(128 * _mapSize.x - 1920))
+      _camOffset.x = -(128 * _mapSize.x - 1920);
+    if (_camOffset.y < -(128 * _mapSize.y - 1080))
+        _camOffset.y = -(128 * _mapSize.y - 1080);
+
 }
 
 void Drawer::drawInfo(Player &p)
@@ -195,6 +211,9 @@ Cell Drawer::getCellFromClick()
     sf::Vector2i pos = sf::Mouse::getPosition(*_window);
     pos.x -= _camOffset.x;
     pos.y -= _camOffset.y;
+    int s = ((pos.x / 128) + ((pos.y / 128 * 20)));
+    if (s < 0 or s > _cells.size() - 1)
+        return (*_cells[0]);
     return (*_cells[(pos.x / 128) + ((pos.y / 128 * 20))]);
 }
 

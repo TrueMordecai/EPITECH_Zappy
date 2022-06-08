@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "Cell.hpp"
 
+
 #ifndef __DRAWER_HPP__
 #define __DRAWER_HPP_
 
@@ -15,16 +16,14 @@ public:
     void clear();
     bool loop();
     void movePlayer(Player &p);
-    void moveCamera();
+    void moveCamera(Player *p);
     void drawInfo(Player &p); /// Debug olny
     sf::RenderWindow &getWindow();
     Cell getCellFromClick();
 private:
-
-
-
     void drawStage2(Player &p);
     void drawStage3(Player &p);
+
 
     sf::RenderWindow *_window;
     mEntity *_stage2;

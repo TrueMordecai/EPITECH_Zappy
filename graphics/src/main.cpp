@@ -18,13 +18,11 @@
 int main()
 {
     Drawer d;
-    //Player p(UP, {5, 5}, "TeamRocket", "TeamRocket0");
     Hud h;
     Network n;
     sf::Event event;
     std::vector<std::string> bfr;
     Population pop;
-
     while (d.loop()) {
         bfr.clear();
         while (d.getWindow().pollEvent(event)) {
@@ -44,7 +42,7 @@ int main()
                 pop.parseCommand(bfr);
             }
         }
-        d.moveCamera();
+        d.moveCamera(pop.getPlayerById(h.getIdToDraw()));
         d.drawGrid();
         for (unsigned int i = 0; i != pop.getPlayers().size(); i++) {
             pop.getPlayers()[i]->update();            
