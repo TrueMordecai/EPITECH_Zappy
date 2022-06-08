@@ -16,7 +16,7 @@ void set_team_sizes(my_server_t *serv)
 
 void get_all_team_names(my_server_t *serv, char **argv, int argc, int i)
 {
-    int tmp;
+    int tmp = 0;
 
     for (int j = i; j < argc; j++) {
         if (strncmp("-", argv[j], 1) != 0)
@@ -34,7 +34,6 @@ void get_all_team_names(my_server_t *serv, char **argv, int argc, int i)
             break;
     }
     serv->team_sizes = malloc(sizeof(int) * serv->nb_teams);
-    set_team_sizes(serv);
 }
 
 void set_arguments(my_server_t *serv, char **argv, int argc)
@@ -53,6 +52,7 @@ void set_arguments(my_server_t *serv, char **argv, int argc)
         if (!strcmp("-n", argv[i]))
             get_all_team_names(serv, argv, argc, i + 1);
         if (!strcmp("-c", argv[i])) {
+            puts(argv[i + 1]);
             serv->clients_nb = atoi(argv[i + 1]);
             set_team_sizes(serv);
         }
