@@ -21,15 +21,23 @@ void get_message(my_server_t *serv, int i)
 {
     int nread;
     char *buffer;
+    char **args;
+    my_client_t *tmp;
 
     ioctl(i, FIONREAD, &nread);
     if (nread == 0) {
-        del_client(serv, i);
-        FD_CLR(i, &serv->fds);
         return;
     }
     buffer = get_client_line(i);
-    printf("%s\n", buffer);
+    args = str_to_strarr(buffer, " \t\r\n");
+    for (tmp = serv->clients; tmp; tmp = tmp->next)
+        if (tmp->fd == i)
+            break;
+    if (!tmp->team_name)
+        set_team(tmp, args, serv);
+    else
+        printf("%s\n", buffer);
+    free_strarr(args);
     free(buffer);
 }
 
