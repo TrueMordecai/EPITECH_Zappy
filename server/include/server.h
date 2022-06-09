@@ -41,15 +41,6 @@ name2 ... -c clientsNb\n\
 #define PHIRAS 8
 #define THYSTAME 5
 
-typedef void (*fct_ptr)(struct my_server *, struct my_client *);
-typedef fct_ptr (*cmd)();
-
-typedef struct cmd_list {
-    char *name;
-    uint cd;
-    cmd fct;
-} cmd_list_t;
-
 typedef enum orientation {
     NORTH = 0,
     EAST,
@@ -87,6 +78,15 @@ typedef struct arg_checklist
     bool clientsNb;
 } arg_checklist_t;
 
+typedef void (*fct_ptr)(struct my_server *, struct my_client *);
+typedef fct_ptr (*cmd)();
+
+typedef struct cmd_list {
+    char *name;
+    uint cd;
+    fct_ptr fct;
+} cmd_list_t;
+
 typedef struct inventory {
     int food;
     int linemate;
@@ -110,7 +110,7 @@ typedef struct my_client {
     char **message_queue;
     uint message_queue_size;
     uint cooldown;
-    cmd func;
+    fct_ptr func;
     bool dead;
     struct my_client *next;
 } my_client_t;

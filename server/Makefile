@@ -17,6 +17,7 @@ SRC = 	src/main.c						\
 		src/check_ritual.c 				\
 		src/generate_map_ressources.c	\
 		src/map_info.c					\
+		src/movement.c					\
 		src/set_client_team.c
 
 NAME = zappy_server

@@ -11,6 +11,7 @@ void add_client(my_server_t *serv, my_client_t *client)
 {
     my_client_t *tail = serv->clients;
 
+    client->next = NULL;
     if (serv->clients == NULL) {
         serv->clients = client;
         return;
@@ -70,6 +71,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->message_queue_size = 0;
     client->next = NULL;
     client->dead = false;
+    client->func = NULL;
     dprintf(fd, "WELCOME\n");
     return client;
 }

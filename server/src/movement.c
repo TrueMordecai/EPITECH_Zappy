@@ -42,6 +42,7 @@ void forward(my_server_t *serv, my_client_t *client)
 
 void left(my_server_t *serv, my_client_t *client)
 {
+    (void)serv;
     if (client->direction == NORTH)
         client->direction = WEST;
     if (client->direction == EAST)
@@ -54,6 +55,7 @@ void left(my_server_t *serv, my_client_t *client)
 
 void right(my_server_t *serv, my_client_t *client)
 {
+    (void)serv;
     if (client->direction == NORTH)
         client->direction = EAST;
     if (client->direction == EAST)

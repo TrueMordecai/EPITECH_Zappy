@@ -39,14 +39,16 @@ void advance_message_queue(my_client_t *client)
         client->message_queue[i - 1] = client->message_queue[i];
     if (str)
         free(str);
+    client->message_queue_size--;
 }
 
-fct_ptr get_next_cmd(my_client_t *client)
+void get_next_cmd(my_client_t *client)
 {
     fct_ptr tmp = NULL;
 
+    client->func = NULL;
     if (client->message_queue_size == 0)
-        return NULL;
+        return;
     while (client->message_queue[0]) {
         if (get_cmd(client->message_queue[0]) != NULL) {
             tmp = get_cmd(client->message_queue[0]);
