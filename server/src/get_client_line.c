@@ -19,7 +19,6 @@ char *get_client_line(int fd)
     while (one[0] != '\n') {
         one[0] = 0;
         read(fd, one, 1);
-        puts(one);
         (one[0] != '\n') ? (buf[size] = one[0]) : (0);
         (one[0] != '\n') ? (size++) : (0);
     }

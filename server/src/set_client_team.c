@@ -16,6 +16,7 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
         serv->gui_fd = client->fd;
         client->fd = -1;
         del_client(serv, -1);
+        dprintf(serv->gui_fd, "Hello GUI\n");
         return;
     }
     for (; tmp; tmp = tmp->next) {
