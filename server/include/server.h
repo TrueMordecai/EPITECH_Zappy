@@ -57,6 +57,7 @@ typedef struct my_server {
     uint clients_nb;
     uint freq;
     int server_fd;
+    int gui_fd;
     int port;
     struct protoent *proto;
     struct sockaddr_in address;
@@ -100,6 +101,7 @@ typedef struct my_client {
     char **message_queue;
     uint message_queue_size;
     uint cooldown;
+    void (*function)(my_server_t *, struct my_client *);
     bool dead;
     struct my_client *next;
 } my_client_t;
@@ -125,3 +127,5 @@ void free_strarr(char **arr);
 void right(my_server_t *serv, my_client_t *client);
 void left(my_server_t *serv, my_client_t *client);
 void forward(my_server_t *serv, my_client_t *client);
+void set_team(my_client_t *client, char **args, my_server_t *serv);
+void add_to_queue(char *buf, my_client_t *client);

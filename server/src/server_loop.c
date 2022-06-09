@@ -7,7 +7,6 @@
 
 #include "server.h"
 #include <sys/ioctl.h>
-void set_team(my_client_t *client, char **args, my_server_t *serv);
 
 int client_list_count(my_client_t *clients)
 {
@@ -37,7 +36,7 @@ void get_message(my_server_t *serv, int i)
     if (!tmp->team_name)
         set_team(tmp, args, serv);
     else
-        printf("%s\n", buffer);
+        add_to_queue(buffer, tmp);
     free_strarr(args);
     free(buffer);
 }
@@ -73,6 +72,7 @@ void check_tick(my_server_t *serv, clock_t *time)
         } else
             serv->map_cooldown--;
         update_player_position(serv);
+        send_gui_map(serv);
         *time = clock();
     }
 }

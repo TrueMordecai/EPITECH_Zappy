@@ -26,3 +26,11 @@ char *get_client_line(int fd)
     buf[size] = 0;
     return buf;
 }
+
+void add_to_queue(char *buf, my_client_t *client)
+{
+    if (client->message_queue_size < 10) {
+        client->message_queue[client->message_queue_size] = strdup(buf);
+        client->message_queue_size++;
+    }
+}
