@@ -52,7 +52,6 @@ void set_arguments(my_server_t *serv, char **argv, int argc)
         if (!strcmp("-n", argv[i]))
             get_all_team_names(serv, argv, argc, i + 1);
         if (!strcmp("-c", argv[i])) {
-            puts(argv[i + 1]);
             serv->clients_nb = atoi(argv[i + 1]);
             set_team_sizes(serv);
         }

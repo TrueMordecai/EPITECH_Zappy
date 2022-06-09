@@ -13,11 +13,13 @@ char *get_client_line(int fd)
     char one[1];
     int size = 0;
 
+    one[0] = '\0';
     if (fd < 0 || buf == NULL)
         return NULL;
     while (one[0] != '\n') {
         one[0] = 0;
         read(fd, one, 1);
+        puts(one);
         (one[0] != '\n') ? (buf[size] = one[0]) : (0);
         (one[0] != '\n') ? (size++) : (0);
     }
