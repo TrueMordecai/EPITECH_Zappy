@@ -122,3 +122,6 @@ int check_tile_ressource(inv_t tile, char ressource);
 void update_player_position(my_server_t *serv);
 char **str_to_strarr(char *str, char *tok);
 void free_strarr(char **arr);
+void right(my_server_t *serv, my_client_t *client);
+void left(my_server_t *serv, my_client_t *client);
+void forward(my_server_t *serv, my_client_t *client);
