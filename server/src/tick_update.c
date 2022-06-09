@@ -8,9 +8,9 @@
 #include "server.h"
 
 const cmd_list_t cmd_list[] = {
-    {"Forward", &forward, 7},
-    {"Right", &right, 7},
-    {"Left", &left, 7}
+    {"Forward", 7, &forward},
+    {"Right", 7, &right},
+    {"Left", 7, &left}
 };
 
 fct_ptr get_cmd(char *str)
