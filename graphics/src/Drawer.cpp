@@ -1,6 +1,6 @@
 #include "Drawer.hpp"
 
-Drawer::Drawer(/* args */)
+Drawer::Drawer(sf::Vector2i msz)
 {
     _window = new sf::RenderWindow(sf::VideoMode(1920, 1024), "MyWindow");
     _window->setFramerateLimit(60);
@@ -8,6 +8,7 @@ Drawer::Drawer(/* args */)
     _cell.setFillColor(sf::Color::Cyan);
     _cell.setOutlineColor(sf::Color::Black);
     _cell.setOutlineThickness(1);
+
 
     _stage2 = new mEntity("assets/stage2.png", sf::IntRect(0, 0, 32, 26), 300, 2, LEFT_TO_RIGHT, "DOWN");
     _stage2->addAnimationLoop("RIGHT", 2, 300, sf::IntRect(64, 0, 32, 26));
@@ -21,7 +22,7 @@ Drawer::Drawer(/* args */)
 
     _stage2->getSprite().setScale(sf::Vector2f(4, 4));
     _stage3->getSprite().setScale(sf::Vector2f(4, 4));
-    _mapSize = {20, 20};
+    _mapSize = msz;
     _camOffset = {0, 0};
 
     sf::Texture temp;
@@ -75,9 +76,18 @@ void Drawer::drawPlayer(Player &p)
 
 }
 
+void Drawer::drawAllPlayer(std::vector<Player *> pop)
+{
+    for (unsigned int i = 0; i != pop.size(); i++) {
+        pop[i]->update();            
+        drawPlayer(*pop[i]);
+    }
+}
+
 void Drawer::display()
 {
     _window->display();
+    clear();
 }
 
 void Drawer::clear()
@@ -211,10 +221,10 @@ Cell Drawer::getCellFromClick()
     sf::Vector2i pos = sf::Mouse::getPosition(*_window);
     pos.x -= _camOffset.x;
     pos.y -= _camOffset.y;
-    int s = ((pos.x / 128) + ((pos.y / 128 * 20)));
+    int s = ((pos.x / 128) + ((pos.y / 128 * _mapSize.y)));
     if (s < 0 or s > _cells.size() - 1)
         return (*_cells[0]);
-    return (*_cells[(pos.x / 128) + ((pos.y / 128 * 20))]);
+    return (*_cells[(pos.x / 128) + ((pos.y / 128 * _mapSize.y))]);
 }
 
 void Drawer::drawStage2(Player &p)
@@ -222,7 +232,6 @@ void Drawer::drawStage2(Player &p)
     _stage2->getSprite().setPosition(p.getHead()->getSprite().getPosition());
     _stage2->update();
     _stage2->synchronize(*p.getHead());
-    std::cout << _stage2->getClock().getElapsedTime().asMilliseconds() << "\n";
     if (p.getOrientation() == e_orientation::DOWN) {
         _stage2->changeAnimationLoop("DOWN");
         _stage2->getSprite().move(0, -24);

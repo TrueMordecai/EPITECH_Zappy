@@ -18,14 +18,16 @@ SRC = 	src/main.c						\
 		src/generate_map_ressources.c	\
 		src/map_info.c					\
 		src/movement.c					\
-		src/set_client_team.c
+		src/set_client_team.c			\
+		src/toolbox.c					\
+		src/send_message_gui.c
 
 NAME = zappy_server
 
 CC = gcc
 
 CFLAGS = -I ./include
-CFLAGS += -Wall -Wextra -Werror -g -luuid
+CFLAGS += -Wall -Wextra -g -luuid
 
 OBJ = $(SRC:.c=.o)
 

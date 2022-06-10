@@ -15,14 +15,23 @@
 
 
 
-int main()
+int main(int ac, char **av)
 {
-    Drawer d;
     Hud h;
-    Network n;
+    Network n(av[1], std::atoi(av[2]));
     sf::Event event;
     std::vector<std::string> bfr;
     Population pop;
+    std::vector<std::vector<std::string>> sbfr;
+
+    while (1) {
+        sbfr = n.serverCommand();
+        if (sbfr.size() >= 1 and sbfr[0][0] == "SIZE") {
+            break;
+        }
+    }
+    sf::Vector2i s  = {std::atoi(sbfr[0][1].c_str()), std::atoi(sbfr[0][2].c_str())};
+    Drawer d(s);
     while (d.loop()) {
         bfr.clear();
         while (d.getWindow().pollEvent(event)) {
@@ -33,36 +42,25 @@ int main()
                 case (sf::Event::KeyReleased):
                     n.manualCommand(event);
                     break;
+                case (sf::Event::MouseButtonReleased):
+                    h.setPlayerToDraw(pop.getPlayerByPos(d.getCellFromClick().getPosition())[0]);
+                    break;
                 default:
                     break;
             }
         }
-        if (bfr.size() > 0) {
-            if (bfr[0] == "player") {
-                pop.parseCommand(bfr);
-            }
+        std::vector<std::vector<std::string>> servbfr = n.serverCommand();
+        if (servbfr.size() >= 1) {
+            std::cout << "Serv bfr is readable\n";
+            pop.parseCommand(servbfr[0]);
         }
+        pop.parseCommand(bfr);
         d.moveCamera(pop.getPlayerById(h.getIdToDraw()));
         d.drawGrid();
-        for (unsigned int i = 0; i != pop.getPlayers().size(); i++) {
-            pop.getPlayers()[i]->update();            
-            d.drawPlayer(*pop.getPlayers()[i]);
-        }
-        for (unsigned int i = 0; i != pop.getPlayers().size(); i++) {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                if (pop.getPlayers()[i]->getPosition() == d.getCellFromClick().getPosition()) {
-                    h.setState(Hud::HudState::SHOW, pop.getPlayers()[i]->getId());
-                    break;
-                } else {
-                    h.setState(Hud::HudState::HIDE, "");
-                }
-            }
-        }
-
-        h.drawHud(d.getWindow(), pop.getPlayerById(h.getIdToDraw()));
+        d.drawAllPlayer(pop.getPlayers());
+        h.drawHud(d.getWindow());
         d.getWindow().draw(n.getText());
         d.display();
-        d.clear();
     }
     return (0);
 }

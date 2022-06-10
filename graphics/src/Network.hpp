@@ -3,15 +3,21 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include <vector>
+#include <SFML/Network.hpp>
+#include <cstring>
 
 class Network
 {
 public:
-    Network();
+    Network(std::string ip, int port);
     ~Network();
     std::vector<std::string> manualCommand(sf::Event event);
+    std::vector<std::vector<std::string>> serverCommand();
     sf::Text getText();
+    void connect(std::string ip, int port);
 private:
+    sf::TcpSocket _socket;
+    bool isConnected;
     std::string _buffer;
     sf::Text _text;
     sf::Font _font;

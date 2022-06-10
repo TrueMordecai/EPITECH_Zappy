@@ -27,7 +27,7 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
     _head->addAnimationLoop("stage6U", 2, 300, sf::IntRect(200, 160, 50, 33));
     _head->addAnimationLoop("stage6L", 2, 300, sf::IntRect(300, 160, 50, 33));
 
-    _head->addAnimationLoop("stage7D", 2, 300, sf::IntRect(0,   208, 56, 30));
+    _head->addAnimationLoop("stage7D", 2, 300, sf::IntRect(0, 8, 56, 30));
     _head->addAnimationLoop("stage7R", 2, 300, sf::IntRect(112, 208, 56, 30));
     _head->addAnimationLoop("stage7U", 2, 300, sf::IntRect(224, 208, 56, 30));
     _head->addAnimationLoop("stage7L", 2, 300, sf::IntRect(336, 208, 56, 30));

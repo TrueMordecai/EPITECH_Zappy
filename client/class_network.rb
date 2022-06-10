@@ -37,4 +37,24 @@ class Network
         end
         return (bfr)
     end
+
+    # Send a command to the server.
+    # @param command [String] The command sent to the server
+    # return [Void]
+    def sendCommand(command, debug = false)
+        if (debug)
+            print ("Command sent to the server : '#{command}'")
+        end
+        if (command[-1] != '\n')
+            if (debug)
+                print " + \\n "
+            end
+            command = command + "\n"
+        end
+        if (debug)
+            puts
+        end
+        print "'#{command}'"
+        @socket.write(command)
+    end
 end

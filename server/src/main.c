@@ -31,6 +31,7 @@ my_server_t *get_server(my_server_t *serv, char **argv, int argc)
     int tmp;
 
     set_arguments(serv, argv, argc);
+    serv->gui_fd = -1;
     serv->proto = getprotobyname("TCP");
     if (!serv->proto) {
         free(serv);

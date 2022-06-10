@@ -100,6 +100,7 @@ typedef struct inventory {
 
 typedef struct my_client {
     int fd;
+    char *name;
     char *team_name;
     uint level;
     uint x;
@@ -138,3 +139,12 @@ void left(my_server_t *serv, my_client_t *client);
 void forward(my_server_t *serv, my_client_t *client);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
+
+// Return a client from its fd
+my_client_t *get_client_from_fd(my_server_t *serv, int fd);
+
+// Functiuns related to communication beetween server and GUI client.
+void gui_new_player(int fd, my_server_t *serv);
+
+// Count how many clients are in linked list.
+int count_client(my_server_t *serv);

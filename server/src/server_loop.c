@@ -22,21 +22,23 @@ void get_message(my_server_t *serv, int i)
     int nread;
     char *buffer;
     char **args;
-    my_client_t *tmp;
-
+    my_client_t *cur = serv->clients;
+    printf("Address is %p\n", cur);
     ioctl(i, FIONREAD, &nread);
     if (nread == 0) {
         return;
     }
     buffer = get_client_line(i);
     args = str_to_strarr(buffer, " \t\r\n");
-    for (tmp = serv->clients; tmp; tmp = tmp->next)
-        if (tmp->fd == i)
+    for (; cur; cur = cur->next)
+        if (cur->fd == i)
             break;
-    if (!tmp->team_name)
-        set_team(tmp, args, serv);
-    else
-        add_to_queue(buffer, tmp);
+
+    if (!cur->team_name){
+        set_team(cur, args, serv);
+        printf("Address team Name after after %p so team name = %s\n", cur->team_name, cur->team_name);
+    } else
+        add_to_queue(buffer, cur);
     free_strarr(args);
     free(buffer);
 }
@@ -46,13 +48,13 @@ void incoming_message(my_server_t *serv, int i)
     struct sockaddr_in client;
     int cli_fd;
 
-    if (FD_ISSET(i, &serv->tmp_fds)) {
-        if (i == serv->server_fd) {
+    if (FD_ISSET(i, &serv->tmp_fds)) { // if message
+        if (i == serv->server_fd) { // If message from unknown source
             cli_fd = accept(serv->server_fd,
             (struct sockaddr *)&client, &serv->addr_len);
             FD_SET(cli_fd, &serv->fds);
-            add_client(serv, make_client(cli_fd, serv->width,
-            serv->height));
+            add_client(serv, make_client(cli_fd, serv->width, serv->height));
+            dprintf(cli_fd, "%i %i\n", serv->width, serv->height);
             return;
         }
         get_message(serv, i);

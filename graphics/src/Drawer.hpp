@@ -8,9 +8,10 @@
 class Drawer
 {
 public:
-    Drawer(/* args */);
+    Drawer(sf::Vector2i mapSize);
     ~Drawer();
     void drawPlayer(Player &p);
+    void drawAllPlayer(std::vector<Player *> pop);
     void drawGrid();
     void display();
     void clear();

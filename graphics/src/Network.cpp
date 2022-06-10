@@ -1,6 +1,6 @@
 #include "Network.hpp"
 
-Network::Network()
+Network::Network(std::string ip, int port)
 {
     _font.loadFromFile("./assets/hud/font1.ttf");
     _text.setFont(_font);
@@ -18,9 +18,8 @@ Network::Network()
     this->_preload.push_back("player new S 1 5 TeamB TeamB0");
     this->_preload.push_back("player new S 2 5 TeamC TeamC0");
     this->_preload.push_back("player new S 3 5 TeamD TeamD0");
-    //this->_preload.push_back("player new S 4 5 TeamE TeamE0");
-
-
+    connect(ip, port);
+    _socket.setBlocking(false);
     _text.setString(_buffer);
 }
 
@@ -29,10 +28,8 @@ Network::~Network()
     
 }
 
-static std::vector<std::string> split(std::string s)
+static std::vector<std::string> split(std::string s, std::string del = " ")
 {
-    std::string del = " ";
-
     size_t pos = 0;
     std::string token;
     std::vector<std::string> vec;
@@ -54,10 +51,8 @@ std::vector<std::string> Network::manualCommand(sf::Event e)
     std::string save;
 
     if (!_preload.empty() and e.type == sf::Event::TextEntered and _buffer == "" and e.text.unicode == 13) {
-        std::cout << "(" << _buffer <<")\n";
         save = _preload[_preload.size()-1];
         _preload.pop_back();
-        std::cout << "Return (" << save <<")\n";
         return split(save);
     }
     if (e.type == sf::Event::KeyReleased) {
@@ -102,8 +97,33 @@ std::vector<std::string> Network::manualCommand(sf::Event e)
     return (split(""));
 }
 
+std::vector<std::vector<std::string>> Network::serverCommand()
+{
+    std::vector<std::vector<std::string>> s;
+    char data[100];
+    std::memset(data, 0, 100);
+    size_t received;
+    if (_socket.receive(data, 100, received) != sf::Socket::NotReady) {
+        if (std::string(data).substr(0, 8) == "map_size") {
+            std::string a = data;
+            return {(std::vector<std::string>({"SIZE", a.substr(9, a.find(',')).c_str(), (a.substr(a.find(',') + 1, a.size() - a.find(',') - 1).c_str()), }))}; // A bit of golfing don't hurt
+        }
+        if (std::string(data).size() >= 1)
+            std::cout << "I just received '" << data << "'.\n";
+        s.push_back(split(data));
+    }
+    return s;
+}
+
 sf::Text Network::getText()
 {
     _text.setString(_buffer);
     return _text;
+}
+
+void Network::connect(std::string ip, int port)
+{
+    _socket.connect(ip, port);
+    _socket.send("Hey Gui\n", 8);
+
 }

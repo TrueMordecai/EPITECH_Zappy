@@ -15,4 +15,11 @@ loop do
     commands = ""
     commands = net.getServerCommmand()
     print commands
+    if (commands == "WELCOME\n")
+        net.sendCommand(options["name"], true)
+    end
+    if (commands == "dead\n")
+        puts("I juste died :(");
+        exit(0)
+    end
 end

@@ -12,13 +12,13 @@ Population::~Population()
 
 static e_orientation getOrientation(std::string s)
 {
-    if (s == "N")
+    if (s == "N" or s == "0")
         return (e_orientation::UP);
-    if (s == "S")
+    if (s == "S" or s == "2")
         return (e_orientation::DOWN);
-    if (s == "E")
+    if (s == "E" or s == "1")
         return (e_orientation::RIGHT);
-    if (s == "W")
+    if (s == "W" or s == "3")
         return (e_orientation::LEFT);
     std::cout << "ERROR : Wrong orientation string\n";
     return (e_orientation::LEFT);
@@ -69,18 +69,20 @@ sf::Vector2i forward(sf::Vector2i p, e_orientation o)
 
 void Population::parseCommand(std::vector<std::string> c)
 {
-    if (c[1] == "new")
+    if (c.size() < 1)
+        return;
+    if (c[0] != "player")
+        return;
+    if (c[1] == "new") {
+        std::cout << "New Player !\n";
         addPlayer(getOrientation(c[2]), {std::atoi(c[3].c_str()), std::atoi(c[4].c_str())}, c[5], c[6]);
-
+    }
     if (c[1] == "rotate")
         getPlayerById(c[2])->setOrientation(rotate(c[3],  getPlayerById(c[2])->getOrientation()));
-
     if (c[1] == "move")
         getPlayerById(c[2])->setPositionGoal(forward(getPlayerById(c[2])->getPosition(), getPlayerById(c[2])->getOrientation()));
-    
     if (c[1] == "life")
         getPlayerById(c[2])->setLife(std::atoi(c[3].c_str()));
-
     if (c[1] == "up")
         getPlayerById(c[2])->setStage(getPlayerById(c[2])->getStage() + 1);
 }
@@ -112,6 +114,8 @@ std::vector<Player *> Population::getPlayerByPos(sf::Vector2i pos)
         if (_players[i]->getPosition() == pos)
             bfr.push_back(_players[i]);
     }
+    if (bfr.size() == 0)
+        bfr.push_back(nullptr);
     return (bfr);
 }
 

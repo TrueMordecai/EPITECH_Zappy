@@ -4,3 +4,5 @@ zappy_server
 .clang-format
 nonpushable.c
 Boo
+vgcore*
+tests/

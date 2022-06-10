@@ -12,11 +12,13 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
     my_client_t *tmp = serv->clients;
     uint i = 0;
 
+    printf("Address is %p\n", client);
     if (args[1]) {
         serv->gui_fd = client->fd;
         client->fd = -1;
         del_client(serv, -1);
-        dprintf(serv->gui_fd, "Hello GUI\n");
+        puts ("GUI is well connected\n");
+        dprintf(serv->gui_fd, "map_size=%i,%i", serv->width, serv->height);
         return;
     }
     for (; tmp; tmp = tmp->next) {
@@ -29,8 +31,12 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
     for (; i < serv->nb_teams; i++)
         if (!strcmp(serv->team_names[i], args[0]))
             break;
+    printf("Address is %p\n", client);
+    printf("Address team Name before %p\n", client->team_name);
     client->team_name = strdup(args[0]);
+    printf("Address team Name after %p\n", client->team_name);
     serv->team_sizes[i]--;
+    gui_new_player(client->fd, serv);
     dprintf(client->fd, "%d\n", serv->team_sizes[i]);
     dprintf(client->fd, "%d %d\n", client->x, client->y);
 }

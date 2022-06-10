@@ -16,13 +16,15 @@ public:
     ~Hud();
     void showHud(Player &p);
     void hideHud();
-    void drawHud(sf::RenderWindow &w, Player *p);
+    void drawHud(sf::RenderWindow &w);
     mEntity *getHud();
     void setState(HudState state, std::string id);
     std::string getIdToDraw();
+    void setPlayerToDraw(Player *p);
 private:
     void moveHud(HudState state);
     std::string _idToShow;
+    Player *_playerToShow;
     mEntity *_heart;
     mEntity *_hud;
     sf::Text _text;
