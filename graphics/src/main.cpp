@@ -26,8 +26,12 @@ int main(int ac, char **av)
 
     while (1) {
         sbfr = n.serverCommand();
-        if (sbfr.size() >= 1 and sbfr[0][0] == "SIZE") {
-            break;
+        
+        if (sbfr.size() >= 1 && sbfr[0].size() == 3) {
+            if (sbfr[0][0] == "SIZE") {
+                std::cout << "Breaking !\n";
+                break;
+            }
         }
     }
     sf::Vector2i s  = {std::atoi(sbfr[0][1].c_str()), std::atoi(sbfr[0][2].c_str())};

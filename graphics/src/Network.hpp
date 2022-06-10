@@ -14,8 +14,13 @@ public:
     std::vector<std::string> manualCommand(sf::Event event);
     std::vector<std::vector<std::string>> serverCommand();
     sf::Text getText();
+    
     void connect(std::string ip, int port);
+    // Connect with saved information
+    void connect();
 private:
+    std::string _ip;
+    int _port;
     sf::TcpSocket _socket;
     bool isConnected;
     std::string _buffer;

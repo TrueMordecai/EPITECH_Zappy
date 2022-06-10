@@ -29,13 +29,20 @@ void get_message(my_server_t *serv, int i)
     }
     buffer = get_client_line(i);
     args = str_to_strarr(buffer, " \t\r\n");
+    
+    if (connect_gui(serv, args, i)) {
+        free_strarr(args);
+        free(buffer);
+        print_all_clients(serv, "Gui is set");
+        return;
+    }
+    
     for (; cur; cur = cur->next)
         if (cur->fd == i)
             break;
-
-    if (!cur->team_name){
+    if (!cur->team_name)
         set_team(cur, args, serv);
-    } else
+    else
         add_to_queue(buffer, cur);
     free_strarr(args);
     free(buffer);
@@ -52,6 +59,7 @@ void incoming_message(my_server_t *serv, int i)
             (struct sockaddr *)&client, &serv->addr_len);
             FD_SET(cli_fd, &serv->fds);
             add_client(serv, make_client(cli_fd, serv->width, serv->height));
+            print_all_clients(serv, "A new client appeared");
             dprintf(cli_fd, "%i %i\n", serv->width, serv->height);
             return;
         }
@@ -72,7 +80,6 @@ void check_tick(my_server_t *serv, clock_t *time)
         } else
             serv->map_cooldown--;
         update_player_position(serv);
-        // send_gui_map(serv);
         *time = clock();
     }
 }

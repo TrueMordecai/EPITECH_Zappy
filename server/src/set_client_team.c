@@ -12,13 +12,6 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
     my_client_t *tmp = serv->clients;
     uint i = 0;
 
-    if (args[1]) {
-        serv->gui_fd = client->fd;
-        client->fd = -1;
-        del_client(serv, -1);
-        dprintf(serv->gui_fd, "map_size=%i,%i", serv->width, serv->height);
-        return;
-    }
     for (; tmp; tmp = tmp->next) {
         if (tmp->team_name && !strcmp(tmp->team_name, args[0])) {
             dprintf(client->fd, "TEAM-IN-USE\n");
@@ -31,6 +24,7 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
             break;
     client->team_name = strdup(args[0]);
     serv->team_sizes[i]--;
+    printf("Try to this fd %i information", client->fd);
     gui_new_player(client->fd, serv);
     dprintf(client->fd, "%d\n", serv->team_sizes[i]);
     dprintf(client->fd, "%d %d\n", client->x, client->y);

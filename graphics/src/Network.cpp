@@ -18,6 +18,8 @@ Network::Network(std::string ip, int port)
     this->_preload.push_back("player new S 1 5 TeamB TeamB0");
     this->_preload.push_back("player new S 2 5 TeamC TeamC0");
     this->_preload.push_back("player new S 3 5 TeamD TeamD0");
+    _ip = ip;
+    _port = port;
     connect(ip, port);
     _socket.setBlocking(false);
     _text.setString(_buffer);
@@ -103,13 +105,16 @@ std::vector<std::vector<std::string>> Network::serverCommand()
     char data[100];
     std::memset(data, 0, 100);
     size_t received;
+    
     if (_socket.receive(data, 100, received) != sf::Socket::NotReady) {
-        if (std::string(data).substr(0, 8) == "map_size") {
-            std::string a = data;
-            return {(std::vector<std::string>({"SIZE", a.substr(9, a.find(',')).c_str(), (a.substr(a.find(',') + 1, a.size() - a.find(',') - 1).c_str()), }))}; // A bit of golfing don't hurt
-        }
         if (std::string(data).size() >= 1)
             std::cout << "I just received '" << data << "'.\n";
+
+        if (std::string(data).substr(0, 8) == "map_size") {
+            std::string a = data;
+            std::cout << "I received map_size\n";
+            return {(std::vector<std::string>({"SIZE", a.substr(9, a.find(',')).c_str(), (a.substr(a.find(',') + 1, a.size() - a.find(',') - 1).c_str()), }))}; // A bit of golfing don't hurt
+        }
         s.push_back(split(data));
     }
     return s;
@@ -124,6 +129,11 @@ sf::Text Network::getText()
 void Network::connect(std::string ip, int port)
 {
     _socket.connect(ip, port);
-    _socket.send("Hey Gui\n", 8);
+    _socket.send("GUI GUI GUI\n", 12);
+}
 
+void Network::connect()
+{
+    _socket.connect(_ip, _port);
+//    _socket.send("GUI GUI GUI\n", 12);
 }

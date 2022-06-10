@@ -35,3 +35,27 @@ int count_client(my_server_t *serv)
     }
     return res;
 }
+
+void print_all_clients(my_server_t *serv, char *message)
+{
+    int i = 0;
+
+    my_client_t *cur = serv->clients;
+
+    printf("\n#######################\n");
+    printf("msg : %s\n", message);
+    if (serv->gui_fd == -1) {
+        printf("No GUI Clients Detected\n");
+    } else {
+        printf("GUI is connected with fd %i\n", serv->gui_fd);
+    }
+    if (!cur) {
+        printf("No Player Clients Detected\n");
+        return;
+    }
+    while (cur) {
+        printf ("%i : Client with fd %i, named %s is connected\n",i ,cur->fd, cur->name);
+        cur = cur->next;
+        i++;
+    }
+}

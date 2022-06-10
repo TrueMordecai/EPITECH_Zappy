@@ -151,3 +151,9 @@ void gui_new_player(int fd, my_server_t *serv);
 
 // Count how many clients are in linked list.
 int count_client(my_server_t *serv);
+
+// Connect the gui.
+bool connect_gui(my_server_t *serv, char **arr, int fd);
+
+// Debug only
+void print_all_clients(my_server_t *serv, char *message);
