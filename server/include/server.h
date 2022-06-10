@@ -139,6 +139,9 @@ void left(my_server_t *serv, my_client_t *client);
 void forward(my_server_t *serv, my_client_t *client);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
+void check_ritual_level(my_client_t *client);
+void check_rit_inv(my_client_t *client, inv_t ritual);
+void ritual_proceed(my_client_t *client, inv_t ritual);
 
 // Return a client from its fd
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);
