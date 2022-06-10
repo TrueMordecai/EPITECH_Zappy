@@ -88,7 +88,6 @@ void update_clients(my_server_t *serv)
     update_client(serv, serv->clients);
     for (; client; client = client->next)
         if (client->dead) {
-            printf("Client %d has died, disconnecting\n", client->fd);
-            del_client(serv, client->fd);
+                del_client(serv, client->fd);
         }
 }

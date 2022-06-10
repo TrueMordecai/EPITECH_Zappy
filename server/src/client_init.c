@@ -76,7 +76,6 @@ my_client_t *make_client(int fd, int x, int y)
 {
     my_client_t *client = malloc(sizeof(my_client_t));
 
-    printf("Address is at creation %p\n", client);
     client->fd = fd;
     client->team_name = NULL;
     client->level = 1;

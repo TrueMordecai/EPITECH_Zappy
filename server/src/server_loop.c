@@ -23,7 +23,6 @@ void get_message(my_server_t *serv, int i)
     char *buffer;
     char **args;
     my_client_t *cur = serv->clients;
-    printf("Address is %p\n", cur);
     ioctl(i, FIONREAD, &nread);
     if (nread == 0) {
         return;
@@ -36,7 +35,6 @@ void get_message(my_server_t *serv, int i)
 
     if (!cur->team_name){
         set_team(cur, args, serv);
-        printf("Address team Name after after %p so team name = %s\n", cur->team_name, cur->team_name);
     } else
         add_to_queue(buffer, cur);
     free_strarr(args);
