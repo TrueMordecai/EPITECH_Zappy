@@ -61,7 +61,7 @@ void Hud::drawHud(sf::RenderWindow &w)
     
     /// Draw Team Name
     _text.setRotation(7);
-    _text.setPosition(2480, 235);
+    _text.setPosition(2480, 225);
     _text.move(_offset);
     _text.setString(_playerToShow->getTeamName());
     while (_text.getGlobalBounds().width > 220)
@@ -78,18 +78,30 @@ void Hud::drawHud(sf::RenderWindow &w)
     _text.setCharacterSize(54);
     _text.setFillColor(sf::Color(54, 45, 45));
 
+
+    /// Draw Id
+    _text.setRotation(7);
+    _text.setPosition(2380, 800);
+    _text.setCharacterSize(50);
+    _text.move(_offset);
+    _text.setString(_playerToShow->getId());
+    while (_text.getGlobalBounds().width > 220)
+        _text.setCharacterSize(_text.getCharacterSize() - 1);
+    w.draw(_text);
+
+    /// Draw heart
     _heart->getSprite().setPosition(1950, 530);
     _heart->getSprite().move(_offset);
     for (int i = 0; i != 6; i++) {
         _heart->getSprite().move(64, 0);
         if (i == 3)
             _heart->getSprite().move(-160, 55);
-        if (!(i * 21 + 11 < _playerToShow->getLife() && (i) * 21 + 21 < _playerToShow->getLife()))
+        if (_playerToShow->getLife() >= i * 210 && _playerToShow->getLife() <= i * 210 + 105)
             _heart->changeAnimationLoop("half");
         else
             _heart->changeAnimationLoop("full");
-        if (i * 21 > _playerToShow->getLife())
-            return;        
+        if (i * 210 > _playerToShow->getLife())
+            return;
         _heart->display(w);
     }
 }
@@ -107,7 +119,9 @@ void Hud::setState(HudState state, std::string id)
 
 std::string Hud::getIdToDraw()
 {
-    return _idToShow;
+    if (_playerToShow)
+        return _playerToShow->getId();
+    return "";
 }
 
 void Hud::setPlayerToDraw(Player *p)

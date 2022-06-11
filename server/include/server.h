@@ -78,7 +78,7 @@ typedef struct arg_checklist
     bool clientsNb;
 } arg_checklist_t;
 
-typedef void (*fct_ptr)(struct my_server *, struct my_client *);
+typedef void (*fct_ptr)(struct my_server *, int fd);
 typedef fct_ptr (*cmd)();
 
 typedef struct cmd_list {
@@ -134,9 +134,9 @@ int check_tile_ressource(inv_t tile, char ressource);
 void update_player_position(my_server_t *serv);
 char **str_to_strarr(char *str, char *tok);
 void free_strarr(char **arr);
-void right(my_server_t *serv, my_client_t *client);
-void left(my_server_t *serv, my_client_t *client);
-void forward(my_server_t *serv, my_client_t *client);
+void right(my_server_t *serv, int fd);
+void left(my_server_t *serv, int fd);
+void forward(my_server_t *serv, int fd);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
 void check_ritual_level(my_client_t *client);
@@ -147,7 +147,14 @@ void ritual_proceed(my_client_t *client, inv_t ritual);
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);
 
 // Functiuns related to communication beetween server and GUI client.
-void gui_new_player(int fd, my_server_t *serv);
+void gui_new_player(my_server_t *serv, my_client_t *client);
+void gui_move_player(my_server_t *serv, my_client_t *client);
+void gui_rotate_player(my_server_t *serv, my_client_t *client);
+void gui_set_life_player(my_server_t *serv, my_client_t *client);
+void gui_fork_player(my_server_t *serv, my_client_t *client);
+void gui_lay_player(my_server_t *serv, my_client_t *client);
+void gui_hatch_player(my_server_t *serv, my_client_t *client);
+void gui_talk_player(my_server_t *serv, my_client_t *client, char *message);
 
 // Count how many clients are in linked list.
 int count_client(my_server_t *serv);

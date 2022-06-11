@@ -18,7 +18,6 @@ my_client_t *get_client_from_fd(my_server_t *serv, int fd)
             return (cur);
         cur = cur->next;
     }
-    puts ("Didn't find fd :(");
     return (NULL);
 }
 
@@ -55,6 +54,11 @@ void print_all_clients(my_server_t *serv, char *message)
     }
     while (cur) {
         printf ("%i : Client with fd %i, named %s is connected\n",i ,cur->fd, cur->name);
+        if (cur->message_queue_size != 0) {
+            for (int in = 0; in != cur->message_queue_size; in++) {
+                printf("\t - %s\n", cur->message_queue[in]);
+            }
+        }
         cur = cur->next;
         i++;
     }

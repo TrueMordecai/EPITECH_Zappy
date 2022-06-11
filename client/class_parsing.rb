@@ -2,7 +2,6 @@
 # coding: utf-8
 
 require_relative 'class_command.rb'
-
 class Parsing
 
     EXPECT_NO_FIXED_SIZE = -99

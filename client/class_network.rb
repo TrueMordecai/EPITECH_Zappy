@@ -35,6 +35,9 @@ class Network
         rescue
             bfr = ""
         end
+        if (bfr != "")
+            puts ("I received (#{bfr.chomp})")
+        end
         return (bfr)
     end
 
@@ -42,6 +45,9 @@ class Network
     # @param command [String] The command sent to the server
     # return [Void]
     def sendCommand(command, debug = false)
+        if (command == "" or command == nil)
+            return
+        end
         if (debug)
             print ("Command sent to the server : '#{command}'")
         end
@@ -54,7 +60,6 @@ class Network
         if (debug)
             puts
         end
-        print "'#{command}'"
         @socket.write(command)
     end
 end

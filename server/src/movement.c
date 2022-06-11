@@ -7,8 +7,9 @@
 
 #include "server.h"
 
-static void forward_aux(my_server_t *serv, my_client_t *client)
+static void forward_aux(my_server_t *serv, int fd)
 {
+    my_client_t *client = get_client_from_fd(serv, fd);
     if (client->direction == EAST) {
         if (client->x == serv->width - 1)
             client->x = 0;
@@ -23,8 +24,9 @@ static void forward_aux(my_server_t *serv, my_client_t *client)
     }
 }
 
-void forward(my_server_t *serv, my_client_t *client)
+void forward(my_server_t *serv, int fd)
 {
+    my_client_t *client = get_client_from_fd(serv, fd);
     if (client->direction == NORTH) {
         if (client->y == 0)
             client->y = serv->height - 1;
@@ -37,12 +39,15 @@ void forward(my_server_t *serv, my_client_t *client)
         else
             client->y++;
     }
-    forward_aux(serv, client);
+    forward_aux(serv, fd);
+    puts("a");
+    gui_move_player(serv, client); 
+    puts("a");
 }
 
-void left(my_server_t *serv, my_client_t *client)
+void left(my_server_t *serv, int fd)
 {
-    (void)serv;
+    my_client_t *client = get_client_from_fd(serv, fd);
     if (client->direction == NORTH)
         client->direction = WEST;
     if (client->direction == EAST)
@@ -53,9 +58,9 @@ void left(my_server_t *serv, my_client_t *client)
         client->direction = SOUTH;
 }
 
-void right(my_server_t *serv, my_client_t *client)
+void right(my_server_t *serv, int fd)
 {
-    (void)serv;
+    my_client_t *client = get_client_from_fd(serv, fd);
     if (client->direction == NORTH)
         client->direction = EAST;
     if (client->direction == EAST)

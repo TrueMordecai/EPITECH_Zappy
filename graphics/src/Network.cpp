@@ -43,6 +43,8 @@ static std::vector<std::string> split(std::string s, std::string del = " ")
         vec.push_back(token);
         s.erase(0, pos + del.length());
     }
+    if (s.back() == '\n')
+        s.pop_back();
     vec.push_back(s);
     return (vec);
 }

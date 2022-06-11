@@ -35,8 +35,10 @@ void advance_message_queue(my_client_t *client)
 {
     char *str = client->message_queue[0];
 
-    for (int i = 1; i < MAX_MSG_QUEUE; i++)
+    for (int i = 1; i < MAX_MSG_QUEUE; i++) {
+        
         client->message_queue[i - 1] = client->message_queue[i];
+    }
     if (str)
         free(str);
     client->message_queue_size--;
@@ -67,7 +69,7 @@ void update_client(my_server_t *serv, my_client_t *client)
         return;
     if (client->cooldown == 0) {
         if (client->func)
-            client->func(serv, client);
+            client->func(serv, client->fd);
         get_next_cmd(client);
     }
     if (client->cooldown > 0)
@@ -75,9 +77,10 @@ void update_client(my_server_t *serv, my_client_t *client)
     if (client->food == 0) {
         dprintf(client->fd, "%s\n", "dead");
         client->dead = true;
-    }
-    else
+    } else {
         client->food--;
+        gui_set_life_player(serv, client);
+    }
     update_client(serv, client->next);
 }
 
@@ -86,8 +89,8 @@ void update_clients(my_server_t *serv)
     my_client_t *client = serv->clients;
 
     update_client(serv, serv->clients);
+    
     for (; client; client = client->next)
-        if (client->dead) {
-                del_client(serv, client->fd);
-        }
+        if (client->dead)
+            del_client(serv, client->fd);
 }

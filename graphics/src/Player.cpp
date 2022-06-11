@@ -70,7 +70,7 @@ Player::Player(e_orientation o, sf::Vector2i pos, std::string teamName, std::str
     _orientation = o;
     _teamName = teamName;
     _id = id;
-    _life = 65;
+    _life = 1260;
 
 }
 

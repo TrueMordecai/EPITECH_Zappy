@@ -12,6 +12,7 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
     my_client_t *tmp = serv->clients;
     uint i = 0;
 
+    puts("Set_team");
     for (; tmp; tmp = tmp->next) {
         if (tmp->team_name && !strcmp(tmp->team_name, args[0])) {
             dprintf(client->fd, "TEAM-IN-USE\n");
@@ -25,7 +26,8 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
     client->team_name = strdup(args[0]);
     serv->team_sizes[i]--;
     printf("Try to this fd %i information", client->fd);
-    gui_new_player(client->fd, serv);
+    gui_new_player(serv, client);
     dprintf(client->fd, "%d\n", serv->team_sizes[i]);
     dprintf(client->fd, "%d %d\n", client->x, client->y);
+    puts("end of Set_team");
 }

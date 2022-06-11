@@ -17,38 +17,33 @@ int client_list_count(my_client_t *clients)
     return count;
 }
 
-void get_message(my_server_t *serv, int i)
+void separate_message_sent(my_server_t *serv, int fd)
 {
     int nread;
     char *buffer;
     char **args;
-    my_client_t *cur = serv->clients;
-    ioctl(i, FIONREAD, &nread);
-    if (nread == 0) {
+    my_client_t *client = get_client_from_fd(serv, fd);
+    ioctl(fd, FIONREAD, &nread);
+    if (nread == 0 || !client)
         return;
-    }
-    buffer = get_client_line(i);
+    buffer = get_client_line(fd);
     args = str_to_strarr(buffer, " \t\r\n");
     
-    if (connect_gui(serv, args, i)) {
+    if (connect_gui(serv, args, fd)) {
         free_strarr(args);
         free(buffer);
         print_all_clients(serv, "Gui is set");
         return;
     }
-    
-    for (; cur; cur = cur->next)
-        if (cur->fd == i)
-            break;
-    if (!cur->team_name)
-        set_team(cur, args, serv);
+    if (!client->team_name)
+        set_team(client, args, serv);
     else
-        add_to_queue(buffer, cur);
+        add_to_queue(buffer, client);
     free_strarr(args);
     free(buffer);
 }
 
-void incoming_message(my_server_t *serv, int i)
+void handle_incoming_message_sender(my_server_t *serv, int i)
 {
     struct sockaddr_in client;
     int cli_fd;
@@ -63,7 +58,7 @@ void incoming_message(my_server_t *serv, int i)
             dprintf(cli_fd, "%i %i\n", serv->width, serv->height);
             return;
         }
-        get_message(serv, i);
+        separate_message_sent(serv, i);
     }
 }
 
@@ -72,14 +67,14 @@ void check_tick(my_server_t *serv, clock_t *time)
     clock_t current;
 
     current = clock() - *time;
-    if ((((float)current) / CLOCKS_PER_SEC) >= 1/(float)serv->freq) {
+    if ((((float)current) / CLOCKS_PER_SEC) >= 1 / (float)serv->freq) {
+        print_all_clients(serv, "Once every tick");
         update_clients(serv);
         if (!serv->map_cooldown) {
             update_map(serv);
             serv->map_cooldown = 16;
         } else
             serv->map_cooldown--;
-        update_player_position(serv);
         *time = clock();
     }
 }
@@ -96,12 +91,12 @@ void server_loop(my_server_t *serv)
     while (1) {
         serv->tmp_fds = serv->fds;
         timeout = select(FD_SETSIZE, &serv->tmp_fds, NULL, NULL, &tv);
+        for (int i = 0; i < FD_SETSIZE; i++)
+            handle_incoming_message_sender(serv, i);
         if (timeout == 0) {
             check_tick(serv, &time);
             continue;
         }
-        for (int i = 0; i < FD_SETSIZE; i++)
-            incoming_message(serv, i);
     }
     close(serv->server_fd);
 }

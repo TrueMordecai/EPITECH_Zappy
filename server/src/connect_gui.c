@@ -31,6 +31,10 @@ bool my_strcmp(char *s1, char *s2)
 
 bool is_gui_message(char **arr)
 {
+    if (!arr)
+        return false;
+    if (!arr[0])
+        return false;
     if (!my_strcmp(arr[0], "GUI"))
         return false;
     if (!my_strcmp(arr[1], "GUI"))
@@ -57,7 +61,6 @@ bool connect_gui(my_server_t *serv, char **arr, int fd)
         }
         cur = cur->next;
     }
-    //printf ("GUI Fd is %i\n", serv->gui_fd);
     del_client(serv, -1);
     dprintf(serv->gui_fd, "map_size=%i,%i", serv->width, serv->height);
     return true;

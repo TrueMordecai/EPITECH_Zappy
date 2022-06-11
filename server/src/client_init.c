@@ -18,10 +18,10 @@ static char *const NAME[] = {"Peppa_Pig", "Bender", "Larry", "Angelica", "Jhonny
                              "Steven_Universe", "Kralamoure_Géant", "Sponge_Bob", "Tom", "Giga_Chad",  // 5
                              "Anal_Genocide", "Arko", "Mia_Khalifa", "Mireille_Matué", "Alkapote", // 5
                              "BibleBlack_Lover", "David_Assezlouche", "Daddy_Issue", "Samira_On_Cocaine", "U_W0T_M8T3", // 5
-                             "Fuck_Belvet", "Simic_Lover", "La_Gross_Jambe_De_Shrek", "Gitano", "Moulaga" // 5
-                             "JazzTheGooze", "Kendrick_Lamar", "Batman", "GoD", "GotaGa" // 5
-                             "Jean_Lasalle", "Poutine", "Poulidor", "DatBoi", "Zyzz" // 5
-                             "Ricardo_Milos", "ayyLmao", "MoonMan", "Risitas", "Pillon_Magique" //5
+                             "Fuck_Belvet", "Simic_Lover", "La_Gross_Jambe_De_Shrek", "Gitano", "Moulaga", // 5
+                             "JazzTheGooze", "Kendrick_Lamar", "Batman", "GoD", "GotaGa", // 5
+                             "Jean_Lasalle", "Poutine", "Poulidor", "DatBoi", "Zyzz", // 5
+                             "Ricardo_Milos", "ayyLmao", "MoonMan", "Risitas", "Pillon_Magique", //5
                              "BasedBoi", "Kekistan_Villager", "smile.jpg", "FreezeCorleone_ft_Kaaris", "Le_Racisme"}; // 5
  
 
