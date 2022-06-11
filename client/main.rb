@@ -38,6 +38,9 @@ loop do
     if (commands == "dead\n")
         puts("I juste died :(");
         exit(0)
-    end    
-    #net.sendCommand(player.getNextMove(), true)
+    end
+    if (commands == "ok\n")
+        player.setReady()
+    end
+    net.sendCommand(player.getNextMove(), true)
 end

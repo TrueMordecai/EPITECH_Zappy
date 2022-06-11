@@ -1,7 +1,7 @@
 
 
 class Player
-    attr_accessor :teamName, :position, :stage, :inventory, :orientation
+    attr_accessor :teamName, :position, :stage, :inventory, :orientation, :lastCommand
 
     def initialize(teamName)
         @teamName = teamName
@@ -16,13 +16,23 @@ class Player
         @isReady = true;
     end
 
+    def computeIa()
+        if (@lastCommand == "Forward")
+            return ("Left")
+        end
+        return ("Forward")
+    end
+
     def getNextMove()
         if (!@isReady)
             return ("")
         end
-        if @c < 10
-            @c = @c + 1
-            return ("Forward")
-        end
+        @lastCommand = (computeIa())
+        @isReady = false
+        return (lastCommand)
+    end
+
+    def setReady()
+        @isReady = true
     end
 end

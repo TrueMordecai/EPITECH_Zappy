@@ -55,8 +55,8 @@ int main(int ac, char **av)
         }
         std::vector<std::vector<std::string>> servbfr = n.serverCommand();
         if (servbfr.size() >= 1) {
-            std::cout << "Serv bfr is readable\n";
-            pop.parseCommand(servbfr[0]);
+            for (auto c : servbfr)
+                pop.parseCommand(c);
         }
         pop.parseCommand(bfr);
         d.moveCamera(pop.getPlayerById(h.getIdToDraw()));

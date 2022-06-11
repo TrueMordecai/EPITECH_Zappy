@@ -40,9 +40,8 @@ void forward(my_server_t *serv, int fd)
             client->y++;
     }
     forward_aux(serv, fd);
-    puts("a");
-    gui_move_player(serv, client); 
-    puts("a");
+    gui_move_player(serv, client);
+    dprintf(fd, "ok\n");
 }
 
 void left(my_server_t *serv, int fd)
@@ -56,6 +55,8 @@ void left(my_server_t *serv, int fd)
         client->direction = EAST;
     if (client->direction == WEST)
         client->direction = SOUTH;
+    gui_rotate_player(serv, client, R_LEFT);
+    dprintf(fd, "ok\n");
 }
 
 void right(my_server_t *serv, int fd)
@@ -69,4 +70,5 @@ void right(my_server_t *serv, int fd)
         client->direction = WEST;
     if (client->direction == WEST)
         client->direction = NORTH;
+    dprintf(fd, "ok\n");
 }

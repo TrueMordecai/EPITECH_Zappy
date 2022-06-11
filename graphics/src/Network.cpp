@@ -101,24 +101,41 @@ std::vector<std::string> Network::manualCommand(sf::Event e)
     return (split(""));
 }
 
+static void DEBUG_print_vvs(std::vector<std::vector<std::string>> vs)
+{
+    int i = 0;
+    int j = 0;
+    for (std::vector<std::string> v : vs) {
+        if (vs[0].size() < 1)
+            return;
+        std::cout << "Vector[" << i << "]\n";
+        for (std::string s : v) {
+            std::cout << "\tString[" << j << "] : " << s << "\n";
+            j++;
+        }
+        i++;
+        j = 0;
+    }
+}
+
 std::vector<std::vector<std::string>> Network::serverCommand()
 {
     std::vector<std::vector<std::string>> s;
     char data[100];
     std::memset(data, 0, 100);
+    std::vector<std::string> bfr;
     size_t received;
     
     if (_socket.receive(data, 100, received) != sf::Socket::NotReady) {
-        if (std::string(data).size() >= 1)
-            std::cout << "I just received '" << data << "'.\n";
-
         if (std::string(data).substr(0, 8) == "map_size") {
             std::string a = data;
-            std::cout << "I received map_size\n";
             return {(std::vector<std::string>({"SIZE", a.substr(9, a.find(',')).c_str(), (a.substr(a.find(',') + 1, a.size() - a.find(',') - 1).c_str()), }))}; // A bit of golfing don't hurt
         }
-        s.push_back(split(data));
+        bfr = split(data, "\n");
+        for (auto v : bfr) 
+            s.push_back(split(v));
     }
+    DEBUG_print_vvs(s);
     return s;
 }
 

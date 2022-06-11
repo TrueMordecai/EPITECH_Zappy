@@ -48,6 +48,12 @@ typedef enum orientation {
     WEST
 } orientation_t;
 
+typedef enum e_rotation {
+    R_LEFT = 0,
+    R_RIGHT
+} e_rotation_t;
+
+
 typedef struct my_server {
     uint width;
     uint height;
@@ -149,7 +155,7 @@ my_client_t *get_client_from_fd(my_server_t *serv, int fd);
 // Functiuns related to communication beetween server and GUI client.
 void gui_new_player(my_server_t *serv, my_client_t *client);
 void gui_move_player(my_server_t *serv, my_client_t *client);
-void gui_rotate_player(my_server_t *serv, my_client_t *client);
+void gui_rotate_player(my_server_t *serv, my_client_t *client, e_rotation_t r);
 void gui_set_life_player(my_server_t *serv, my_client_t *client);
 void gui_fork_player(my_server_t *serv, my_client_t *client);
 void gui_lay_player(my_server_t *serv, my_client_t *client);
