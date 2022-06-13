@@ -12,6 +12,7 @@ public:
     Player *getPlayerById(std::string id);
     std::vector<Player *> getPlayerByPos(sf::Vector2i pos);
     std::vector<Player *> getPlayerByTeam(std::string name);
+    std::vector<Player *> getPlayerByTeammateId(std::string id);
     bool teamExist(std::string tn);
 private:
     void addPlayer(e_orientation o, sf::Vector2i pos, std::string team, std::string id);

@@ -38,7 +38,7 @@ void Hud::hideHud()
     moveHud(_e_state);
 }
 
-void Hud::drawHud(sf::RenderWindow &w)
+void Hud::drawHud(sf::RenderWindow &w, std::vector<Player *> _teamates)
 {
     if (_playerToShow == nullptr)
         _e_state = HIDE;
@@ -61,12 +61,13 @@ void Hud::drawHud(sf::RenderWindow &w)
     
     /// Draw Team Name
     _text.setRotation(7);
-    _text.setPosition(2480, 225);
+    _text.setPosition(2480, 220);
     _text.move(_offset);
     _text.setString(_playerToShow->getTeamName());
     while (_text.getGlobalBounds().width > 220)
         _text.setCharacterSize(_text.getCharacterSize() - 1);
     w.draw(_text);
+    _text.setCharacterSize(54);
 
     /// Draw Level
     _text.setPosition(2440, 350);
@@ -78,16 +79,33 @@ void Hud::drawHud(sf::RenderWindow &w)
     _text.setCharacterSize(54);
     _text.setFillColor(sf::Color(54, 45, 45));
 
-
+    /// Draw Friend
+    _text.setPosition(2300, 550);
+    _text.setCharacterSize(40);
+    _text.setOutlineThickness(0);
+    _text.move(_offset);
+    for (int i = 0; i != _teamates.size(); i++) {
+        std::string sbfr = "";
+        sbfr += _teamates[i]->getId();
+        sbfr += " lvl. ";
+        sbfr += std::to_string(_teamates[i]->getStage());
+        
+        _text.move({0, 40});
+        _text.setString(sbfr);
+        w.draw(_text);
+    }
+    _text.setOutlineThickness(1);
+    
     /// Draw Id
     _text.setRotation(7);
-    _text.setPosition(2380, 800);
+    _text.setPosition(2300, 815);
     _text.setCharacterSize(50);
     _text.move(_offset);
     _text.setString(_playerToShow->getId());
     while (_text.getGlobalBounds().width > 220)
         _text.setCharacterSize(_text.getCharacterSize() - 1);
     w.draw(_text);
+    _text.setCharacterSize(54);
 
     /// Draw heart
     _heart->getSprite().setPosition(1950, 530);

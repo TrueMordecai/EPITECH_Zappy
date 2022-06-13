@@ -21,6 +21,7 @@ public:
     void drawInfo(Player &p); /// Debug olny
     sf::RenderWindow &getWindow();
     Cell getCellFromClick();
+    bool showMenu();
 private:
     void drawStage2(Player &p);
     void drawStage3(Player &p);
@@ -36,5 +37,6 @@ private:
     std::vector<Cell*> _cells;
     sf::Text _text;
     sf::Font _font;
+    bool _isMenu = false;
 };
 #endif

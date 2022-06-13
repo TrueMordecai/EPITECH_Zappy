@@ -14,7 +14,8 @@ SRC =	src/main.cpp				\
 		src/Hud.cpp					\
 		src/Cell.cpp				\
 		src/Network.cpp				\
-		src/Population.cpp
+		src/Population.cpp			\
+		src/Menu.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 

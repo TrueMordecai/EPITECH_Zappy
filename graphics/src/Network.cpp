@@ -14,10 +14,10 @@ Network::Network(std::string ip, int port)
     this->_history.push_back("player new S 0 1 b b0");
     this->_history.push_back("player new S 1 1 b b1");
 
-    this->_preload.push_back("player new S 0 5 TeamA TeamA0");
-    this->_preload.push_back("player new S 1 5 TeamB TeamB0");
-    this->_preload.push_back("player new S 2 5 TeamC TeamC0");
-    this->_preload.push_back("player new S 3 5 TeamD TeamD0");
+    this->_preload.push_back("player new S 0 5 LesRats Hitrat");
+    this->_preload.push_back("player new S 1 5 LesRats Remy");
+    this->_preload.push_back("player new S 2 5 LesRats Gitan");
+    this->_preload.push_back("player new S 3 5 LesRats JeanDuratdin");
     _ip = ip;
     _port = port;
     connect(ip, port);
@@ -135,7 +135,7 @@ std::vector<std::vector<std::string>> Network::serverCommand()
         for (auto v : bfr) 
             s.push_back(split(v));
     }
-    DEBUG_print_vvs(s);
+    //DEBUG_print_vvs(s);
     return s;
 }
 

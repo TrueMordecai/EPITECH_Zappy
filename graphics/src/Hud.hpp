@@ -16,7 +16,7 @@ public:
     ~Hud();
     void showHud(Player &p);
     void hideHud();
-    void drawHud(sf::RenderWindow &w);
+    void drawHud(sf::RenderWindow &w, std::vector<Player *> _teamates);
     mEntity *getHud();
     void setState(HudState state, std::string id);
     std::string getIdToDraw();
@@ -33,6 +33,4 @@ private:
     HudState _e_state;
     sf::Vector2f _offset;
 };
-
-
 #endif

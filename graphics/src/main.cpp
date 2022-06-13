@@ -12,8 +12,7 @@
 #include "Hud.hpp"
 #include "Network.hpp"
 #include <stdlib.h>
-
-
+#include "Menu.hpp"
 
 int main(int ac, char **av)
 {
@@ -23,21 +22,21 @@ int main(int ac, char **av)
     std::vector<std::string> bfr;
     Population pop;
     std::vector<std::vector<std::string>> sbfr;
-
-    while (1) {
-        sbfr = n.serverCommand();
-        
-        if (sbfr.size() >= 1 && sbfr[0].size() == 3) {
-            if (sbfr[0][0] == "SIZE") {
-                std::cout << "Breaking !\n";
-                break;
-            }
-        }
-    }
-    sf::Vector2i s  = {std::atoi(sbfr[0][1].c_str()), std::atoi(sbfr[0][2].c_str())};
-    Drawer d(s);
+    Menu m;
+    //while (1) {
+    //    sbfr = n.serverCommand();
+    //    
+    //    if (sbfr.size() >= 1 && sbfr[0].size() == 3) {
+    //        if (sbfr[0][0] == "SIZE") {
+    //            std::cout << "Breaking !\n";
+    //            break;
+    //        }
+    //    }
+    //}
+    //sf::Vector2i s  = {std::atoi(sbfr[0][1].c_str()), std::atoi(sbfr[0][2].c_str())};
+    Drawer d({20, 20});
     while (d.loop()) {
-        bfr.clear();
+        bfr.clear();        
         while (d.getWindow().pollEvent(event)) {
             switch (event.type) {
                 case (sf::Event::TextEntered): 
@@ -59,11 +58,15 @@ int main(int ac, char **av)
                 pop.parseCommand(c);
         }
         pop.parseCommand(bfr);
-        d.moveCamera(pop.getPlayerById(h.getIdToDraw()));
-        d.drawGrid();
-        d.drawAllPlayer(pop.getPlayers());
-        h.drawHud(d.getWindow());
-        d.getWindow().draw(n.getText());
+        if (d.showMenu()) {
+            m.drawMenu(d.getWindow());
+        } else {
+            d.moveCamera(pop.getPlayerById(h.getIdToDraw()));
+            d.drawGrid();
+            d.drawAllPlayer(pop.getPlayers());
+            h.drawHud(d.getWindow(), pop.getPlayerByTeammateId(h.getIdToDraw()));
+            d.getWindow().draw(n.getText());
+        }
         d.display();
     }
     return (0);

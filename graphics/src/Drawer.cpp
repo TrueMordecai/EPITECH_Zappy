@@ -42,7 +42,6 @@ Drawer::Drawer(sf::Vector2i msz)
 
 Drawer::~Drawer()
 {
-    
 }
 
 void Drawer::drawPlayer(Player &p)
@@ -225,6 +224,11 @@ Cell Drawer::getCellFromClick()
     if (s < 0 or s > _cells.size() - 1)
         return (*_cells[0]);
     return (*_cells[(pos.x / 128) + ((pos.y / 128 * _mapSize.y))]);
+}
+
+bool Drawer::showMenu()
+{
+    return this->_isMenu;
 }
 
 void Drawer::drawStage2(Player &p)

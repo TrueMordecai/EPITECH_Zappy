@@ -130,6 +130,20 @@ std::vector<Player *> Population::getPlayerByTeam(std::string team)
     return (bfr);
 }
 
+std::vector<Player *> Population::getPlayerByTeammateId(std::string id)
+{
+    std::vector<Player *> bfr;
+    
+    Player *p = getPlayerById(id);
+    if (!p)
+        return (bfr);
+    for (unsigned int i = 0; i != getPlayers().size(); i++) {
+        if (_players[i]->getTeamName() == p->getTeamName() && _players[i]->getId() != id)
+            bfr.push_back(_players[i]);
+    }
+    return (bfr);
+}
+
 std::vector<Player*> Population::getPlayers()
 {
     return _players;
@@ -146,7 +160,8 @@ void Population::addPlayer(e_orientation o, sf::Vector2i pos, std::string team, 
     if (!teamExist(team)) {
         _teamRegistered.push_back(std::pair<std::string, e_character>(team, p->getCharacter()));
     }
-    _players.push_back(p);}
+    _players.push_back(p);
+}
 
 e_character Population::getRightCharacter(std::string s)
 {
