@@ -13,7 +13,7 @@ my_client_t *get_client_from_fd(my_server_t *serv, int fd)
 
     if (cur->fd == fd)
         return (cur);
-    while (cur->next) {
+    while (cur) {
         if (cur->fd == fd)
             return (cur);
         cur = cur->next;
@@ -43,11 +43,10 @@ void print_all_clients(my_server_t *serv, char *message)
 
     printf("\n#######################\n");
     printf("msg : %s\n", message);
-    if (serv->gui_fd == -1) {
+    if (serv->gui_fd == -1)
         printf("No GUI Clients Detected\n");
-    } else {
+    else
         printf("GUI is connected with fd %i\n", serv->gui_fd);
-    }
     if (!cur) {
         printf("No Player Clients Detected\n");
         return;
@@ -55,7 +54,7 @@ void print_all_clients(my_server_t *serv, char *message)
     while (cur) {
         printf ("%i : Client with fd %i, named %s is connected\n",i ,cur->fd, cur->name);
         if (cur->message_queue_size != 0) {
-            for (int in = 0; in != cur->message_queue_size; in++) {
+            for (uint in = 0; in != cur->message_queue_size; in++) {
                 printf("\t - %s\n", cur->message_queue[in]);
             }
         }

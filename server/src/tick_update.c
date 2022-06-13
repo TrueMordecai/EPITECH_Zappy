@@ -89,7 +89,6 @@ void update_clients(my_server_t *serv)
     my_client_t *client = serv->clients;
 
     update_client(serv, serv->clients);
-    
     for (; client; client = client->next)
         if (client->dead)
             del_client(serv, client->fd);

@@ -19,16 +19,14 @@ int client_list_count(my_client_t *clients)
 
 void separate_message_sent(my_server_t *serv, int fd)
 {
-    int nread;
     char *buffer;
     char **args;
     my_client_t *client = get_client_from_fd(serv, fd);
-    ioctl(fd, FIONREAD, &nread);
-    if (nread == 0 || !client)
+
+    if (!client)
         return;
     buffer = get_client_line(fd);
     args = str_to_strarr(buffer, " \t\r\n");
-    
     if (connect_gui(serv, args, fd)) {
         free_strarr(args);
         free(buffer);

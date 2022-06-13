@@ -48,6 +48,7 @@ void del_client(my_server_t *serv, int fd)
         rem = serv->clients;
         serv->clients = serv->clients->next;
         decon_client(rem);
+        FD_CLR(fd, &serv->fds);
         return;
     }
     if (serv->clients == NULL)
@@ -58,6 +59,7 @@ void del_client(my_server_t *serv, int fd)
     rem = tmp->next;
     tmp->next = tmp->next->next;
     decon_client(rem);
+    FD_CLR(fd, &serv->fds);
 }
 
 void decon_client(my_client_t *client)
