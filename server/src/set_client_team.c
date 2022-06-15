@@ -14,7 +14,7 @@ void set_team_aux(my_server_t *serv, int i, my_client_t *client, char **args)
     printf("Try to this fd %i information\n", client->fd);
     gui_new_player(serv, client);
     dprintf(client->fd, "%d\n", serv->team_sizes[i]);
-    dprintf(client->fd, "%d %d\n", client->x, client->y);
+    dprintf(client->fd, "ppo %d %d\n", client->x, client->y);
 }
 
 void set_team(my_client_t *client, char **args, my_server_t *serv)

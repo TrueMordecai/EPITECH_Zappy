@@ -115,6 +115,7 @@ typedef struct my_client {
     uint food;
     inv_t inventory;
     char **message_queue;
+    char *cur;
     uint message_queue_size;
     uint cooldown;
     fct_ptr func;
@@ -143,6 +144,7 @@ void free_strarr(char **arr);
 void right(my_server_t *serv, int fd);
 void left(my_server_t *serv, int fd);
 void forward(my_server_t *serv, int fd);
+void broadcast(my_server_t *serv, int fd);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
 void check_ritual_level(my_client_t *client);

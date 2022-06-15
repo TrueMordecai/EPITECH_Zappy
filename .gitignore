@@ -6,3 +6,5 @@ nonpushable.c
 Boo
 vgcore*
 tests/
+test.c
+a.out

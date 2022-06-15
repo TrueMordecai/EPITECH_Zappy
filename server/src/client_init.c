@@ -93,6 +93,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->next = NULL;
     client->dead = false;
     client->func = NULL;
+    client->cur = NULL;
     dprintf(fd, "WELCOME\n");
     return client;
 }

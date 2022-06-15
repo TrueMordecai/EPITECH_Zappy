@@ -53,7 +53,7 @@ void handle_incoming_message_sender(my_server_t *serv, int i)
             FD_SET(cli_fd, &serv->fds);
             add_client(serv, make_client(cli_fd, serv->width, serv->height));
             print_all_clients(serv, "A new client appeared");
-            dprintf(cli_fd, "%i %i\n", serv->width, serv->height);
+            dprintf(cli_fd, "msz %i %i\n", serv->width, serv->height);
             return;
         }
         separate_message_sent(serv, i);

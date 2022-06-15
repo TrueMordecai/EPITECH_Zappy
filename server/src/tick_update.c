@@ -10,13 +10,14 @@
 const cmd_list_t cmd_list[] = {
     {"Forward", 7, &forward},
     {"Right", 7, &right},
-    {"Left", 7, &left}
+    {"Left", 7, &left},
+    {"Broadcast", 7, &broadcast}
 };
 
 fct_ptr get_cmd(char *str)
 {
-    for (int i = 0; i < 3; i++) {
-        if (strcmp(cmd_list[i].name, str) == 0)
+    for (int i = 0; i < 4; i++) {
+        if (strncmp(cmd_list[i].name, str, strlen(cmd_list[i].name)) == 0)
             return cmd_list[i].fct;
     }
     return NULL;
@@ -24,8 +25,8 @@ fct_ptr get_cmd(char *str)
 
 int get_cd(char *str)
 {
-    for (int i = 0; i < 3; i++) {
-        if (strcmp(cmd_list[i].name, str) == 0)
+    for (int i = 0; i < 4; i++) {
+        if (strncmp(cmd_list[i].name, str, strlen(cmd_list[i].name)) == 0)
             return cmd_list[i].cd;
     }
     return 0;
@@ -36,7 +37,6 @@ void advance_message_queue(my_client_t *client)
     char *str = client->message_queue[0];
 
     for (int i = 1; i < MAX_MSG_QUEUE; i++) {
-        
         client->message_queue[i - 1] = client->message_queue[i];
     }
     if (str)
@@ -56,6 +56,9 @@ void get_next_cmd(my_client_t *client)
             tmp = get_cmd(client->message_queue[0]);
             client->cooldown = 1 + get_cd(client->message_queue[0]);
             client->func = tmp;
+            (client->cur) ? (free(client->cur)) : (0);
+            client->cur = NULL;
+            client->cur = strdup(client->message_queue[0]);
             advance_message_queue(client);
             break;
         }
@@ -75,7 +78,7 @@ void update_client(my_server_t *serv, my_client_t *client)
     if (client->cooldown > 0)
         client->cooldown--;
     if (client->food == 0) {
-        dprintf(client->fd, "%s\n", "dead");
+        dprintf(client->fd, "dead\n");
         client->dead = true;
     } else {
         client->food--;

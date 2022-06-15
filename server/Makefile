@@ -21,7 +21,8 @@ SRC = 	src/main.c						\
 		src/set_client_team.c			\
 		src/toolbox.c					\
 		src/gui_protocole/new_player.c	\
-		src/connect_gui.c
+		src/connect_gui.c				\
+		src/broadcast.c
 
 NAME = zappy_server
 

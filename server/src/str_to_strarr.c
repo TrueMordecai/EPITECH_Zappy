@@ -7,25 +7,73 @@
 
 #include "server.h"
 
+int str_char_cmp(char c, char *tok)
+{
+    for (int i = 0; tok[i]; i++) {
+        if (c == tok[i])
+            return (1);
+    }
+    return (0);
+}
+
+int str_len(char *str, char *tok)
+{
+    int i = 0;
+    int quotes = 0;
+
+    while (str[i] && quotes != 2) {
+        if (str_char_cmp(str[i], tok) && quotes != 1)
+            break;
+        if (str[i] == '"')
+            quotes++;
+        i++;
+    }
+    return (i);
+}
+
+int get_next_arg_index(char *str, char *tok, int index)
+{
+    int i = index;
+
+    while (str[i]) {
+        if (!str_char_cmp(str[i], tok))
+            break;
+        i++;
+    }
+    return (i);
+}
+
+char *clip_quotes(char *str)
+{
+    if (str[0] == '"') {
+        str[strlen(str) - 1] = '\0';
+        return (str + 1);
+    }
+    return str;
+}
+
 char **str_to_strarr(char *str, char *tok)
 {
     char **ret = malloc(sizeof(char *));
-    char *buf = strtok(str, tok);
+    char *buf = NULL;
+    int index = get_next_arg_index(str, tok, 0);
     int i = 0;
 
-    if (!ret || !buf || !str)
+    if (!ret || !str)
         return NULL;
-    for (;;) {
-        ret[i] = strdup(buf);
-        i++;
-        ret = realloc(ret, sizeof(char *) * (i + 1));
-        buf = strtok(NULL, tok);
-        if (buf == NULL) {
+    while (1) {
+        if (!str[index]) {
             ret[i] = NULL;
             break;
         }
+        buf = strndup(str + index, str_len(str + index, tok));
+        index += str_len(str + index, tok);
+        index = get_next_arg_index(str, tok, index);
+        ret[i] = strdup(clip_quotes(buf));
+        free(buf);
+        i++;
+        ret = realloc(ret, sizeof(char *) * (i + 2));
     }
-    free(buf);
     return ret;
 }
 
