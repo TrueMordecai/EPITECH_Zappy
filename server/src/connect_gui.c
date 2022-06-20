@@ -47,7 +47,7 @@ bool is_gui_message(char **arr)
 bool connect_gui(my_server_t *serv, char **arr, int fd)
 {
     my_client_t *cur = serv->clients;
-    
+
     if (is_gui_message(arr) == false)
         return false;
     if (!cur)

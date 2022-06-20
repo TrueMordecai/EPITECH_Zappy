@@ -62,3 +62,13 @@ void print_all_clients(my_server_t *serv, char *message)
         i++;
     }
 }
+
+int get_team_id(my_server_t *serv, char *team)
+{
+    int i = 0;
+
+    for (; i < serv->nb_teams; i++)
+        if (!strcmp(serv->team_names[i], team))
+            return i;
+    return -1;
+}

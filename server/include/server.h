@@ -141,15 +141,19 @@ int check_tile_ressource(inv_t tile, char ressource);
 void update_player_position(my_server_t *serv);
 char **str_to_strarr(char *str, char *tok);
 void free_strarr(char **arr);
-void right(my_server_t *serv, int fd);
-void left(my_server_t *serv, int fd);
-void forward(my_server_t *serv, int fd);
-void broadcast(my_server_t *serv, int fd);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
 void check_ritual_level(my_client_t *client);
 void check_rit_inv(my_client_t *client, inv_t ritual);
 void ritual_proceed(my_client_t *client, inv_t ritual);
+int get_team_id(my_server_t *serv, char *team);
+
+// Client commands
+void right(my_server_t *serv, int fd);
+void left(my_server_t *serv, int fd);
+void forward(my_server_t *serv, int fd);
+void broadcast(my_server_t *serv, int fd);
+void fork_egg(my_server_t *serv, int fd);
 
 // Return a client from its fd
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);

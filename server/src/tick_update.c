@@ -70,6 +70,8 @@ void update_client(my_server_t *serv, my_client_t *client)
 {
     if (!client)
         return;
+    if (client->team_name == NULL)
+        update_client(serv, client->next);
     if (client->cooldown == 0) {
         if (client->func)
             client->func(serv, client->fd);
@@ -93,6 +95,8 @@ void update_clients(my_server_t *serv)
 
     update_client(serv, serv->clients);
     for (; client; client = client->next)
-        if (client->dead)
+        if (client->dead) {
+            serv->team_sizes[get_team_id(serv, client->team_name)]++;
             del_client(serv, client->fd);
+        }
 }

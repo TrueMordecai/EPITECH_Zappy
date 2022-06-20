@@ -149,4 +149,5 @@ void broadcast(my_server_t *serv, int fd)
         return;
     }
     send_message(serv, cmd[1], client->x, client->y);
+    dprintf(fd, "ok\n");
 }
