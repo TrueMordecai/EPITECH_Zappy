@@ -21,26 +21,44 @@ parser = Parsing.new()
 player = Player.new(options["name"])
 mapSize = []
 
+
 loop do
     commands = ""
     commands = net.getServerCommmand()
     if (commands == "WELCOME\n")
         net.sendCommand(options["name"], false)
     end
-    if (commands.split.all? {|i| i.is_integer?} and commands.split.size == 2 and mapSize.size != 0)
-        puts ("set Position too #{commands.split.map(&:to_i)}")
-        player.setPosition(commands.split.map(&:to_i))
+    ## SET PLAYER POS If command is 2 integer split by a space and map size have been given
+    if (commands.split[0] == "ppo" and mapSize.size != 0)
+        cbfr = commands.split.drop(1)
+        puts ("set Position too #{cbfr.map(&:to_i)}")
+        player.setPosition(cbfr.map(&:to_i))
     end
-    if (commands.split.all? {|i| i.is_integer?} and commands.split.size == 2 and mapSize.size == 0)
-        puts ("map size = #{commands.split.map(&:to_i)}")
-        mapSize = commands.split.map(&:to_i)
+
+    ## SET MAP SIZE If command is 2 integer split by a space and map size havn't been given
+    if (commands.split[0] == "msz" and mapSize.size == 0)
+        cbfr = commands.split.drop(1)
+        player.setMap(cbfr.map(&:to_i))
+        puts ("map size = #{cbfr.map(&:to_i)}")
+        mapSize = cbfr.map(&:to_i)
     end
+
+    ## If the player die
     if (commands == "dead\n")
         puts("I juste died :(");
         exit(0)
     end
+    
+    ## If player wait for a response of look
+    if (player.lastCommand == "Look")
+        player.updateMap("player Sibur,player,player,player")
+        player.map.printMap()
+        player.isReady = true
+    end
+    
+    ## If commands have been well executed
     if (commands == "ok\n")
-        player.setReady()
+        #player.setReady() ##TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEMP
     end
     net.sendCommand(player.getNextMove(), true)
 end

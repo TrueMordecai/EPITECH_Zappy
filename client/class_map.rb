@@ -28,17 +28,22 @@ class String
     def light_blue
       colorize(36)
     end
+
+    def color(a)
+      colorize(a)
+    end
 end
 
 class Map
-    attr_accessor :map
+    attr_accessor :map, :sizeX, :sizeY
     
     # Initialize map
     # @param *Size [Int] size of the map.
     # @param argumentCount [Int] argument needed by the command.
     def initialize(xSize, ySize)
         @map = []
-
+        @sizeX = xSize
+        @sizeY = ySize
         for y in 0..ySize - 1
             tmp = []
             for x in 0..xSize - 1
@@ -53,23 +58,69 @@ class Map
     # Print the map, for debug purpose
     # return [Void]
     def printMap()
-        puts ('---' * @map[0].size + '-')
+        puts ('------' * @map[0].size + '-') # First "----" line
         for line in @map
-            print '|'
-            for c in line 
-                print ("#{(c.countFoodTotal.to_s + "       ")[0, 2].red}|")
+
+            print '|' # First block line
+            for c in line            
+              if (c.countItemsTotal != 0) #First line cells
+                print ("#{(c.countItemsTotal.to_s + "       ")[0, 5].red}|")
+              else
+                print ("#{(c.countItemsTotal.to_s + "       ")[0, 5].green}|")
+              end
             end
             puts
-            print '|'
+
+            print '|' # Seconde line cells
             for c in line 
-                print ("  |")
+                print ("x=#{(c.posX.to_s + "        ")[0, 3]}|")
             end
             puts
-            print '-'
+
+            print '|' # Seconde line cells
             for c in line 
-                print ("---")
+                print ("y=#{(c.posY.to_s + "        ")[0, 3]}|")
             end
             puts
+
+            print '|' # Seconde line cells
+            for c in line 
+              if (c.playerNbr > 0)  
+                print ("#{(c.playerNbr.to_s + " pl        ")[0, 5]}|".blue)
+              else
+                print ("#{(c.playerNbr.to_s + " pl        ")[0, 5]}|")
+              end
+            end
+            puts
+            
+            for c in line # Last line
+                print ("------")
+            end
+            puts '-'
         end
     end
-end
+    
+    # Update the cell
+    # @param [Int] posX
+    # @param [Int] posX
+    # @param [String] Content of the tile
+    # return [Void]
+    def update_cell(posX, posY, content)
+      if (@map == nil or content == nil)
+        return
+      end
+      while (posX < 0)
+        posX = @sizeX - posX
+      end
+      while (posY < 0)
+        posY = @sizeY - posY
+      end
+      while (posX > sizeX)
+        posX -= sizeX
+      end
+      while (posY > sizeY)
+        posY -= sizeY
+      end
+      @map[posX][posY].setContents(content)
+    end
+  end
