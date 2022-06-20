@@ -7,12 +7,6 @@
 
 #include "server.h"
 
-void hatch(my_server_t *serv, int fd)
-{
-    (void)serv;
-    (void)fd;
-}
-
 void fork_egg(my_server_t *serv, int fd)
 {
     my_client_t *dad = get_client_from_fd(serv, fd);

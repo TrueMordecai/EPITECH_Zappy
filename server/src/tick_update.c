@@ -11,12 +11,13 @@ const cmd_list_t cmd_list[] = {
     {"Forward", 7, &forward},
     {"Right", 7, &right},
     {"Left", 7, &left},
-    {"Broadcast", 7, &broadcast}
+    {"Broadcast", 7, &broadcast},
+    {"Fork", 42, &fork_egg}
 };
 
 fct_ptr get_cmd(char *str)
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < COMMAND_LIST_SIZE; i++) {
         if (strncmp(cmd_list[i].name, str, strlen(cmd_list[i].name)) == 0)
             return cmd_list[i].fct;
     }
@@ -25,7 +26,7 @@ fct_ptr get_cmd(char *str)
 
 int get_cd(char *str)
 {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < COMMAND_LIST_SIZE; i++) {
         if (strncmp(cmd_list[i].name, str, strlen(cmd_list[i].name)) == 0)
             return cmd_list[i].cd;
     }
