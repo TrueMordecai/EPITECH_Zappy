@@ -123,4 +123,12 @@ class Map
       end
       @map[posX][posY].setContents(content)
     end
+
+    # Getter for a cell at certain coords
+    # @param x = x pos
+    # @param y = y pos
+    # return [Cell]
+    def getCell(x, y)
+      return @map[y][x]
+    end
   end

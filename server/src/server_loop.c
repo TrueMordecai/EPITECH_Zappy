@@ -33,6 +33,7 @@ void separate_message_sent(my_server_t *serv, int fd)
         print_all_clients(serv, "Gui is set");
         return;
     }
+    printf("I Received %s ", buffer);
     if (!client->team_name)
         set_team(client, args, serv);
     else

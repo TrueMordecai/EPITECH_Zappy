@@ -73,5 +73,6 @@ void right(my_server_t *serv, int fd)
         client->direction = WEST;
     if (client->direction == WEST)
         client->direction = NORTH;
+    gui_rotate_player(serv, client, R_RIGHT);
     dprintf(fd, "ok\n");
 }

@@ -58,7 +58,16 @@ loop do
     
     ## If commands have been well executed
     if (commands == "ok\n")
-        player.setReady() ##TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEMP
+        if (player.lastCommand() == "Left" or player.lastCommand() == "Right")
+            player.updateOrientation(player.lastCommand())
+        end
+        if (player.lastCommand() == "Forward")
+            player.updatePosition()
+        end
+
+        player.setReady()
     end
     net.sendCommand(player.getNextMove(), true)
+    
+    player.update() # DON'T REMOVE !!!
 end

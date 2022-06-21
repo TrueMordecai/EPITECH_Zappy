@@ -29,6 +29,7 @@ char *get_client_line(int fd)
 void add_to_queue(char *buf, my_client_t *client)
 {
     if (client->message_queue_size < 10) {
+        printf("Adding to queue %s\n", buf);
         client->message_queue[client->message_queue_size] = strdup(buf);
         client->message_queue_size++;
     }
