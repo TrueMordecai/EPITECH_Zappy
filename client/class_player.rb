@@ -39,8 +39,8 @@ class Player
             return ("")
         end
         @lastCommand = computeIa()
-        print "last command is "
-        puts @lastCommand
+        #print "last command is "
+        #puts @lastCommand
         @isReady = false
         return (@lastCommand)
     end

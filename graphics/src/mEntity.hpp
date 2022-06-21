@@ -1,9 +1,7 @@
-/*
-** EPITECH PROJECT, 2022
-** EPITECH_JAM_3
-** File description:
-** mEntity
-*/
+// This belongs to mathias.blanchard01@gmail.com
+// Notify me if you are using it, if your nice 
+
+
 #ifndef MENTITY_HPP_
 #define MENTITY_HPP_
 #include "SFML/Graphics.hpp"

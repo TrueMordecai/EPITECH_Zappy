@@ -58,7 +58,7 @@ loop do
     
     ## If commands have been well executed
     if (commands == "ok\n")
-        #player.setReady() ##TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEMP
+        player.setReady() ##TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEMP
     end
     net.sendCommand(player.getNextMove(), true)
 end

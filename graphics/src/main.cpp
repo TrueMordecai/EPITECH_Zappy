@@ -17,47 +17,58 @@
 int main(int ac, char **av)
 {
     Hud h;
-    Network n(av[1], std::atoi(av[2]));
+    Network n;
+    if (ac < 2)
+        n.setInfo("localhost", 88860);
+    else 
+        n.setInfo(av[1], std::atoi(av[2]));
     sf::Event event;
     std::vector<std::string> bfr;
     Population pop;
     std::vector<std::vector<std::string>> sbfr;
     Menu m;
-    //while (1) {
-    //    sbfr = n.serverCommand();
-    //    
-    //    if (sbfr.size() >= 1 && sbfr[0].size() == 3) {
-    //        if (sbfr[0][0] == "SIZE") {
-    //            std::cout << "Breaking !\n";
-    //            break;
-    //        }
-    //    }
-    //}
-    //sf::Vector2i s  = {std::atoi(sbfr[0][1].c_str()), std::atoi(sbfr[0][2].c_str())};
     Drawer d({20, 20});
+
     while (d.loop()) {
-        bfr.clear();        
+        bfr.clear();
         while (d.getWindow().pollEvent(event)) {
             switch (event.type) {
                 case (sf::Event::TextEntered): 
                     bfr = n.manualCommand(event);
+                    m.handleEvent(event);
                     break;
                 case (sf::Event::KeyReleased):
-                    n.manualCommand(event);
+                    n.manualCommand(event);                    
+                    m.handleEvent(event);
                     break;
                 case (sf::Event::MouseButtonReleased):
-                    h.setPlayerToDraw(pop.getPlayerByPos(d.getCellFromClick().getPosition())[0]);
+                    if (d.showMenu() == false)
+                        h.setPlayerToDraw(pop.getPlayerByPos(d.getCellFromClick().getPosition())[0]);
                     break;
                 default:
                     break;
             }
+        }
+        if (m.tryConnect()) { // When player released the enter key on "try connection"
+            std::cout << "Trying to connect" << "\n";
+            n.connect(m.getIps(), std::atoi(m.getPort().c_str()));
+        }
+        if (n.getMapSize().x != 0)
+            m.setConnection(true);            
+        else
+            m.setConnection(false);
+        if (d.showMenu() and m.getPlay()) { // When map size is received in the network 
+            if (n.getMapSize().x != 0)
+                d.createMap(n.getMapSize());
+            else
+                d.createMap({20, 20});
+            d.setShowMenu(false);
         }
         std::vector<std::vector<std::string>> servbfr = n.serverCommand();
         if (servbfr.size() >= 1) {
             for (auto c : servbfr)
                 pop.parseCommand(c);
         }
-        pop.parseCommand(bfr);
         if (d.showMenu()) {
             m.drawMenu(d.getWindow());
         } else {
@@ -67,6 +78,7 @@ int main(int ac, char **av)
             h.drawHud(d.getWindow(), pop.getPlayerByTeammateId(h.getIdToDraw()));
             d.getWindow().draw(n.getText());
         }
+        m.drawCornerNetwork(d.getWindow());
         d.display();
     }
     return (0);

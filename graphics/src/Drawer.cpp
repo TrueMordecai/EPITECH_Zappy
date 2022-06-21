@@ -24,15 +24,6 @@ Drawer::Drawer(sf::Vector2i msz)
     _stage3->getSprite().setScale(sf::Vector2f(4, 4));
     _mapSize = msz;
     _camOffset = {0, 0};
-
-    sf::Texture temp;
-    temp.loadFromFile("assets/tileset.png");
-    for (int y = 0; y != _mapSize.x; y++) {
-        for (int x = 0; x != _mapSize.y; x++) {
-            Cell *ncell = new Cell(temp, {x, y});
-            _cells.push_back(ncell);
-        }        
-    }
     _font.loadFromFile("assets/hud/font1.ttf");
     _text.setFont(_font);
     _text.setCharacterSize(32);
@@ -91,7 +82,7 @@ void Drawer::display()
 
 void Drawer::clear()
 {
-    _window->clear(sf::Color::White);
+    _window->clear(sf::Color::Blue);
 }
 
 bool Drawer::loop()
@@ -229,6 +220,24 @@ Cell Drawer::getCellFromClick()
 bool Drawer::showMenu()
 {
     return this->_isMenu;
+}
+
+void Drawer::setShowMenu(bool v)
+{
+    this->_isMenu = v;
+}
+
+void Drawer::createMap(sf::Vector2i a)
+{
+    sf::Texture temp;
+    _mapSize = a;
+    temp.loadFromFile("assets/tileset.png");
+    for (int y = 0; y != a.x; y++) {
+        for (int x = 0; x != a.y; x++) {
+            Cell *ncell = new Cell(temp, {x, y});
+            _cells.push_back(ncell);
+        }        
+    }
 }
 
 void Drawer::drawStage2(Player &p)

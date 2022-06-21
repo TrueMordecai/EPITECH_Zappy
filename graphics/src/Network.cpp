@@ -1,6 +1,6 @@
 #include "Network.hpp"
 
-Network::Network(std::string ip, int port)
+Network::Network()
 {
     _font.loadFromFile("./assets/hud/font1.ttf");
     _text.setFont(_font);
@@ -13,14 +13,11 @@ Network::Network(std::string ip, int port)
     this->_history.push_back("player new S 1 0 a a1");
     this->_history.push_back("player new S 0 1 b b0");
     this->_history.push_back("player new S 1 1 b b1");
-
+    
     this->_preload.push_back("player new S 0 5 LesRats Hitrat");
     this->_preload.push_back("player new S 1 5 LesRats Remy");
     this->_preload.push_back("player new S 2 5 LesRats Gitan");
     this->_preload.push_back("player new S 3 5 LesRats JeanDuratdin");
-    _ip = ip;
-    _port = port;
-    connect(ip, port);
     _socket.setBlocking(false);
     _text.setString(_buffer);
 }
@@ -127,13 +124,18 @@ std::vector<std::vector<std::string>> Network::serverCommand()
     size_t received;
     
     if (_socket.receive(data, 100, received) != sf::Socket::NotReady) {
-        if (std::string(data).substr(0, 8) == "map_size") {
-            std::string a = data;
-            return {(std::vector<std::string>({"SIZE", a.substr(9, a.find(',')).c_str(), (a.substr(a.find(',') + 1, a.size() - a.find(',') - 1).c_str()), }))}; // A bit of golfing don't hurt
-        }
         bfr = split(data, "\n");
         for (auto v : bfr) 
             s.push_back(split(v));
+    }
+    if (_msz.x == 0) {
+        for (auto vs : s) {
+            if (vs.size() == 3) {
+                if (vs[0] == "msz") {
+                    _msz = {std::atoi(vs[1].c_str()), std::atoi(vs[2].c_str())};
+                }
+            }
+        }
     }
     //DEBUG_print_vvs(s);
     return s;
@@ -147,12 +149,25 @@ sf::Text Network::getText()
 
 void Network::connect(std::string ip, int port)
 {
+    
     _socket.connect(ip, port);
-    _socket.send("GUI GUI GUI\n", 12);
+    std::size_t sent = 13;
+    _socket.send("GUI GUI GUI\n", 12, sent);
 }
 
 void Network::connect()
 {
     _socket.connect(_ip, _port);
 //    _socket.send("GUI GUI GUI\n", 12);
+}
+
+sf::Vector2i Network::getMapSize(void)
+{
+    return _msz;
+}
+
+void Network::setInfo(std::string ip, int port)
+{
+    _ip = ip;
+    _port = port;
 }

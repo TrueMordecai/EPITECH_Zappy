@@ -9,15 +9,16 @@
 class Network
 {
 public:
-    Network(std::string ip, int port);
+    Network();
     ~Network();
     std::vector<std::string> manualCommand(sf::Event event);
     std::vector<std::vector<std::string>> serverCommand();
     sf::Text getText();
-    
     void connect(std::string ip, int port);
-    // Connect with saved information
-    void connect();
+    void connect(); // Connect with saved information
+    sf::Vector2i getMapSize(void);
+    void setInfo(std::string ip, int port);
+
 private:
     std::string _ip;
     int _port;
@@ -29,6 +30,6 @@ private:
     std::vector<std::string> _history;
     std::vector<std::string> _preload;
     int _historyIndex = -1;
+    sf::Vector2i _msz = {0, 0};
 };
-
 #endif
