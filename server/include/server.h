@@ -125,8 +125,7 @@ typedef struct my_client {
 } my_client_t;
 
 int good_args(int argc, char **argv);
-inv_t generate_inventory(void);
-inv_t delete_inventory(inv_t);
+inv_t *generate_inventory(void);
 void server_loop(my_server_t *serv);
 void set_arguments(my_server_t *serv, char **argv, int argc);
 char *get_client_line(int fd);
