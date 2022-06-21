@@ -23,7 +23,9 @@ SRC = 	src/main.c						\
 		src/gui_protocole/new_player.c	\
 		src/connect_gui.c				\
 		src/take.c						\
-		src/broadcast.c
+		src/set.c						\
+		src/broadcast.c					\
+		src/lay_egg.c
 
 NAME = zappy_server
 

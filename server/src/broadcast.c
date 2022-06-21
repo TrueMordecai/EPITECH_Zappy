@@ -20,7 +20,7 @@ int get_shortest(int pos1, int pos2, int max)
 
 int get_base_x(orientation_t dir, int x)
 {
-    if (x > 0)
+    if (x > 0) {
         if (dir == SOUTH)
             return 1;
         if (dir == NORTH)
@@ -29,7 +29,7 @@ int get_base_x(orientation_t dir, int x)
             return 3;
         if (dir == WEST)
             return 7;
-    else
+    } else {
         if (dir == SOUTH)
             return 5;
         if (dir == NORTH)
@@ -38,12 +38,13 @@ int get_base_x(orientation_t dir, int x)
             return 7;
         if (dir == WEST)
             return 3;
+    }
     return 0;
 }
 
 int get_base_y(orientation_t dir, int y)
 {
-    if (y > 0)
+    if (y > 0) {
         if (dir == EAST)
             return 1;
         if (dir == WEST)
@@ -52,7 +53,7 @@ int get_base_y(orientation_t dir, int y)
             return 3;
         if (dir == SOUTH)
             return 7;
-    else
+    } else {
         if (dir == EAST)
             return 5;
         if (dir == WEST)
@@ -61,6 +62,7 @@ int get_base_y(orientation_t dir, int y)
             return 7;
         if (dir == SOUTH)
             return 3;
+    }
     return 0;
 }
 

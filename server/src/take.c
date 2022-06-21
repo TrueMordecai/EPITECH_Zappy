@@ -9,12 +9,12 @@
 
 int pickup_aux(my_server_t *serv, my_client_t *client, char *cmd, int x)
 {
-    if (!strcmp(cmd[1], "phiras")) {
+    if (!strcmp(cmd, "phiras")) {
         client->inventory.phiras += serv->map[client->y][client->x].phiras;
         x = serv->map[client->y][client->x].phiras;
         serv->map[client->y][client->x].phiras = 0;
     }
-    if (!strcmp(cmd[1], "thystame")) {
+    if (!strcmp(cmd, "thystame")) {
         client->inventory.thystame += serv->map[client->y][client->x].thystame;
         x = serv->map[client->y][client->x].thystame;
         serv->map[client->y][client->x].thystame = 0;
@@ -24,17 +24,17 @@ int pickup_aux(my_server_t *serv, my_client_t *client, char *cmd, int x)
 
 int pickup(my_server_t *serv, my_client_t *client, char *cmd, int x)
 {
-    if (!strcmp(cmd[1], "deraumere")) {
+    if (!strcmp(cmd, "deraumere")) {
         client->inventory.deraumere += serv->map[client->y][client->x].deraumere;
         x = serv->map[client->y][client->x].deraumere;
         serv->map[client->y][client->x].deraumere = 0;
     }
-    if (!strcmp(cmd[1], "sibur")) {
+    if (!strcmp(cmd, "sibur")) {
         client->inventory.sibur += serv->map[client->y][client->x].sibur;
         x = serv->map[client->y][client->x].sibur;
         serv->map[client->y][client->x].sibur = 0;
     }
-    if (!strcmp(cmd[1], "mendiane")) {
+    if (!strcmp(cmd, "mendiane")) {
         client->inventory.mendiane += serv->map[client->y][client->x].mendiane;
         x = serv->map[client->y][client->x].mendiane;
         serv->map[client->y][client->x].mendiane = 0;
@@ -59,7 +59,7 @@ void take(my_server_t *serv, int fd)
         x = serv->map[client->y][client->x].linemate;
         serv->map[client->y][client->x].linemate = 0;
     }
-    x = pickup(serv, client, cmd, x);
+    x = pickup(serv, client, cmd[1], x);
     if (x > 0)
         dprintf(fd, "ok\n");
     else
