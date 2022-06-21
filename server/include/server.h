@@ -161,7 +161,7 @@ void look(my_server_t *serv, int fd);
 void inventory(my_server_t *serv, int fd);
 
 // inventory_to_string.c: converts inventory into printable string for look
-void inventory_to_string(inv_t *inv, int fd);
+char *inventory_to_string(inv_t *inv);
 
 // Return a client from its fd
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);

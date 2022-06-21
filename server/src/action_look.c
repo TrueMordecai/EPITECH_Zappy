@@ -32,15 +32,21 @@ inv_t *get_next_tile(my_server_t *s, my_client_t *c, int x, int y)
 void look(my_server_t *serv, int fd)
 {
     my_client_t *cli = get_client_from_fd(serv, fd);
+    char buff[2048];
+    char *msg = buff;
+    char *tmp;
     inv_t *tile;
 
-    dprintf(fd, "[");
+    strcpy(msg, "[");
     for (uint n = 0; n <= cli->level; n++) {
         for (uint y = 0; y < (2 * n) + 1; y++) {
             tile = get_next_tile(serv, cli, y - n, n);
-            inventory_to_string(tile, fd);
-            (y < (2 * n) || n + 1 <= cli->level) ? dprintf(fd, ",") : (0);
+            tmp = inventory_to_string(tile);
+            strcat(msg, tmp);
+            (y < (2 * n) || n + 1 <= cli->level) ? (strcat(msg, ",")) : (1);
+            free(tmp);
         }
     }
-    dprintf(fd, "]\n");
+    strcat(msg, "]\n");
+    dprintf(cli->fd, "%s", buff);
 }

@@ -39,70 +39,74 @@ int count_total_items(inv_t *inv)
     return n;
 }
 
-void add_other_item(inv_t *inv, int fd)
+void add_other_item(char *str, inv_t *inv)
 {
     if (inv->sibur > 0) {
-        dprintf(fd, "sibur");
+        strcat(str, "sibur");
         inv->sibur--;
         return;
     }
     if (inv->mendiane > 0) {
-        dprintf(fd, "mendiane");
+        strcat(str, "mendiane");
         inv->mendiane--;
         return;
     }
     if (inv->phiras > 0) {
-        dprintf(fd, "phiras");
+        strcat(str, "phiras");
         inv->phiras--;
         return;
     }
     if (inv->thystame > 0) {
-        dprintf(fd, "thystame");
+        strcat(str, "thystame");
         inv->thystame--;
         return;
     }
 }
 
-void add_item_to_string(inv_t *inv, int fd)
+void add_item_to_string(char *str, inv_t *inv)
 {
     if (inv->player > 0) {
-        dprintf(fd, "player");
+        strcat(str, "player");
         inv->player--;
         return;
     }
     if (inv->food > 0) {
-        dprintf(fd, "food");
+        strcat(str, "food");
         inv->food--;
         return;
     }
     if (inv->deraumere > 0) {
-        dprintf(fd, "deraumere");
+        strcat(str, "deraumere");
         inv->deraumere--;
         return;
     }
     if (inv->linemate > 0) {
-        dprintf(fd, "linemate");
+        strcat(str, "linemate");
         inv->linemate--;
         return;
     }
-    return add_other_item(inv, fd);
+    return add_other_item(str, inv);
 }
 
-void inventory_to_string(inv_t *inv, int fd)
+char *inventory_to_string(inv_t *inv)
 {
+    char buff[1024];
+    char *tmp = buff;
     int n;
     inv_t *tmp_inv;
-    if (!inv)
-        return;
 
+    if (!inv)
+        return strdup("");
     n = count_total_items(inv);
-    tmp_inv = inv_dup(inv);
     if (n == 0)
-        return;
+        return strdup("");
+    tmp[0] = 0;
+    tmp_inv = inv_dup(inv);
     for (int i = 0; i < n; i++) {
-        add_item_to_string(tmp_inv, fd);
+        add_item_to_string(tmp, tmp_inv);
         if (i + 1 < n)
-            dprintf(fd, " ");
+            strcat(tmp, " ");
     }
     free(tmp_inv);
+    return strdup(buff);
 }
