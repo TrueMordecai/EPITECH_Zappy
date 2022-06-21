@@ -39,72 +39,70 @@ int count_total_items(inv_t *inv)
     return n;
 }
 
-void add_other_item(char *str, inv_t *inv)
+void add_other_item(inv_t *inv, int fd)
 {
     if (inv->sibur > 0) {
-        str += sprintf(str, "sibur");
+        dprintf(fd, "sibur");
         inv->sibur--;
         return;
     }
     if (inv->mendiane > 0) {
-        str += sprintf(str, "mendiane");
+        dprintf(fd, "mendiane");
         inv->mendiane--;
         return;
     }
     if (inv->phiras > 0) {
-        str += sprintf(str, "phiras");
+        dprintf(fd, "phiras");
         inv->phiras--;
         return;
     }
     if (inv->thystame > 0) {
-        str += sprintf(str, "thystame");
+        dprintf(fd, "thystame");
         inv->thystame--;
         return;
     }
 }
 
-void add_item_to_string(char *str, inv_t *inv)
+void add_item_to_string(inv_t *inv, int fd)
 {
     if (inv->player > 0) {
-        str += sprintf(str, "player");
+        dprintf(fd, "player");
         inv->player--;
         return;
     }
     if (inv->food > 0) {
-        str += sprintf(str, "food");
+        dprintf(fd, "food");
         inv->food--;
         return;
     }
     if (inv->deraumere > 0) {
-        str += sprintf(str, "deraumere");
+        dprintf(fd, "deraumere");
         inv->deraumere--;
         return;
     }
     if (inv->linemate > 0) {
-        str += sprintf(str, "linemate");
+        dprintf(fd, "linemate");
         inv->linemate--;
         return;
     }
-    return add_other_item(str, inv);
+    return add_other_item(inv, fd);
 }
 
-char *inventory_to_string(inv_t *inv)
+void inventory_to_string(inv_t *inv, int fd)
 {
-    char buff[1024];
-    char *tmp = buff;
-
+    int n;
+    inv_t *tmp_inv;
     if (!inv)
-        return strdup("");
+        return;
 
-    int n = count_total_items(inv);
-    inv_t *tmp_inv = inv_dup(inv);
-
+    n = count_total_items(inv);
+    tmp_inv = inv_dup(inv);
     if (n == 0)
-        return strdup("");
+        return;
     for (int i = 0; i < n; i++) {
-        add_item_to_string(tmp, tmp_inv);
+        add_item_to_string(tmp_inv, fd);
         if (i + 1 < n)
-            tmp += sprintf(tmp, " ");
+            dprintf(fd, " ");
     }
-    return strdup(buff);
+    free(tmp_inv);
 }
