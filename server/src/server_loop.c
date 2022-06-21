@@ -68,6 +68,7 @@ void check_tick(my_server_t *serv, clock_t *time)
     current = clock() - *time;
     if ((((float)current) / CLOCKS_PER_SEC) >= 1 / (float)serv->freq) {
         print_all_clients(serv, "Once every tick");
+        update_player_position(serv);
         update_clients(serv);
         if (!serv->map_cooldown) {
             update_map(serv);

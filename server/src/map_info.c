@@ -56,5 +56,6 @@ void update_player_position(my_server_t *serv)
         for (uint j = 0; j < serv->width; j++)
             serv->map[i][j].player = 0;
     for (; tmp; tmp = tmp->next)
-        serv->map[tmp->y][tmp->x].player++;
+        if (tmp->team_name)
+            serv->map[tmp->y][tmp->x].player++;
 }

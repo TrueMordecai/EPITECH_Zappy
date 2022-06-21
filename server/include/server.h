@@ -40,7 +40,7 @@ name2 ... -c clientsNb\n\
 #define MENDIANE 10
 #define PHIRAS 8
 #define THYSTAME 5
-#define COMMAND_LIST_SIZE 7
+#define COMMAND_LIST_SIZE 9
 
 typedef enum orientation {
     NORTH = 0,
@@ -125,8 +125,7 @@ typedef struct my_client {
 } my_client_t;
 
 int good_args(int argc, char **argv);
-inv_t generate_inventory(void);
-inv_t delete_inventory(inv_t);
+inv_t *generate_inventory(void);
 void server_loop(my_server_t *serv);
 void set_arguments(my_server_t *serv, char **argv, int argc);
 char *get_client_line(int fd);
@@ -157,6 +156,11 @@ void broadcast(my_server_t *serv, int fd);
 void fork_egg(my_server_t *serv, int fd);
 void take(my_server_t *serv, int fd);
 void set(my_server_t *serv, int fd);
+void look(my_server_t *serv, int fd);
+void inventory(my_server_t *serv, int fd);
+
+// inventory_to_string.c: converts inventory into printable string for look
+char *inventory_to_string(inv_t *inv);
 
 // Return a client from its fd
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);
