@@ -40,7 +40,7 @@ name2 ... -c clientsNb\n\
 #define MENDIANE 10
 #define PHIRAS 8
 #define THYSTAME 5
-#define COMMAND_LIST_SIZE 5
+#define COMMAND_LIST_SIZE 7
 
 typedef enum orientation {
     NORTH = 0,
@@ -155,6 +155,8 @@ void left(my_server_t *serv, int fd);
 void forward(my_server_t *serv, int fd);
 void broadcast(my_server_t *serv, int fd);
 void fork_egg(my_server_t *serv, int fd);
+void take(my_server_t *serv, int fd);
+void set(my_server_t *serv, int fd);
 
 // Return a client from its fd
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);

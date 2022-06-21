@@ -31,6 +31,8 @@ bool check_arg(int argc, char **argv, int i)
             return false;
     if (atoi(argv[i + 1]) < 1)
         return false;
+    if (!strcmp("-c", argv[i]) && atoi(argv[i + 1]) < 6)
+        return false;
     return true;
 }
 

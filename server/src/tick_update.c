@@ -12,7 +12,9 @@ const cmd_list_t cmd_list[] = {
     {"Right", 7, &right},
     {"Left", 7, &left},
     {"Broadcast", 7, &broadcast},
-    {"Fork", 42, &fork_egg}
+    {"Fork", 42, &fork_egg},
+    {"Set", 7, &set},
+    {"Take", 7, &take}
 };
 
 fct_ptr get_cmd(char *str)
