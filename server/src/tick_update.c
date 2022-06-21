@@ -11,6 +11,8 @@ const cmd_list_t cmd_list[] = {
     {"Forward", 7, &forward},
     {"Right", 7, &right},
     {"Left", 7, &left},
+    {"Look", 7, &look},
+    {"Inventory", 1, &inventory},
     {"Broadcast", 7, &broadcast},
     {"Fork", 42, &fork_egg},
     {"Set", 7, &set},
@@ -42,6 +44,7 @@ void advance_message_queue(my_client_t *client)
     for (int i = 1; i < MAX_MSG_QUEUE; i++) {
         client->message_queue[i - 1] = client->message_queue[i];
     }
+    client->message_queue[MAX_MSG_QUEUE - 1] = NULL;
     if (str)
         free(str);
     client->message_queue_size--;

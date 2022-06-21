@@ -92,13 +92,13 @@ char *inventory_to_string(inv_t *inv)
 {
     char buff[1024];
     char *tmp = buff;
-    
+
     if (!inv)
         return strdup("");
 
     int n = count_total_items(inv);
     inv_t *tmp_inv = inv_dup(inv);
-    
+
     if (n == 0)
         return strdup("");
     for (int i = 0; i < n; i++) {

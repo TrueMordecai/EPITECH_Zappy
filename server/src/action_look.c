@@ -13,7 +13,7 @@ inv_t *get_tile_pos(my_server_t *serv, int x, int y)
         x += serv->width;
     if (y < 0)
         y += serv->height;
-    return serv->map[y % serv->height][x % serv->width];
+    return &serv->map[y % serv->height][x % serv->width];
 }
 
 inv_t *get_next_tile(my_server_t *s, my_client_t *c, int x, int y)

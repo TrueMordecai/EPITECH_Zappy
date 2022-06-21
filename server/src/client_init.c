@@ -73,6 +73,15 @@ void decon_client(my_client_t *client)
     free(client);
 }
 
+char **init_message_queue(void)
+{
+    char **ret = malloc(sizeof(char*) * 11);
+
+    for (uint i = 0; i < 11; i++)
+        ret[i] = NULL;
+    return ret;
+}
+
 my_client_t *make_client(int fd, int x, int y)
 {
     my_client_t *client = malloc(sizeof(my_client_t));
@@ -87,7 +96,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->inventory = generate_inventory();
     client->food = 1260;
     client->cooldown = 0;
-    client->message_queue = malloc(sizeof(char*) * 11);
+    client->message_queue = init_message_queue();
     client->message_queue_size = 0;
     client->next = NULL;
     client->dead = false;
