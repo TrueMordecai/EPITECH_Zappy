@@ -157,6 +157,10 @@ void broadcast(my_server_t *serv, int fd);
 void fork_egg(my_server_t *serv, int fd);
 void take(my_server_t *serv, int fd);
 void set(my_server_t *serv, int fd);
+void look(my_server_t *serv, int fd);
+
+// inventory_to_string.c: converts inventory into printable string for look
+char *inventory_to_string(inv_t *inv);
 
 // Return a client from its fd
 my_client_t *get_client_from_fd(my_server_t *serv, int fd);
