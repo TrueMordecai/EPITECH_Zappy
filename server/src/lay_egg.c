@@ -13,7 +13,7 @@ void fork_egg(my_server_t *serv, int fd)
     my_client_t *egg;
     int team_id = get_team_id(serv, dad->team_name);
 
-    if (serv->team_sizes[team_id] >= (int)serv->clients_nb) {
+    if (serv->team_sizes[team_id] <= 0) {
         dprintf(fd, "ko\n");
         return;
     }

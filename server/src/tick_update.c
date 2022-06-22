@@ -16,7 +16,8 @@ const cmd_list_t cmd_list[] = {
     {"Broadcast", 7, &broadcast},
     {"Fork", 42, &fork_egg},
     {"Set", 7, &set},
-    {"Take", 7, &take}
+    {"Take", 7, &take},
+    {"Incantation", 300, &incantation}
 };
 
 fct_ptr get_cmd(char *str)
@@ -50,7 +51,7 @@ void advance_message_queue(my_client_t *client)
     client->message_queue_size--;
 }
 
-void get_next_cmd(my_client_t *client)
+void get_next_cmd(my_server_t *serv, my_client_t *client)
 {
     fct_ptr tmp = NULL;
 
@@ -58,6 +59,9 @@ void get_next_cmd(my_client_t *client)
     if (client->message_queue_size == 0)
         return;
     while (client->message_queue[0]) {
+        if (get_cmd(client->message_queue[0]) != incantation &&
+            !check_inc(serv, client->fd))
+            advance_message_queue(client);
         if (get_cmd(client->message_queue[0]) != NULL) {
             tmp = get_cmd(client->message_queue[0]);
             client->cooldown = 1 + get_cd(client->message_queue[0]);
@@ -81,7 +85,7 @@ void update_client(my_server_t *serv, my_client_t *client)
     if (client->cooldown == 0) {
         if (client->func)
             client->func(serv, client->fd);
-        get_next_cmd(client);
+        get_next_cmd(serv, client);
     }
     if (client->cooldown > 0)
         client->cooldown--;
