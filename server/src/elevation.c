@@ -56,7 +56,6 @@ int *fds)
 int check_inc(my_server_t *serv, int fd)
 {
     int needed = 0;
-    int actual = 0;
     int *fds;
     my_client_t *client = get_client_from_fd(serv, fd);
 
@@ -79,7 +78,6 @@ int check_inc(my_server_t *serv, int fd)
 void incantation(my_server_t *serv, int fd)
 {
     int needed = 0;
-    int actual = 0;
     int *fds;
     my_client_t *client = get_client_from_fd(serv, fd);
 
@@ -92,11 +90,11 @@ void incantation(my_server_t *serv, int fd)
     && check_other_clients(serv->clients, client, needed, fds) < needed) {
         free(fds);
         dprintf(fd, "ko\n");
-        return 0;
+        return;
     }
     for (int i = 0; i < needed + 1; i++) {
         check_ritual_level(get_client_from_fd(serv, fds[i]));
         dprintf(fds[i], "Current level: %d\n", client->level);
     }
-    return 1;
+    return;
 }
