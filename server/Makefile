@@ -20,7 +20,9 @@ SRC = 	src/main.c						\
 		src/movement.c					\
 		src/set_client_team.c			\
 		src/toolbox.c					\
-		src/gui_protocole/new_player.c	\
+		src/gui_protocole/player.c		\
+		src/gui_protocole/egg.c			\
+		src/gui_protocole/ressource.c	\
 		src/connect_gui.c				\
 		src/take.c						\
 		src/set.c						\
