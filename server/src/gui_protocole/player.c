@@ -45,5 +45,6 @@ void gui_new_player(my_server_t *serv, my_client_t *client)
         return;
     if (serv->gui_fd == -1)
         return;
-    dprintf(serv->gui_fd, "player new %i %i %i %s %s", client->direction, client->x, client->y, client->team_name, client->name);
+    dprintf(serv->gui_fd, "player new %i %i %i %s %s"
+    , client->direction, client->x, client->y, client->team_name, client->name);
 }

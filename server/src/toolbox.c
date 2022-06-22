@@ -35,6 +35,17 @@ int count_client(my_server_t *serv)
     return res;
 }
 
+void print_connected_client(my_client_t *cur, int i)
+{
+    printf("%i : Client with fd %i, named %s is connected\n"
+    , i, cur->fd, cur->name);
+    if (cur->message_queue_size != 0) {
+        for (uint in = 0; in != cur->message_queue_size; in++) {
+            printf("\t - %s\n", cur->message_queue[in]);
+        }
+    }
+}
+
 void print_all_clients(my_server_t *serv, char *message)
 {
     my_client_t *cur = serv->clients;
@@ -50,12 +61,7 @@ void print_all_clients(my_server_t *serv, char *message)
         return;
     }
     for (int i = 0; cur; i++) {
-        printf("%i : Client with fd %i, named %s is connected\n", i, cur->fd, cur->name);
-        if (cur->message_queue_size != 0) {
-            for (uint in = 0; in != cur->message_queue_size; in++) {
-                printf("\t - %s\n", cur->message_queue[in]);
-            }
-        }
+        print_connected_client(cur, i);
         cur = cur->next;
     }
 }
