@@ -67,8 +67,7 @@ void add_item_to_string(char *str, inv_t *inv)
 {
     if (inv->player > 0) {
         strcat(str, "player");
-        inv->player--;
-        return;
+        return inv->player--;
     }
     if (inv->food > 0) {
         strcat(str, "food");

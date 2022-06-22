@@ -68,7 +68,7 @@ bool connect_gui(my_server_t *serv, char **arr, int fd)
         return false;
     if (!cur)
         return false;
-    while(cur) {
+    while (cur) {
         if (cur->fd == fd) {
             //puts("Gui fd is well set");
             serv->gui_fd = fd;

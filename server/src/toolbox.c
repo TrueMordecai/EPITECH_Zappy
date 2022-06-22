@@ -37,8 +37,6 @@ int count_client(my_server_t *serv)
 
 void print_all_clients(my_server_t *serv, char *message)
 {
-    int i = 0;
-
     my_client_t *cur = serv->clients;
 
     printf("\n#######################\n");
@@ -51,15 +49,14 @@ void print_all_clients(my_server_t *serv, char *message)
         printf("No Player Clients Detected\n");
         return;
     }
-    while (cur) {
-        printf ("%i : Client with fd %i, named %s is connected\n",i ,cur->fd, cur->name);
+    for (int i = 0; cur; i++) {
+        printf("%i : Client with fd %i, named %s is connected\n", i, cur->fd, cur->name);
         if (cur->message_queue_size != 0) {
             for (uint in = 0; in != cur->message_queue_size; in++) {
                 printf("\t - %s\n", cur->message_queue[in]);
             }
         }
         cur = cur->next;
-        i++;
     }
 }
 

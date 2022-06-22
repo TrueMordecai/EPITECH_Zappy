@@ -15,7 +15,7 @@ static char *const NAME[] = {"Peppa_Pig", "Bender", "Larry", "Angelica", "Jhonny
                              "???", "#UwU#", "Comte_Harebourg", "Rick", "Micron", // 5
                              "Zinedine", "SAKEEEN!!", "Dr.Doofenshmirtz", "The Rock", // 5
                              "EricCartman", "Kc_Deku", "SUPLINK", "Liza_Monet", "Captain_Morgan", // 5
-                             "Steven_Universe", "Kralamoure_Géant", "Sponge_Bob", "Tom", "Giga_Chad",  // 5
+                             "Steven_Universe", "Kralamoure_Géant", "Sponge_Bob", "Tom", "Giga_Chad", // 5
                              "Anal_Genocide", "Arko", "Mia_Khalifa", "Mireille_Matué", "Alkapote", // 5
                              "BibleBlack_Lover", "David_Assezlouche", "Daddy_Issue", "Samira_On_Cocaine", "U_W0T_M8T3", // 5
                              "Fuck_Belvet", "Simic_Lover", "La_Grosse_Jambe_De_Shrek", "Gitano", "Moulaga", // 5
