@@ -50,8 +50,8 @@ loop do
     end
     
     ## If player wait for a response of look
-    if (player.lastCommand == "Look")
-        player.updateMap("player Sibur,player,player,player")
+    if (player.lastCommand == "Look" && commands.include?("["))
+        player.updateMap(commands.tr("[]\n", ""))
         player.map.printMap()
         player.isReady = true
     end
@@ -68,6 +68,5 @@ loop do
         player.setReady()
     end
     net.sendCommand(player.getNextMove(), true)
-    
     player.update() # DON'T REMOVE !!!
 end

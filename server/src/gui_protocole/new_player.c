@@ -12,8 +12,20 @@ void gui_move_player(my_server_t *serv, my_client_t *client)
     dprintf(serv->gui_fd, "player move %s\n", client->name);
 }
 
+void gui_spawn_resource(my_server_t *serv, int res, int x, int y)
+{
+    if (serv->gui_fd == -1)
+        return;
+    printf("map spawn %i %i %i\n", res, x, y);
+    dprintf(serv->gui_fd, "map spawn %i %i %i\n", res, x, y);
+}
+
 void gui_rotate_player(my_server_t *serv, my_client_t *client, e_rotation_t r)
 {
+    if (!client)
+        return;
+    if (serv->gui_fd == -1)
+        return;
     if (r == R_LEFT)
         dprintf(serv->gui_fd, "player rotate %s L\n", client->name);
     else

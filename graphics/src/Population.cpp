@@ -74,7 +74,7 @@ void Population::parseCommand(std::vector<std::string> c)
     if (c[0] != "player")
         return;
     if (c[1] == "new") {
-        std::cout << "New Player !\n";
+        std::cout << "New Player ! Position = " << std::atoi(c[3].c_str()) << "/" << std::atoi(c[4].c_str()) << "\n";
         addPlayer(getOrientation(c[2]), {std::atoi(c[3].c_str()), std::atoi(c[4].c_str())}, c[5], c[6]);
     }
     if (c[1] == "rotate")

@@ -24,6 +24,9 @@ public:
     bool showMenu();
     void setShowMenu(bool v);
     void createMap(sf::Vector2i a);
+    void drawCellInfos(Cell c);
+    void parseMapCommand(std::vector<std::string> v);
+    bool isMapReady();
 private:
     void drawStage2(Player &p);
     void drawStage3(Player &p);
@@ -32,7 +35,9 @@ private:
     sf::RenderWindow *_window;
     mEntity *_stage2;
     mEntity *_stage3;
-    sf::RectangleShape _cell;
+    sf::RectangleShape _rect;
+    sf::Text _textInfo;
+    mEntity *_items;
     int f = 10;
     sf::Vector2i _mapSize;
     sf::Vector2f _camOffset;

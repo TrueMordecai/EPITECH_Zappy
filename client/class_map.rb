@@ -63,8 +63,8 @@ class Map
 
             print '|' # First block line
             for c in line            
-              if (c.countItemsTotal != 0) #First line cells
-                print ("#{(c.countItemsTotal.to_s + "       ")[0, 5].red}|")
+              if (c.countItemsTotal < 0) #First line cells
+                print ("#{("?       ")[0, 5].red}|")
               else
                 print ("#{(c.countItemsTotal.to_s + "       ")[0, 5].green}|")
               end
@@ -88,7 +88,7 @@ class Map
               if (c.playerNbr > 0)  
                 print ("#{(c.playerNbr.to_s + " pl        ")[0, 5]}|".blue)
               else
-                print ("#{(c.playerNbr.to_s + " pl        ")[0, 5]}|")
+                print ("#{("?pl        ")[0, 5]}|")
               end
             end
             puts
@@ -124,11 +124,25 @@ class Map
       @map[posX][posY].setContents(content)
     end
 
-    # Getter for a cell at certain coords
-    # @param x = x pos
-    # @param y = y pos
+    # Getter for a cell at certain coords, check map overflow
+    # @param posX = x pos
+    # @param posY = y pos
     # return [Cell]
-    def getCell(x, y)
-      return @map[y][x]
+    def getCell(posX, posY)
+      while (posX < 0)
+        posX = @sizeX - posX
+      end
+      while (posY < 0)
+        posY = @sizeY - posY
+      end
+      while (posX > sizeX)
+        posX -= sizeX
+      end
+      while (posY > sizeY)
+        posY -= sizeY
+      end
+      return @map[posY][posX]
     end
+  
+    def get
   end

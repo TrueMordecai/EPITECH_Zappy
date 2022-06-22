@@ -1,5 +1,5 @@
 #include "mEntity.hpp"
-#include <iostream> /// REOMVE !!
+#include <iostream> /// REMOVE !!
 
 mEntityAnimation::mEntityAnimation(std::string name, int nbFrame, int64_t milli, sf::IntRect rect)
 {
@@ -13,8 +13,6 @@ std::string mEntityAnimation::name() {return (_name);}
 sf::IntRect mEntityAnimation::rect() {return (_rect);}
 int mEntityAnimation::nbFrame() {return (_nbFrame);}
 int64_t mEntityAnimation::milliseconds() {return (_milliseconds);}
-
-
 
 mEntity::mEntity(sf::String path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir/* = LEFT_TO_RIGHT*/, std::string namee /* = "DEFAULT"*/)
 {

@@ -17,7 +17,7 @@ class Player
 
     def setPosition(pos)
         @position = [pos[0], pos[1]];
-        @orientation = pos[2]
+        @orientation = pos[2] + 1
         puts ("My position is set");
         @isReady = true;
     end
@@ -27,6 +27,53 @@ class Player
         puts ("Map is generated in my mind");
     end
 
+    # Functiuns that count the number of unexplored cell that can be check by a player Look
+    # return [Int] The count
+    def countUnknownCell()
+        x = 0
+        y = 0
+        c = [0, 4, 9, 16, 25, 36, 49, 64, 81] ## Number of cell to check, stage 0 == 0 cells
+        res = 0
+
+        for ite in 0..(c[@stage] -1)
+            if (@map.getCell(x + @position[0], y + @position[1]).countItemsTotal() == -1)
+                res += 1
+            end
+            if (@orientation == 1) # Orientation is north
+                if (x * -1 == y) 
+                    y -= 1
+                    x = y
+                else
+                    x += 1
+                end
+            end
+            if (@orientation == 2) # Orientation is east
+                if (x == y)
+                    x += 1
+                    y = -(x)
+                else 
+                    y += 1
+                end
+            end
+            if (@orientation == 3) # Orientation is south
+                if (x == y * -1) 
+                    y += 1
+                    x = y
+                else
+                    x -= 1
+                end
+            end
+            if (@orientation == 4) # Orientation is weast
+                if (x == y) 
+                    x -= 1
+                    y = -(x)
+                else
+                    y -= 1
+                end
+            end
+        end
+        return res
+    end
 
     # Functiuns that tells the ether left or right to go to the goal orientation, reminder 1 == north, 2 == east, 3 == south and 4 == west
     # @param [String] must be "north", "east", "south", "weast"
@@ -84,7 +131,6 @@ class Player
             return ("Arrived")
         end
         if (x > @position[0])
-            puts ("fast rotate east")
             bfr = fastRotate("east")
             if (bfr == "Aligned")
                 return ("Forward")
@@ -92,7 +138,6 @@ class Player
             return (bfr)
         end
         if (x < @position[0])
-            puts ("fast rotate west")
             bfr = fastRotate("west")
             if (bfr == "Aligned")
                 return ("Forward")
@@ -100,7 +145,6 @@ class Player
             return (bfr)
         end
         if (y > @position[1])
-            puts ("fast rotate south")
             bfr = fastRotate("south")
             if (bfr == "Aligned")
                 return ("Forward")
@@ -108,7 +152,6 @@ class Player
             return (bfr)
         end
         if (y < @position[1])
-            puts ("fast rotate north")
             bfr = fastRotate("north")
             if (bfr == "Aligned")
                 return ("Forward")
@@ -119,12 +162,14 @@ class Player
 
     def computeIa()
         bfr = ""
-        puts ("COMPUTE AI : IM IN #{@position}")
+        ca = [0, 4, 9, 16, 25, 36, 49, 64, 81]
+        puts ("COMPUTE AI : IM IN #{@position} LOOKING #{@orientation}")
         if (@GFood.size != 2)
             print ("I WANT TO DIE, NOT CREATED\n")
         end
-        if (@GFood[0] == -999)
-            print ("I WANT TO DIE, NO FOOD FOUND\n")
+        puts ("#{countUnknownCell} unknown cells in front of me out of #{ca[stage]}")
+        if (countUnknownCell() > ca[stage] - countUnknownCell) # If there is more unknown cell than know one, then Look arround !
+            return ("Look")
         end
         if (@life <= 3000) # Life threshold
             bfr = fastWay(@GFood[0], @GFood[1])
@@ -153,17 +198,14 @@ class Player
     def updateMap(command)
         x = 0
         y = 0
-        counter = 0
         for cells_content in command.split(",")
-            puts ("add #{cells_content} to #{x}, #{y}")
+            puts ("add #{cells_content} to #{x + @position[0]}, #{y + @position[1]}")
             @map.update_cell(y + @position[1], x + @position[0], cells_content)
             #####################
             if (@orientation == 1) # Orientation is north
                 if (x * -1 == y) 
-                    puts ("Breaking : #{x}, #{y}")
                     y -= 1
                     x = y
-                    puts ("After : #{x}, #{y}")
                 else
                     x += 1
                 end
@@ -173,24 +215,27 @@ class Player
                 if (x == y)
                     x += 1
                     y = -(x)
+                else 
+                    y += 1
                 end
-                y += 1
             end
             #####################
             if (@orientation == 3) # Orientation is south
-                if (-x == y) 
+                if (x == y * -1) 
                     y += 1
                     x = y
+                else
+                    x -= 1
                 end
-                x -= 1
             end
             #####################
             if (@orientation == 4) # Orientation is weast
                 if (x == y) 
                     x -= 1
-                    y = -(y)
+                    y = -(x)
+                else
+                    y -= 1
                 end
-                y -= 1
             end
         end 
     end
@@ -207,7 +252,7 @@ class Player
         while ite_posY != @map.sizeY 
             while ite_posX != @map.sizeY
                 if (@map.getCell(ite_posX, ite_posY).Food >= 1)
-                    if (abs(@position[0] - ite_posX) + abs(@position[1] - ite_posY) < abs(@position[0] - save[0]) + abs(@position[1] - save[1]))
+                    if ((@position[0] - ite_posX).abs + (@position[1] - ite_posY).abs < (@position[0] - save[0]).abs + (@position[1] - save[1]).abs)
                         save = [ite_posX, ite_posY]
                     end
                 end
@@ -216,14 +261,13 @@ class Player
             ite_posX = 0
             ite_posY += 1
         end
-        # @GFood = save UNCOMMENT
-        @GFood = [5, 5]
+        @GFood = save
     end
 
     # Functiuns that absolutely need to be call at the end of the main loop, please i beg you, call me baybe. Update a lot of this
     # return [Void]
     def update()
-        updateGFood()
+       updateGFood()
     end
     
 

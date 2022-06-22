@@ -9,7 +9,7 @@
 
 inv_t *generate_inventory(void)
 {
-    inv_t new = malloc(sizeof(inv_t));
+    inv_t *new = malloc(sizeof(inv_t));
 
     if (!new)
         return NULL;

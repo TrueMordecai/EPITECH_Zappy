@@ -10,27 +10,27 @@
 void ritual_proceed(my_client_t *client, inv_t ritual)
 {
     client->level++;
-    client->inventory.linemate -= ritual.linemate;
-    client->inventory.deraumere -= ritual.deraumere;
-    client->inventory.sibur -= ritual.sibur;
-    client->inventory.mendiane -= ritual.mendiane;
-    client->inventory.phiras -= ritual.phiras;
-    client->inventory.thystame -= ritual.thystame;
+    client->inventory->linemate -= ritual.linemate;
+    client->inventory->deraumere -= ritual.deraumere;
+    client->inventory->sibur -= ritual.sibur;
+    client->inventory->mendiane -= ritual.mendiane;
+    client->inventory->phiras -= ritual.phiras;
+    client->inventory->thystame -= ritual.thystame;
 }
 
 void check_rit_inv(my_client_t *client, inv_t ritual)
 {
-    if (client->inventory.linemate < ritual.linemate)
+    if (client->inventory->linemate < ritual.linemate)
         return;
-    if (client->inventory.deraumere < ritual.deraumere)
+    if (client->inventory->deraumere < ritual.deraumere)
         return;
-    if (client->inventory.sibur < ritual.sibur)
+    if (client->inventory->sibur < ritual.sibur)
         return;
-    if (client->inventory.mendiane < ritual.mendiane)
+    if (client->inventory->mendiane < ritual.mendiane)
         return;
-    if (client->inventory.phiras < ritual.phiras)
+    if (client->inventory->phiras < ritual.phiras)
         return;
-    if (client->inventory.thystame < ritual.thystame)
+    if (client->inventory->thystame < ritual.thystame)
         return;
     ritual_proceed(client, ritual);
 }

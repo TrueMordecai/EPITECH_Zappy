@@ -20,7 +20,7 @@ void make_map(my_server_t *serv)
     for (uint i = 0; i < serv->height; i++) {
         serv->map[i] = malloc(sizeof(inv_t) * serv->width);
         for (uint j = 0; j < serv->width; j++)
-            serv->map[i][j] = generate_inventory();
+            serv->map[i][j] = *generate_inventory();
     }
     update_map(serv);
     serv->map_cooldown = 16;

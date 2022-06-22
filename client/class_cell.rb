@@ -18,14 +18,14 @@ class Cell
     def initialize(x, y)
         @posX = x
         @posY = y
-        @Food = 0
-        @Linemate = 0
-        @Deraumere = 0
-        @Sibur = 0
-        @Mendiane = 0
-        @Phiras = 0
-        @Thysame = 0
-        @playerNbr = 0
+        @Food = -1
+        @Linemate = -1
+        @Deraumere = -1
+        @Sibur = -1
+        @Mendiane = -1
+        @Phiras = -1
+        @Thysame = -1
+        @playerNbr = -1
     end
 
     # Replace the food of the cell
@@ -42,13 +42,18 @@ class Cell
         @playerNbr = playerNbr
     end
 
-    # Count the unity of food find in this cell
+    # Count the unity of food find in this cell, if unitialize return -1
     # return [Int]
     def countItemsTotal()
-        return (@Food + @Linemate + @Deraumere + @Sibur + @Mendiane + @Phiras + @Thysame)
+        #puts ("I count #{@Food + @Linemate + @Deraumere + @Sibur + @Mendiane + @Phiras + @Thysame}, (food #{@Food})")
+        if (@Food == -1)
+            return -1
+        end
+        return @Food + @Linemate + @Deraumere + @Sibur + @Mendiane + @Phiras + @Thysame
     end
 
     def setContents(content)
+        puts ("Setting #{content} for #{@position}")
         @Food = 0
         @Linemate = 0
         @Deraumere = 0
@@ -58,25 +63,25 @@ class Cell
         @Thysame = 0
         @playerNbr = 0
         for c in content.split(" ")
-            if (c == "Food")
+            if (c == "food")
                 @Food += 1
             end
-            if (c == "Linemate")
+            if (c == "linemate")
                 @Linemate += 1
             end
-            if (c == "Deraumere")
+            if (c == "deraumere")
                 @Deraumere += 1
             end
-            if (c == "Sibur")
+            if (c == "sibur")
                 @Sibur += 1
             end
-            if (c == "Mendiane")
+            if (c == "mendiane")
                 @Mendiane += 1
             end
-            if (c == "Phiras")
+            if (c == "phiras")
                 @Phiras += 1
             end
-            if (c == "Thysame")
+            if (c == "thystame")
                 @Thysame += 1
             end
             if (c == "player")

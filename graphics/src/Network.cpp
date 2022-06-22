@@ -9,15 +9,11 @@ Network::Network()
     _text.setOutlineThickness(1);
     _text.setOutlineColor(sf::Color::Black);
     _text.setPosition(50, 900);
-    this->_history.push_back("player new S 0 0 a a0");
-    this->_history.push_back("player new S 1 0 a a1");
-    this->_history.push_back("player new S 0 1 b b0");
-    this->_history.push_back("player new S 1 1 b b1");
     
-    this->_preload.push_back("player new S 0 5 LesRats Hitrat");
-    this->_preload.push_back("player new S 1 5 LesRats Remy");
-    this->_preload.push_back("player new S 2 5 LesRats Gitan");
-    this->_preload.push_back("player new S 3 5 LesRats JeanDuratdin");
+    //this->_preload.push_back("player new S 0 5 LesRats Hitrat");
+    //this->_preload.push_back("player new S 1 5 LesRats Remy");
+    //this->_preload.push_back("player new S 2 5 LesRats Gitan");
+    //this->_preload.push_back("player new S 3 5 LesRats JeanDuratdin");
     _socket.setBlocking(false);
     _text.setString(_buffer);
 }
@@ -118,12 +114,12 @@ static void DEBUG_print_vvs(std::vector<std::vector<std::string>> vs)
 std::vector<std::vector<std::string>> Network::serverCommand()
 {
     std::vector<std::vector<std::string>> s;
-    char data[100];
-    std::memset(data, 0, 100);
+    char data[1000];
+    std::memset(data, 0, 1000);
     std::vector<std::string> bfr;
     size_t received;
     
-    if (_socket.receive(data, 100, received) != sf::Socket::NotReady) {
+    if (_socket.receive(data, 1000, received) != sf::Socket::NotReady) {
         bfr = split(data, "\n");
         for (auto v : bfr) 
             s.push_back(split(v));

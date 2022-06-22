@@ -49,34 +49,45 @@ int main(int ac, char **av)
                     break;
             }
         }
-        if (m.tryConnect()) { // When player released the enter key on "try connection"
-            std::cout << "Trying to connect" << "\n";
+        if (m.tryConnect()) // When player released the enter key on "try connection"
             n.connect(m.getIps(), std::atoi(m.getPort().c_str()));
-        }
-        if (n.getMapSize().x != 0)
+        
+        if (n.getMapSize().x != 0) {
             m.setConnection(true);            
-        else
+        } else {
             m.setConnection(false);
+        }
+        
+        if (n.getMapSize().x != 0 and !d.isMapReady()) {
+            d.createMap(n.getMapSize());
+        }
+        
         if (d.showMenu() and m.getPlay()) { // When map size is received in the network 
-            if (n.getMapSize().x != 0)
-                d.createMap(n.getMapSize());
-            else
+            if (n.getMapSize().x == 0)
                 d.createMap({20, 20});
             d.setShowMenu(false);
         }
+        
+        pop.parseCommand(bfr);
+        d.parseMapCommand(bfr);
+        
         std::vector<std::vector<std::string>> servbfr = n.serverCommand();
         if (servbfr.size() >= 1) {
-            for (auto c : servbfr)
+            for (auto c : servbfr) {
                 pop.parseCommand(c);
+                d.parseMapCommand(c);
+
+            }
         }
         if (d.showMenu()) {
             m.drawMenu(d.getWindow());
         } else {
-            d.moveCamera(pop.getPlayerById(h.getIdToDraw()));
-            d.drawGrid();
-            d.drawAllPlayer(pop.getPlayers());
-            h.drawHud(d.getWindow(), pop.getPlayerByTeammateId(h.getIdToDraw()));
-            d.getWindow().draw(n.getText());
+            d.moveCamera(pop.getPlayerById(h.getIdToDraw())); // Move camera
+            d.drawGrid(); // All cells
+            d.drawAllPlayer(pop.getPlayers()); // Players on the map
+            h.drawHud(d.getWindow(), pop.getPlayerByTeammateId(h.getIdToDraw())); // Player info
+            d.drawCellInfos(d.getCellFromClick()); // Info cell
+            d.getWindow().draw(n.getText()); // Command line
         }
         m.drawCornerNetwork(d.getWindow());
         d.display();

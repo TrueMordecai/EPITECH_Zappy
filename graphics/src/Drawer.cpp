@@ -4,10 +4,21 @@ Drawer::Drawer(sf::Vector2i msz)
 {
     _window = new sf::RenderWindow(sf::VideoMode(1920, 1024), "MyWindow");
     _window->setFramerateLimit(60);
-    _cell.setSize(sf::Vector2f(128, 128));
-    _cell.setFillColor(sf::Color::Cyan);
-    _cell.setOutlineColor(sf::Color::Black);
-    _cell.setOutlineThickness(1);
+    
+    _rect.setPosition(-1, -1);
+    _rect.setSize(sf::Vector2f(128 * 3, 128));
+    _rect.setFillColor(sf::Color(0, 0, 0, 100));
+    _rect.setOutlineColor(sf::Color::Black);
+    _rect.setOutlineThickness(1);
+
+    _items = new mEntity("assets/items.png", sf::IntRect(32 * 0, 0, 32, 32), 100, 2, LEFT_TO_RIGHT, "stage1");
+    _items->addAnimationLoop("stage2", 2, 100, sf::IntRect(32 * 1, 0, 32, 32));
+    _items->addAnimationLoop("stage3", 2, 100, sf::IntRect(32 * 2, 0, 32, 32));
+    _items->addAnimationLoop("stage4", 2, 100, sf::IntRect(32 * 3, 0, 32, 32));
+    _items->addAnimationLoop("stage5", 2, 100, sf::IntRect(32 * 4, 0, 32, 32));
+    _items->addAnimationLoop("stage6", 2, 100, sf::IntRect(32 * 5, 0, 32, 32));
+    _items->addAnimationLoop("food", 2, 100, sf::IntRect(32 * 6, 0, 32, 32));
+//    _items->getSprite().scale(1.7, 1.7);
 
 
     _stage2 = new mEntity("assets/stage2.png", sf::IntRect(0, 0, 32, 26), 300, 2, LEFT_TO_RIGHT, "DOWN");
@@ -24,11 +35,16 @@ Drawer::Drawer(sf::Vector2i msz)
     _stage3->getSprite().setScale(sf::Vector2f(4, 4));
     _mapSize = msz;
     _camOffset = {0, 0};
+
     _font.loadFromFile("assets/hud/font1.ttf");
     _text.setFont(_font);
     _text.setCharacterSize(32);
     _text.setFillColor(sf::Color::Black);
     _text.setString("TEST");
+
+    _textInfo.setFont(_font);
+    _textInfo.setCharacterSize(30);
+    _textInfo.setFillColor(sf::Color::Black);
 }
 
 Drawer::~Drawer()
@@ -192,12 +208,7 @@ void Drawer::drawInfo(Player &p)
     s += std::to_string(p.getBody()->getSprite().getPosition().x + _camOffset.x);
     s += " >= ";
     s += std::to_string(p.getPositionGoal().x * 128 + _camOffset.x);
-    // p.getBody()->getSprite().getPosition().x + _camOffset.x >= p.getPositionGoal().x * 128 + _camOffset.x
-
-
     _text.setString(s);
-    
-    
     _window->draw(_text);
 }
 
@@ -229,6 +240,8 @@ void Drawer::setShowMenu(bool v)
 
 void Drawer::createMap(sf::Vector2i a)
 {
+    if (_mapReady)
+        return;
     sf::Texture temp;
     _mapSize = a;
     temp.loadFromFile("assets/tileset.png");
@@ -238,6 +251,62 @@ void Drawer::createMap(sf::Vector2i a)
             _cells.push_back(ncell);
         }        
     }
+    _mapReady = true;
+}
+
+void Drawer::drawCellInfos(Cell c)
+{
+    _window->draw(_rect);
+    _textInfo.setPosition(5, 5);   
+    _textInfo.setCharacterSize(30);
+    std::string bfr = "Cell #";
+    bfr += std::to_string(c.getPosition().x + c.getPosition().y * _mapSize.y);
+    bfr += "\nx : ";
+    bfr += std::to_string(c.getPosition().x);
+    bfr += ", y :";
+    bfr += std::to_string(c.getPosition().y);
+    _textInfo.setString(bfr);
+    _window->draw(_textInfo);
+
+    std::vector<int> items = c.getAllItems();
+    _textInfo.setPosition(0, 85);
+    _items->getSprite().setPosition(12, 85);
+    _textInfo.setCharacterSize(20);
+    for (int i = 0; i != items.size(); i++) {
+        if (items[i] == 0)
+            continue;
+        _textInfo.setString(std::to_string(items[i])+ "-");
+        _items->changeAnimationLoop("stage" + std::to_string(i + 1));
+        _window->draw(_textInfo);
+        _window->draw(_items->getSprite());
+        _items->getSprite().move(54, 0);
+        _textInfo.move(54, 0);
+    }
+    if (c.food() == 0)
+        return;
+    _textInfo.setString(std::to_string(c.food())+ "-");
+    _window->draw(_textInfo);
+    _items->changeAnimationLoop("food");
+    _window->draw(_items->getSprite());    
+}
+
+void Drawer::parseMapCommand(std::vector<std::string> v)
+{
+    
+    if (v.size() < 1)
+        return;
+    if (v[0] != "map" and v[0] != "m")
+        return;
+
+    if (v[0] == "m" and v.size() == 5) // "m $i $q $x $y" -> m item quatity posX posY
+        _cells[(std::atoi(v[3].c_str()) + ((std::atoi(v[4].c_str())) * _mapSize.x))]->addItems(v[1][0], std::atoi(v[2].c_str()));
+    if (v[1] == "spawn") // map spawn $i $y -> map spawn item posX posY
+        _cells[(std::atoi(v[3].c_str()) + ((std::atoi(v[4].c_str())) * _mapSize.x))]->addItem(std::atoi(v[2].c_str()));
+}
+
+bool Drawer::isMapReady()
+{
+    return _mapReady;
 }
 
 void Drawer::drawStage2(Player &p)
@@ -267,7 +336,7 @@ void Drawer::drawStage2(Player &p)
 void Drawer::drawStage3(Player &p)
 {
     _window->draw(_stage3->getSprite());
-
+    _window->draw(_textInfo);
 }
 
 
@@ -276,5 +345,10 @@ void Drawer::drawGrid()
     for (long unsigned int i = 0; i != _cells.size(); i++) {
         _cells[i]->getCell()->getSprite().setPosition(sf::Vector2f(_cells[i]->getPosition().x * 128 + _camOffset.x, _cells[i]->getPosition().y * 128 + _camOffset.y));
         _window->draw(_cells[i]->getCell()->getSprite());
+        if (_cells[i]->food() >= 1) {
+            _items->changeAnimationLoop("food");
+            _items->getSprite().setPosition(_cells[i]->getCell()->getSprite().getPosition());
+            _window->draw(_items->getSprite());
+        }
     }
 }

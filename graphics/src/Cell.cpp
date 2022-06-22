@@ -32,3 +32,79 @@ sf::Vector2i Cell::getPosition()
 {
     return _position;
 }
+
+int Cell::food()
+{
+    return _food;
+}
+
+int Cell::linemate()
+{
+    return _linemate;
+}
+
+int Cell::deraumere()
+{
+    return _deraumere;
+}
+
+int Cell::sibur()
+{
+    return _sibur;
+}
+
+int Cell::mendiane()
+{
+    return _mendiane;
+}
+
+int Cell::phiras()
+{
+    return _phiras;
+}
+
+int Cell::thystame()
+{
+    return _thystame;
+}
+
+std::vector<int> Cell::getAllItems()
+{
+    return {_linemate, _deraumere, _sibur, _mendiane, _phiras, _thystame};
+}
+
+void Cell::addItem(char i)
+{
+    if (i == 'l')
+        _linemate++;
+    if (i == 'd')
+        _deraumere++;
+    if (i == 's')
+        _sibur++;
+    if (i == 'm')
+        _mendiane++;
+    if (i == 'p')
+        _phiras++;
+    if (i == 't')
+        _thystame++;
+    if (i == 'f')
+        _food++;
+}
+
+void Cell::addItems(char i, int q)
+{
+    if (i == 'l')
+        _linemate += q;
+    if (i == 'd')
+        _deraumere += q;
+    if (i == 's')
+        _sibur += q;
+    if (i == 'm')
+        _mendiane += q;
+    if (i == 'p')
+        _phiras += q;
+    if (i == 't')
+        _thystame += q;
+    if (i == 'f')
+        _food += q;
+}
