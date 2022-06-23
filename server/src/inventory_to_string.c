@@ -57,7 +57,7 @@ char *add_other_item(inv_t *inv)
         inv->thystame--;
         return "thystame";
     }
-    return NULL;
+    return "";
 }
 
 char *add_item_to_string(inv_t *inv)
@@ -94,8 +94,8 @@ char *inventory_to_string(inv_t *inv)
     n = count_total_items(inv);
     if (n == 0)
         return strdup("");
-    tmp[0] = 0;
     tmp_inv = inv_dup(inv);
+    tmp[0] = 0;
     for (int i = 0; i < n; i++) {
         item = add_item_to_string(tmp_inv);
         strcat(tmp, item);

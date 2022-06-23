@@ -13,7 +13,9 @@ inv_t *get_tile_pos(my_server_t *serv, int x, int y)
         x += serv->width;
     if (y < 0)
         y += serv->height;
-    return &serv->map[y % serv->height][x % serv->width];
+    x %= serv->width;
+    y %= serv->height;
+    return &serv->map[y][x];
 }
 
 inv_t *get_next_tile(my_server_t *s, my_client_t *c, int x, int y)
@@ -22,11 +24,11 @@ inv_t *get_next_tile(my_server_t *s, my_client_t *c, int x, int y)
         return get_tile_pos(s, c->x + x, c->y - y);
     if (c->direction == SOUTH)
         return get_tile_pos(s, c->x - x, c->y + y);
-    if (c->direction == WEST)
-        return get_tile_pos(s, c->x - y, c->y - x);
     if (c->direction == EAST)
         return get_tile_pos(s, c->x + y, c->y + x);
-    return NULL;
+    if (c->direction == WEST)
+        return get_tile_pos(s, c->x - y, c->y - x);
+    return &s->map[0][0];
 }
 
 void look(my_server_t *serv, int fd)
@@ -47,6 +49,5 @@ void look(my_server_t *serv, int fd)
             free(tmp);
         }
     }
-    strcat(msg, "]\n");
-    dprintf(cli->fd, "%s", buff);
+    dprintf(cli->fd, "%s]\n", buff);
 }
