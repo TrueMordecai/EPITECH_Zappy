@@ -36,8 +36,9 @@ static std::vector<std::string> split(std::string s, std::string del = " ")
         vec.push_back(token);
         s.erase(0, pos + del.length());
     }
-    if (s.back() == '\n')
-        s.pop_back();
+    if (del == " ")
+        if (s.back() == '\n')
+            s.pop_back();
     vec.push_back(s);
     return (vec);
 }
@@ -114,12 +115,12 @@ static void DEBUG_print_vvs(std::vector<std::vector<std::string>> vs)
 std::vector<std::vector<std::string>> Network::serverCommand()
 {
     std::vector<std::vector<std::string>> s;
-    char data[1000];
-    std::memset(data, 0, 1000);
+    char data[5000];
+    std::memset(data, 0, 5000);
     std::vector<std::string> bfr;
     size_t received;
     
-    if (_socket.receive(data, 1000, received) != sf::Socket::NotReady) {
+    if (_socket.receive(data, 5000, received) != sf::Socket::NotReady) {
         bfr = split(data, "\n");
         for (auto v : bfr) 
             s.push_back(split(v));

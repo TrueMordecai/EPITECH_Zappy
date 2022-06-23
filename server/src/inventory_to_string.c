@@ -39,52 +39,46 @@ int count_total_items(inv_t *inv)
     return n;
 }
 
-void add_other_item(char *str, inv_t *inv)
+char *add_other_item(inv_t *inv)
 {
     if (inv->sibur > 0) {
-        strcat(str, "sibur");
         inv->sibur--;
-        return;
+        return "sibur";
     }
     if (inv->mendiane > 0) {
-        strcat(str, "mendiane");
         inv->mendiane--;
-        return;
+        return "mendiane";
     }
     if (inv->phiras > 0) {
-        strcat(str, "phiras");
         inv->phiras--;
-        return;
+        return "phiras";
     }
     if (inv->thystame > 0) {
-        strcat(str, "thystame");
         inv->thystame--;
-        return;
+        return "thystame";
     }
+    return NULL;
 }
 
-void add_item_to_string(char *str, inv_t *inv)
+char *add_item_to_string(inv_t *inv)
 {
     if (inv->player > 0) {
-        strcat(str, "player");
-        return inv->player--;
+        inv->player--;
+        return "player";
     }
     if (inv->food > 0) {
-        strcat(str, "food");
         inv->food--;
-        return;
+        return "food";
     }
     if (inv->deraumere > 0) {
-        strcat(str, "deraumere");
         inv->deraumere--;
-        return;
+        return "deraumere";
     }
     if (inv->linemate > 0) {
-        strcat(str, "linemate");
         inv->linemate--;
-        return;
+        return "linemate";
     }
-    return add_other_item(str, inv);
+    return add_other_item(inv);
 }
 
 char *inventory_to_string(inv_t *inv)
@@ -92,6 +86,7 @@ char *inventory_to_string(inv_t *inv)
     char buff[1024];
     char *tmp = buff;
     int n;
+    char *item;
     inv_t *tmp_inv;
 
     if (!inv)
@@ -102,7 +97,8 @@ char *inventory_to_string(inv_t *inv)
     tmp[0] = 0;
     tmp_inv = inv_dup(inv);
     for (int i = 0; i < n; i++) {
-        add_item_to_string(tmp, tmp_inv);
+        item = add_item_to_string(tmp_inv);
+        strcat(tmp, item);
         if (i + 1 < n)
             strcat(tmp, " ");
     }

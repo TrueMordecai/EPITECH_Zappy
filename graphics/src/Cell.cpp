@@ -108,3 +108,33 @@ void Cell::addItems(char i, int q)
     if (i == 'f')
         _food += q;
 }
+
+void Cell::remItem(char i)
+{
+    std::cout << "Removing" << i << "On cell " << _position.x << "." << _position.y << "\n";
+    if (i == 'l')
+        _linemate -= 1;
+    if (i == 'd')
+        _deraumere -= 1;
+    if (i == 's')
+        _sibur -= 1;
+    if (i == 'm')
+        _mendiane -= 1;
+    if (i == 'p')
+        _phiras -= 1;
+    if (i == 't')
+        _thystame -= 1;
+    if (i == 'f')
+        _food -= 1;
+}
+
+void Cell::clearItem()
+{
+    _linemate = 0;
+    _deraumere = 0;
+    _sibur = 0;
+    _mendiane = 0;
+    _phiras = 0;
+    _thystame = 0;
+    _food = 0;
+}

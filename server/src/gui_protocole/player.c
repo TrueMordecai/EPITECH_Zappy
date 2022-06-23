@@ -12,14 +12,6 @@ void gui_move_player(my_server_t *serv, my_client_t *client)
     dprintf(serv->gui_fd, "player move %s\n", client->name);
 }
 
-void gui_spawn_resource(my_server_t *serv, int res, int x, int y)
-{
-    if (serv->gui_fd == -1)
-        return;
-    printf("map spawn %i %i %i\n", res, x, y);
-    dprintf(serv->gui_fd, "map spawn %i %i %i\n", res, x, y);
-}
-
 void gui_rotate_player(my_server_t *serv, my_client_t *client, e_rotation_t r)
 {
     if (!client)
@@ -41,24 +33,6 @@ void gui_set_life_player(my_server_t *serv, my_client_t *client)
     dprintf(serv->gui_fd, "player life %s %i\n", client->name, client->food);
 }
 
-void gui_fork_player(my_server_t *serv, my_client_t *client)
-{
-    (void)serv;
-    (void)client;
-}
-
-void gui_lay_player(my_server_t *serv, my_client_t *client)
-{
-    (void)serv;
-    (void)client;
-}
-
-void gui_hatch_player(my_server_t *serv, my_client_t *client)
-{
-    (void)serv;
-    (void)client;
-}
-
 void gui_talk_player(my_server_t *serv, my_client_t *client, char *message)
 {
     (void)serv;
@@ -71,5 +45,6 @@ void gui_new_player(my_server_t *serv, my_client_t *client)
         return;
     if (serv->gui_fd == -1)
         return;
-    dprintf(serv->gui_fd, "player new %i %i %i %s %s", client->direction, client->x, client->y, client->team_name, client->name);
+    dprintf(serv->gui_fd, "player new %i %i %i %s %s"
+    , client->direction, client->x, client->y, client->team_name, client->name);
 }

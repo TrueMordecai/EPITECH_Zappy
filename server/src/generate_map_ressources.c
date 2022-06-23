@@ -32,7 +32,7 @@ int add_on_tile(my_server_t *serv, char tile, int chance, int vec[2])
     (tile == 'm') ? (serv->map[vec[0]][vec[1]].mendiane++): (0);
     (tile == 'p') ? (serv->map[vec[0]][vec[1]].phiras++): (0);
     (tile == 't') ? (serv->map[vec[0]][vec[1]].thystame++): (0);
-    gui_spawn_resource(serv, tile, vec[0], vec[1]);
+    gui_spawn_resource(serv, tile, vec[1], vec[0]);
     return 1;
 }
 

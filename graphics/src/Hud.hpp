@@ -22,7 +22,7 @@ public:
     std::string getIdToDraw();
     void setPlayerToDraw(Player *p);
 private:
-    void moveHud(HudState state);
+    void moveHud(HudState state, sf::Vector2i max);
     std::string _idToShow;
     Player *_playerToShow;
     mEntity *_heart;

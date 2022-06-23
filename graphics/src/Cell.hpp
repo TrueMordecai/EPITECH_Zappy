@@ -23,6 +23,8 @@ public:
     std::vector<int> getAllItems(); // In a vector sort from low to high raraity, exclude food
     void addItem(char i);
     void addItems(char i, int q);
+    void remItem(char i);
+    void clearItem();
 
 private:
     sf::Vector2i _position;

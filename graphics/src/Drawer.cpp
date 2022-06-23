@@ -7,7 +7,7 @@ Drawer::Drawer(sf::Vector2i msz)
     
     _rect.setPosition(-1, -1);
     _rect.setSize(sf::Vector2f(128 * 3, 128));
-    _rect.setFillColor(sf::Color(0, 0, 0, 100));
+    _rect.setFillColor(sf::Color(255, 255, 255, 70));
     _rect.setOutlineColor(sf::Color::Black);
     _rect.setOutlineThickness(1);
 
@@ -222,10 +222,10 @@ Cell Drawer::getCellFromClick()
     sf::Vector2i pos = sf::Mouse::getPosition(*_window);
     pos.x -= _camOffset.x;
     pos.y -= _camOffset.y;
-    int s = ((pos.x / 128) + ((pos.y / 128 * _mapSize.y)));
+    int s = ((pos.y / 128) + ((pos.x / 128 * _mapSize.y)));
     if (s < 0 or s > _cells.size() - 1)
         return (*_cells[0]);
-    return (*_cells[(pos.x / 128) + ((pos.y / 128 * _mapSize.y))]);
+    return (*_cells[(pos.y / 128) + ((pos.x / 128 * _mapSize.y))]);
 }
 
 bool Drawer::showMenu()
@@ -245,8 +245,8 @@ void Drawer::createMap(sf::Vector2i a)
     sf::Texture temp;
     _mapSize = a;
     temp.loadFromFile("assets/tileset.png");
-    for (int y = 0; y != a.x; y++) {
-        for (int x = 0; x != a.y; x++) {
+    for (int x = 0; x != a.x; x++) {
+        for (int y = 0; y != a.y; y++) {
             Cell *ncell = new Cell(temp, {x, y});
             _cells.push_back(ncell);
         }        
@@ -295,13 +295,24 @@ void Drawer::parseMapCommand(std::vector<std::string> v)
     
     if (v.size() < 1)
         return;
-    if (v[0] != "map" and v[0] != "m")
+    if (v[0] != "map" and v[0] != "l" and v[0] != "s" and v[0] != "m" and v[0] != "p" and v[0] != "t" and v[0] != "f")
         return;
-
-    if (v[0] == "m" and v.size() == 5) // "m $i $q $x $y" -> m item quatity posX posY
-        _cells[(std::atoi(v[3].c_str()) + ((std::atoi(v[4].c_str())) * _mapSize.x))]->addItems(v[1][0], std::atoi(v[2].c_str()));
-    if (v[1] == "spawn") // map spawn $i $y -> map spawn item posX posY
-        _cells[(std::atoi(v[3].c_str()) + ((std::atoi(v[4].c_str())) * _mapSize.x))]->addItem(std::atoi(v[2].c_str()));
+    if (v[0].size() == 1 and v.size() >= 3) { // "$i $q $x $y" -> $item quatity posX posY -> Used for save some byte on protocol
+        int x = int(v[2][0] - 'a');
+        int y = int(v[3][0] - 'a');
+        _cells[y + x * _mapSize.x]->addItems(v[0][0], std::atoi(v[1].c_str()));
+        return;
+    }
+    if (v[1] == "spawn" and v.size() == 5) {// map spawn $i $x $y -> map spawn item posX posY
+        int x = std::atoi(v[3].c_str());
+        int y = std::atoi(v[4].c_str());
+        _cells[y + x * _mapSize.x]->addItem(v[2].c_str()[0]);
+    }
+    if (v[1] == "rem" and v.size() == 5) { // map rem $i $x $y -> map spawn item posX posY
+        int x = std::atoi(v[3].c_str());
+        int y = std::atoi(v[4].c_str());
+        _cells[y + x * _mapSize.x]->remItem(v[2].c_str()[0]);    
+    }
 }
 
 bool Drawer::isMapReady()
