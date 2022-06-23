@@ -222,7 +222,7 @@ Cell Drawer::getCellFromClick()
     sf::Vector2i pos = sf::Mouse::getPosition(*_window);
     pos.x -= _camOffset.x;
     pos.y -= _camOffset.y;
-    int s = ((pos.x / 128) + ((pos.y / 128 * _mapSize.y)));
+    int s = ((pos.y / 128) + ((pos.x / 128 * _mapSize.y)));
     if (s < 0 or s > _cells.size() - 1)
         return (*_cells[0]);
     return (*_cells[(pos.y / 128) + ((pos.x / 128 * _mapSize.y))]);

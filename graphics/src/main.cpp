@@ -27,7 +27,7 @@ int main(int ac, char **av)
     Population pop;
     std::vector<std::vector<std::string>> sbfr;
     Menu m;
-    Drawer d({20, 20});
+    Drawer d({5, 5});
 
     while (d.loop()) {
         bfr.clear();
@@ -64,7 +64,7 @@ int main(int ac, char **av)
         
         if (d.showMenu() and m.getPlay()) { // When map size is received in the network 
             if (n.getMapSize().x == 0)
-                d.createMap({20, 20});
+                d.createMap({5, 5});
             d.setShowMenu(false);
         }
         
