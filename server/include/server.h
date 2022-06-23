@@ -148,6 +148,7 @@ void check_rit_inv(my_client_t *client, inv_t ritual, int level);
 void ritual_proceed(my_client_t *client, inv_t ritual, int level);
 int get_team_id(my_server_t *serv, char *team);
 int check_inc(my_server_t *serv, int fd);
+void destroy_egg(my_client_t *egg);
 
 // Client commands
 void right(my_server_t *serv, int fd);
