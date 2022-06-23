@@ -106,7 +106,7 @@ void Menu::drawMenu(sf::RenderWindow &w)
         }
         if (_menu1 == 3) { // Try to connect
             _text.setString("->");
-            _text.setPosition(1500, 1750);
+            _text.setPosition(1360, 1790);
         }
     }
     _text.move({_offset.x, _offset.y});
