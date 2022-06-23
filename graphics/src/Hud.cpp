@@ -29,20 +29,20 @@ Hud::~Hud()
 void Hud::showHud(Player &p)
 {
     (void)p;
-    moveHud(_e_state);
+    //moveHud(_e_state);
 }
 
 void Hud::hideHud()
 {
     _e_state = HIDE;
-    moveHud(_e_state);
+    //moveHud(_e_state);
 }
 
 void Hud::drawHud(sf::RenderWindow &w, std::vector<Player *> _teamates)
 {
     if (_playerToShow == nullptr)
         _e_state = HIDE;
-    moveHud(_e_state);
+    moveHud(_e_state, sf::Mouse::getPosition(w));
     w.draw(_hud->getSprite());
     if (_playerToShow == nullptr)
         return;
@@ -154,20 +154,26 @@ void Hud::setPlayerToDraw(Player *p)
     }
 }
 
-void Hud::moveHud(HudState state)
+void Hud::moveHud(HudState state, sf::Vector2i max)
 {
     _hud->getSprite().setPosition(1920, 0); // Set paper at initial place
     if (state == SHOW) // if paper should be shown, increase offset
         _offset += {-45, 0};
     if (state == HIDE) // else decrease offset
         _offset += {25, 0};
-    _hud->getSprite().move(_offset); // Move the paper based on offset
     
+    _hud->getSprite().move(_offset); // Move the paper based on offset    
+
     if (_hud->getSprite().getPosition().x < 1920 - _hud->getSprite().getLocalBounds().width * 4) { // If paper go to far left
         _hud->getSprite().setPosition(1920 - _hud->getSprite().getLocalBounds().width * 4, 0);
         _offset = {-_hud->getSprite().getLocalBounds().width * 4, 0}; // Max left offset
     }
-    else if (_hud->getSprite().getPosition().x > 1920){ // If paper go to far right
+    if (_hud->getSprite().getPosition().x < max.x) { // If paper go to far left
+        _hud->getSprite().setPosition(max.x, 0);
+        _offset = {(max.x - 1920), 0}; // Max left offset
+        return;
+    }
+    if (_hud->getSprite().getPosition().x > 1920){ // If paper go to far right
         _hud->getSprite().setPosition(1920, 0);
         _offset = {0, 0}; // Max right offset
     }

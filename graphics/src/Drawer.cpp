@@ -7,7 +7,7 @@ Drawer::Drawer(sf::Vector2i msz)
     
     _rect.setPosition(-1, -1);
     _rect.setSize(sf::Vector2f(128 * 3, 128));
-    _rect.setFillColor(sf::Color(0, 0, 0, 100));
+    _rect.setFillColor(sf::Color(255, 255, 255, 70));
     _rect.setOutlineColor(sf::Color::Black);
     _rect.setOutlineThickness(1);
 

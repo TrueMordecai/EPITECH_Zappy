@@ -111,7 +111,7 @@ void Cell::addItems(char i, int q)
 
 void Cell::remItem(char i)
 {
-    std::cout << "On cell " << _position.x << "." << _position.y << "\n";
+    std::cout << "Removing" << i << "On cell " << _position.x << "." << _position.y << "\n";
     if (i == 'l')
         _linemate -= 1;
     if (i == 'd')
