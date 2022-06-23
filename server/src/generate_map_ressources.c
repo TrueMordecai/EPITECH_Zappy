@@ -36,20 +36,18 @@ int add_on_tile(my_server_t *serv, char tile, int chance, int vec[2])
     return 1;
 }
 
-void gen_ressource(int current, my_server_t *serv, char tile, int expected)
+void gen_ressource(int current, my_server_t *serv, char res, int expected)
 {
     int vec[2];
 
-    while (current < expected && check_map_full(serv) == 0) {
-        vec[0] = rand() % serv->height;
-        vec[1] = rand() % serv->width;
-        if (check_tile(serv->map[vec[0]][vec[1]]) == 0)
-            current += add_on_tile(serv, tile, expected, vec);
-    }
+    vec[0] = rand() % serv->height;
+    vec[1] = rand() % serv->width;
     while (current < expected) {
-        vec[0] = rand() % serv->height;
-        vec[1] = rand() % serv->width;
-        current += add_on_tile(serv, tile, expected, vec);
+        while (check_tile_ressource(serv->map[vec[0]][vec[1]], res) != 0) {
+            vec[0] = rand() % serv->height;
+            vec[1] = rand() % serv->width;
+        }
+        current += add_on_tile(serv, res, expected, vec);
     }
 }
 

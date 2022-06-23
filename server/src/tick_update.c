@@ -60,7 +60,7 @@ void get_next_cmd(my_server_t *serv, my_client_t *client)
     if (client->message_queue_size == 0)
         return;
     while (client->message_queue[0]) {
-        if (get_cmd(client->message_queue[0]) != incantation &&
+        if (get_cmd(client->message_queue[0]) == incantation &&
             !check_inc(serv, client->fd))
             advance_message_queue(client);
         if (get_cmd(client->message_queue[0]) != NULL) {

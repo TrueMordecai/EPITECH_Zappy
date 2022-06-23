@@ -74,8 +74,8 @@ int check_inc(my_server_t *serv, int fd)
     (client->level <= 4) ? (needed = 3) : (0);
     (client->level <= 6) ? (needed = 5) : (0);
     fds = malloc(sizeof(int) * (100));
-    if (check_inv(client, costs[client->level - 1])
-    && check_other_clients(serv->clients, client, needed, fds) < needed) {
+    if (!check_inv(client, costs[client->level - 1])
+    || check_other_clients(serv->clients, client, needed, fds) < needed) {
         free(fds);
         dprintf(fd, "ko\n");
         return 0;

@@ -37,6 +37,7 @@ void add_client(my_server_t *serv, my_client_t *client)
     while (tail->next)
         tail = tail->next;
     tail->next = client;
+    tail->next->next = NULL;
 }
 
 void del_client(my_server_t *serv, int fd)
