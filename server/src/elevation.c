@@ -40,17 +40,28 @@ int *fds)
 {
     int actual = 0;
 
-    while (actual < needed) {
+    while (clients) {
         if (clients->x == client->x && clients->y == client-> y &&
             clients->level == client->level && clients->cooldown == 0
-            && check_inv(clients, costs[client->level - 1]) &&
-            clients->fd != client->fd) {
+            && check_inv(clients, costs[client->level -1]) && !clients->func &&
+            clients->fd != client->fd && !clients->message_queue[0]) {
             fds[actual] = clients->fd;
             actual++;
         }
         clients = clients->next;
     }
+    fds[actual] = client->fd;
+    fds[actual + 1] = -1;
     return actual;
+}
+
+void set_cd(my_server_t *serv, int fd)
+{
+    my_client_t *client = get_client_from_fd(serv, fd);
+
+    client->cooldown = 300;
+    (client->cur) ? (free(client->cur)) : (0);
+    client->cur = strdup("Participant");
 }
 
 int check_inc(my_server_t *serv, int fd)
@@ -63,16 +74,17 @@ int check_inc(my_server_t *serv, int fd)
     (client->level <= 2) ? (needed = 1) : (0);
     (client->level <= 4) ? (needed = 3) : (0);
     (client->level <= 6) ? (needed = 5) : (0);
-    fds = malloc(sizeof(int) * (needed + 1));
-    fds[needed] = fd;
+    fds = malloc(sizeof(int) * (100));
     if (check_inv(client, costs[client->level - 1])
     && check_other_clients(serv->clients, client, needed, fds) < needed) {
         free(fds);
         dprintf(fd, "ko\n");
         return 0;
     }
-    for (int i = 0; i < needed + 1; i++)
+    for (int i = 0; fds[i] != -1; i++) {
+
         dprintf(fds[i], "Elevation underway\n");
+    }
     return 1;
 }
 
@@ -86,8 +98,7 @@ void incantation(my_server_t *serv, int fd)
     (client->level <= 2) ? (needed = 1) : (0);
     (client->level <= 4) ? (needed = 3) : (0);
     (client->level <= 6) ? (needed = 5) : (0);
-    fds = malloc(sizeof(int) * (needed + 1));
-    fds[needed] = fd;
+    fds = malloc(sizeof(int) * (100));
     if (check_inv(client, costs[client->level - 1])
     && check_other_clients(serv->clients, client, needed, fds) < needed) {
         free(fds);
