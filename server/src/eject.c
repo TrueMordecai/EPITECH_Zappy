@@ -18,9 +18,6 @@ void disrupt_elevation(my_client_t *victim)
 
 void push_client(my_client_t *client, my_client_t *victim)
 {
-    if (!strcmp(client->cur, "hatch")) {
-        destroy_egg(client);
-    }
     if (client->direction == NORTH) {
         victim->y--;
         dprintf(victim->fd, "eject: N\n");
@@ -36,6 +33,9 @@ void push_client(my_client_t *client, my_client_t *victim)
     if (client->direction == WEST) {
         victim->x--;
         dprintf(victim->fd, "eject: W\n");
+    }
+    if (!strcmp(client->cur, "hatch")) {
+        destroy_egg(client);
     }
 }
 
