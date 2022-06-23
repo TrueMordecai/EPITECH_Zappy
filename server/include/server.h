@@ -40,7 +40,7 @@ name2 ... -c clientsNb\n\
 #define MENDIANE 10
 #define PHIRAS 8
 #define THYSTAME 5
-#define COMMAND_LIST_SIZE 10
+#define COMMAND_LIST_SIZE 11
 
 typedef enum orientation {
     NORTH = 0,
@@ -143,9 +143,9 @@ char **str_to_strarr(char *str, char *tok);
 void free_strarr(char **arr);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
-void check_ritual_level(my_client_t *client);
-void check_rit_inv(my_client_t *client, inv_t ritual);
-void ritual_proceed(my_client_t *client, inv_t ritual);
+void check_ritual_level(my_client_t *client, int level);
+void check_rit_inv(my_client_t *client, inv_t ritual, int level);
+void ritual_proceed(my_client_t *client, inv_t ritual, int level);
 int get_team_id(my_server_t *serv, char *team);
 int check_inc(my_server_t *serv, int fd);
 
@@ -160,6 +160,7 @@ void set(my_server_t *serv, int fd);
 void look(my_server_t *serv, int fd);
 void inventory(my_server_t *serv, int fd);
 void incantation(my_server_t *serv, int fd);
+void eject(my_server_t *serv, int fd);
 
 // inventory_to_string.c: converts inventory into printable string for look
 char *inventory_to_string(inv_t *inv);

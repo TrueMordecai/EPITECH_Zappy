@@ -17,7 +17,8 @@ const cmd_list_t cmd_list[] = {
     {"Fork", 42, &fork_egg},
     {"Set", 7, &set},
     {"Take", 7, &take},
-    {"Incantation", 300, &incantation}
+    {"Incantation", 300, &incantation},
+    {"Eject", 7, &eject}
 };
 
 fct_ptr get_cmd(char *str)
@@ -64,7 +65,7 @@ void get_next_cmd(my_server_t *serv, my_client_t *client)
             advance_message_queue(client);
         if (get_cmd(client->message_queue[0]) != NULL) {
             tmp = get_cmd(client->message_queue[0]);
-            client->cooldown = 1 + get_cd(client->message_queue[0]);
+            client->cooldown = get_cd(client->message_queue[0]);
             client->func = tmp;
             (client->cur) ? (free(client->cur)) : (0);
             client->cur = NULL;
@@ -83,12 +84,10 @@ void update_client(my_server_t *serv, my_client_t *client)
     if (client->team_name == NULL)
         update_client(serv, client->next);
     if (client->cooldown == 0) {
-        if (client->func)
+        if (client->func && client->func != &incantation)
             client->func(serv, client->fd);
         get_next_cmd(serv, client);
     }
-    if (client->cooldown > 0)
-        client->cooldown--;
     if (client->food == 0) {
         dprintf(client->fd, "dead\n");
         client->dead = true;
@@ -103,6 +102,12 @@ void update_clients(my_server_t *serv)
 {
     my_client_t *client = serv->clients;
 
+    for (my_client_t *cli = serv->clients; cli; cli = cli->next)
+        if (cli->cooldown > 0)
+            cli->cooldown--;
+    for (my_client_t *cli = serv->clients; cli; cli = cli->next)
+        if (cli->func == &incantation)
+            cli->func(serv, cli->fd);
     update_client(serv, serv->clients);
     for (; client; client = client->next)
         if (client->dead) {
