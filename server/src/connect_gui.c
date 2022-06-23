@@ -44,18 +44,29 @@ bool is_gui_message(char **arr)
     return true;
 }
 
-void gui_spawn_all_ressources(my_server_t *s)
+void gui_server_catchup(my_server_t *s)
 {
-    puts("dprint all ressources");
+    my_client_t *c = s->clients;
+    while (c) {
+        dprintf(s->gui_fd, "player new %i %i %i %s %s", c->direction, c->x, c->y, c->team_name, c->name);
+        c = c->next;
+    }
     for (uint i = 0; i < s->height; i++) {
         for (uint j = 0; j < s->width; j++) {
-            dprintf(s->gui_fd, "m l %i %i %i\n" , s->map[i][j].linemate, i, j);
-            dprintf(s->gui_fd, "m d %i %i %i\n" , s->map[i][j].deraumere, i, j);
-            dprintf(s->gui_fd, "m s %i %i %i\n" , s->map[i][j].sibur, i, j);
-            dprintf(s->gui_fd, "m m %i %i %i\n" , s->map[i][j].mendiane, i, j);
-            dprintf(s->gui_fd, "m p %i %i %i\n" , s->map[i][j].phiras, i, j);
-            dprintf(s->gui_fd, "m t %i %i %i\n" , s->map[i][j].thystame, i, j);
-            dprintf(s->gui_fd, "m f %i %i %i\n" , s->map[i][j].food, i, j);
+            if (s->map[i][j].linemate > 0)
+                dprintf(s->gui_fd, "l %i %c %c\n", s->map[i][j].linemate, j + 'a', i + 'a');
+            if (s->map[i][j].deraumere > 0)
+                dprintf(s->gui_fd, "d %i %c %c\n", s->map[i][j].deraumere, j + 'a', i + 'a');
+            if (s->map[i][j].sibur > 0)
+                dprintf(s->gui_fd, "s %i %c %c\n", s->map[i][j].sibur, j + 'a', i + 'a');
+            if (s->map[i][j].mendiane > 0)
+                dprintf(s->gui_fd, "m %i %c %c\n", s->map[i][j].mendiane, j + 'a', i + 'a');
+            if (s->map[i][j].phiras > 0)
+                dprintf(s->gui_fd, "p %i %c %c\n", s->map[i][j].phiras, j + 'a', i + 'a');
+            if (s->map[i][j].thystame > 0)
+                dprintf(s->gui_fd, "t %i %c %c\n", s->map[i][j].thystame, j + 'a', i + 'a');
+            if (s->map[i][j].food > 0)
+                dprintf(s->gui_fd, "f %i %c %c\n", s->map[i][j].food, j + 'a', i + 'a');
         }
     }
 }
@@ -80,6 +91,6 @@ bool connect_gui(my_server_t *serv, char **arr, int fd)
     del_client(serv, -1);
     dprintf(serv->gui_fd, "msz %i %i\n", serv->width, serv->height);
     sleep(1); // Useful so gui can create map
-    gui_spawn_all_ressources(serv);
+    gui_server_catchup(serv);
     return true;
 }

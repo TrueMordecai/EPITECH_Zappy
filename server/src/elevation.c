@@ -70,8 +70,8 @@ int check_inc(my_server_t *serv, int fd)
         dprintf(fd, "ko\n");
         return 0;
     }
-    for (int i = 0; i < needed + 1; i++)
-        dprintf(fds[i], "Elevation underway\n");
+//    for (int i = 0; i < needed + 1; i++)
+        //dprintf(fds[i], "Elevation underway\n"); WTF Is this ???
     return 1;
 }
 

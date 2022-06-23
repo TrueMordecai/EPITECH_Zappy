@@ -60,9 +60,11 @@ void take(my_server_t *serv, int fd)
         serv->map[client->y][client->x].linemate = 0;
     }
     x = pickup(serv, client, cmd[1], x);
-    if (x > 0)
+    if (x > 0) {
         dprintf(fd, "ok\n");
-    else
+        gui_remove_resource(serv, cmd[1][0], client->x, client->y);
+    } else {
         dprintf(fd, "ko\n");
+    } 
     free_strarr(cmd);
 }

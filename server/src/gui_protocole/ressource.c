@@ -11,6 +11,13 @@ void gui_spawn_resource(my_server_t *serv, int res, int x, int y)
 {
     if (serv->gui_fd == -1)
         return;
-    printf("map spawn %i %i %i\n", res, x, y);
-    dprintf(serv->gui_fd, "map spawn %i %i %i\n", res, x, y);
+    dprintf(serv->gui_fd, "map spawn %c %i %i\n", res, x, y);
+}
+
+void gui_remove_resource(my_server_t *serv, int res, int x, int y)
+{
+    if (serv->gui_fd == -1)
+        return;
+    printf("map rem %i %i %i\n", res, x, y);
+    dprintf(serv->gui_fd, "map rem %c %i %i\n", res, x, y);
 }

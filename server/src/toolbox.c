@@ -11,6 +11,10 @@ my_client_t *get_client_from_fd(my_server_t *serv, int fd)
 {
     my_client_t *cur = serv->clients;
 
+    if (fd == -1)
+        return (NULL);
+    if (!serv->clients)
+        return (NULL);
     if (cur->fd == fd)
         return (cur);
     while (cur) {
@@ -74,4 +78,24 @@ int get_team_id(my_server_t *serv, char *team)
         if (!strcmp(serv->team_names[i], team))
             return i;
     return -1;
+}
+
+
+void print_cell(my_server_t *serv, int x, int y)
+{
+    if (serv->map[y][x].linemate > 0)
+        printf("%i", serv->map[y][x].linemate);
+    if (serv->map[y][x].deraumere > 0)
+        printf("%i", serv->map[y][x].deraumere);
+    if (serv->map[y][x].sibur > 0)
+        printf("%i", serv->map[y][x].sibur);
+    if (serv->map[y][x].mendiane > 0)
+        printf("%i", serv->map[y][x].mendiane);
+    if (serv->map[y][x].phiras > 0)
+        printf("%i", serv->map[y][x].phiras);
+    if (serv->map[y][x].thystame > 0)
+        printf("%i", serv->map[y][x].thystame);
+    if (serv->map[y][x].food > 0)
+        printf("%i", serv->map[y][x].food);
+
 }
