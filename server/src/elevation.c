@@ -127,7 +127,7 @@ void incantation(my_server_t *serv, int fd)
         return;
     }
     for (int i = 0; fds[i] != -1; i++) {
-        check_ritual_level(get_client_from_fd(serv, fds[i]), client->level);
+        check_ritual_level(serv, get_client_from_fd(serv, fds[i]), client->level);
         dprintf(fds[i], "Current level: %d\n",
         get_client_from_fd(serv, fds[i])->level);
     }
