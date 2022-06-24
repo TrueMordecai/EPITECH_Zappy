@@ -94,7 +94,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->x = rand() % x;
     client->y = rand() % y;
     client->direction = rand() % 4;
-    client->name = strdup(NAME[rand() % 86]);
+    client->name = strdup(NAME[rand() % 84]);
     client->inventory = generate_inventory();
     client->food = 1260;
     client->cooldown = 0;

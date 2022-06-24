@@ -22,7 +22,8 @@ void set_egg(my_client_t *client, char **args, my_server_t *serv)
     my_client_t *tmp = serv->clients;
 
     while (tmp != NULL) {
-        if (strcmp(tmp->team_name, args[0]) && tmp->fd == -2) {
+        if (tmp->team_name &&
+            !strcmp(tmp->team_name, args[0]) && tmp->fd == -2) {
             tmp->fd = client->fd;
             client->fd = -1;
             del_client(serv, -1);
@@ -31,6 +32,7 @@ void set_egg(my_client_t *client, char **args, my_server_t *serv)
             dprintf(tmp->fd, "ppo %d %d\n", tmp->x, tmp->y);
             return;
         }
+        tmp = tmp->next;
     }
     dprintf(client->fd, "TEAM-IN-USE\n");
     del_client(serv, client->fd);

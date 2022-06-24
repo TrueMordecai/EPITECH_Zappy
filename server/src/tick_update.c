@@ -54,19 +54,20 @@ void advance_message_queue(my_client_t *client)
 
 void get_next_cmd(my_server_t *serv, my_client_t *client)
 {
-    fct_ptr tmp = NULL;
-
     client->func = NULL;
     if (client->message_queue_size == 0)
         return;
     while (client->message_queue[0]) {
         if (get_cmd(client->message_queue[0]) == incantation &&
-            !check_inc(serv, client->fd))
+        check_inc(serv, client->fd)) {
             advance_message_queue(client);
-        if (get_cmd(client->message_queue[0]) != NULL) {
-            tmp = get_cmd(client->message_queue[0]);
+            client->func = incantation;
+            break;
+        }
+        if (get_cmd(client->message_queue[0]) != NULL &&
+            get_cmd(client->message_queue[0]) != incantation) {
             client->cooldown = get_cd(client->message_queue[0]);
-            client->func = tmp;
+            client->func = get_cmd(client->message_queue[0]);
             (client->cur) ? (free(client->cur)) : (0);
             client->cur = NULL;
             client->cur = strdup(client->message_queue[0]);
