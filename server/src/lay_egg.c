@@ -7,12 +7,11 @@
 
 #include "server.h"
 
-void destroy_egg(my_client_t *egg)
+void destroy_egg(my_server_t *serv, my_client_t *egg)
 {
     dprintf(egg->fd, "dead\n");
     egg->dead = true;
-    (egg->cur) ? (free(egg->cur)) : (0);
-    egg->cur = NULL;
+    del_client(serv, egg->fd);
 }
 
 void fork_egg(my_server_t *serv, int fd)

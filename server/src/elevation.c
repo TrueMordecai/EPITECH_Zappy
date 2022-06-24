@@ -55,13 +55,15 @@ int *fds)
     return actual;
 }
 
-void set_cd(my_server_t *serv, int fd)
+void set_cd(my_server_t *serv, int fd, int starter)
 {
     my_client_t *client = get_client_from_fd(serv, fd);
 
     client->cooldown = 300;
     (client->cur) ? (free(client->cur)) : (0);
     client->cur = strdup("Participant");
+    if (fd == starter)
+        client->func = incantation;
 }
 
 int check_inc(my_server_t *serv, int fd)
@@ -81,8 +83,7 @@ int check_inc(my_server_t *serv, int fd)
         return 0;
     }
     for (int i = 0; fds[i] != -1; i++) {
-        if (fds[i] != fd)
-            set_cd(serv, fds[i]);
+        set_cd(serv, fds[i], fd);
         dprintf(fds[i], "Elevation underway\n");
     }
     return 1;
@@ -115,9 +116,9 @@ void incantation(my_server_t *serv, int fd)
     int *fds;
     my_client_t *client = get_client_from_fd(serv, fd);
 
-    (client->level <= 2) ? (needed = 1) : (0);
-    (client->level <= 4) ? (needed = 3) : (0);
-    (client->level <= 6) ? (needed = 5) : (0);
+    (client->level >= 2) ? (needed = 1) : (0);
+    (client->level >= 4) ? (needed = 3) : (0);
+    (client->level >= 6) ? (needed = 5) : (0);
     fds = malloc(sizeof(int) * (100));
     if (!check_inv(client, costs[client->level - 1])
         || check_other_clients(serv->clients, client, needed, fds) < needed) {

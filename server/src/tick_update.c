@@ -61,7 +61,6 @@ void get_next_cmd(my_server_t *serv, my_client_t *client)
         if (get_cmd(client->message_queue[0]) == incantation &&
         check_inc(serv, client->fd)) {
             advance_message_queue(client);
-            client->func = incantation;
             break;
         }
         if (get_cmd(client->message_queue[0]) != NULL &&
@@ -107,7 +106,7 @@ void update_clients(my_server_t *serv)
         if (cli->cooldown > 0)
             cli->cooldown--;
     for (my_client_t *cli = serv->clients; cli; cli = cli->next)
-        if (cli->func == &incantation)
+        if (cli->func == &incantation && cli->cooldown == 0)
             cli->func(serv, cli->fd);
     update_client(serv, serv->clients);
     for (; client; client = client->next)

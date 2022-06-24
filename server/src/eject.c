@@ -12,11 +12,10 @@ void disrupt_elevation(my_client_t *victim)
     if (!strcmp(victim->cur, "Participant") || victim->func == &incantation) {
         victim->cooldown = 0;
         victim->func = NULL;
-        (victim->cur) ? (free(victim->cur)) : (0);
     }
 }
 
-void push_client(my_client_t *client, my_client_t *victim)
+void push_client(my_server_t *serv, my_client_t *client, my_client_t *victim)
 {
     if (client->direction == NORTH) {
         victim->y--;
@@ -34,8 +33,9 @@ void push_client(my_client_t *client, my_client_t *victim)
         victim->x--;
         dprintf(victim->fd, "eject: W\n");
     }
-    if (!strcmp(client->cur, "hatch")) {
-        destroy_egg(client);
+    disrupt_elevation(victim);
+    if (!strcmp(victim->cur, "hatch")) {
+        destroy_egg(serv, victim);
     }
 }
 
@@ -49,8 +49,7 @@ void eject(my_server_t *serv, int fd)
         if (clients->x == client->x && clients->y && client->y &&
             client->fd != clients->fd) {
             pushed++;
-            push_client(client, clients);
+            push_client(serv, client, clients);
         }
-
     }
 }
