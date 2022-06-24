@@ -9,7 +9,7 @@ module Items
 end
 
 class Cell
-    attr_accessor :posX, :posY, :Food, :Linemate, :Deraumere, :Sibur, :Mendiane, :Phiras, :Thysame, :playerNbr
+    attr_accessor :posX, :posY, :Food, :Linemate, :Deraumere, :Sibur, :Mendiane, :Phiras, :Thysame, :playerNbr, :Counter
 
     # Replace the food of the cell
     # @param x [Int] x pos of the cell 
@@ -26,6 +26,7 @@ class Cell
         @Phiras = -1
         @Thysame = -1
         @playerNbr = -1
+        @Counter = 0
     end
 
     # Replace the food of the cell
@@ -52,8 +53,10 @@ class Cell
         return @Food + @Linemate + @Deraumere + @Sibur + @Mendiane + @Phiras + @Thysame
     end
 
+    # Set contents in cur tile
+    # @params [String] String containing elements separated by a space like "player food food", useful for "Look" command
+    # return [Void]
     def setContents(content)
-        puts ("Setting #{content} for #{@position}")
         @Food = 0
         @Linemate = 0
         @Deraumere = 0
@@ -62,6 +65,7 @@ class Cell
         @Phiras = 0
         @Thysame = 0
         @playerNbr = 0
+        @Counter = 0
         for c in content.split(" ")
             if (c == "food")
                 @Food += 1
@@ -88,5 +92,83 @@ class Cell
                 @playerNbr += 1
             end
         end
+    end
+
+    # Remove one items from cell
+    # @params [String] items to remove
+    # return [Void]
+    def decreaseItem(item)
+        if (item == "food")
+            @Food = @Food - 1
+        end
+        if (item == "linemate")
+            @Linemate = @Linemate - 1
+        end
+        if (item == "deraumere")
+            @Deraumere = @Deraumere - 1
+        end
+        if (item == "sibur")
+            @Sibur = @Sibur - 1
+        end
+        if (item == "mendiane")
+            @Mendiane = @Mendiane - 1
+        end
+        if (item == "phiras")
+            @Phiras = @Phiras - 1
+        end
+        if (item == "thystame")
+            @Thysame = @Thysame - 1
+        end
+    end
+    
+    # Return the quantity of an specified item
+    # @param [String] item to check
+    # return [Void]
+    def getItem(item)
+        if (item == "food")
+            return @Food
+        end
+        if (item == "linemate")
+            return @Linemate
+        end
+        if (item == "deraumere")
+            return @Deraumere
+        end
+        if (item == "sibur")
+            return @Sibur
+        end
+        if (item == "mendiane")
+            return @Mendiane
+        end
+        if (item == "phiras")
+            return @Phiras
+        end
+        if (item == "thystame")
+            return @Thysame
+        end
+    end
+    
+    # Forget a cell, clean all about it but the position of course
+    # Return [Void]
+    def forget()
+        @Food = -1
+        @Linemate = -1
+        @Deraumere = -1
+        @Sibur = -1
+        @Mendiane = -1
+        @Phiras = -1
+        @Thysame = -1
+        @playerNbr = -1
+    end
+    
+    # Update the cell counter and forget it if necessary
+    # return [Bool] True if forgetted false otherwise
+    def updateCell()
+        @Counter += 1
+        if (@Counter >= 15)
+            forget()
+            return true
+        end
+        return false
     end
 end

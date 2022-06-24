@@ -13,7 +13,7 @@ static char *const NAME[] = {"Peppa_Pig", "Bender", "Larry", "Angelica", "Jhonny
                              "Garnet", "Betty_Boop", "Korra", "Bart", "Harley_Quinn", // 5
                              "Spiderman", "Emile", "Mathias", "Covidman", "Le_S", // 5
                              "???", "#UwU#", "Comte_Harebourg", "Rick", "Micron", // 5
-                             "Zinedine", "SAKEEEN!!", "Dr.Doofenshmirtz", "The Rock", // 5
+                             "Zinedine", "SAKEEEN!!", "Dr.Doofenshmirtz", "The Rock", "Sardo", // 5
                              "EricCartman", "Kc_Deku", "SUPLINK", "Liza_Monet", "Captain_Morgan", // 5
                              "Steven_Universe", "Kralamoure_Géant", "Sponge_Bob", "Tom", "Giga_Chad", // 5
                              "Anal_Genocide", "Arko", "Mia_Khalifa", "Mireille_Matué", "Alkapote", // 5
@@ -95,8 +95,11 @@ my_client_t *make_client(int fd, int x, int y)
     client->level = 1;
     client->x = rand() % x;
     client->y = rand() % y;
+    client->x = 1; // TEMP
+    client->y = 1; // TEMP
     client->direction = rand() % 4;
-    client->name = strdup(NAME[rand() % 84]);
+    client->direction = 2; // TEMP
+    client->name = strdup(NAME[rand() % 86]);
     client->inventory = generate_inventory();
     client->food = 1260;
     client->cooldown = 0;
@@ -106,6 +109,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->dead = false;
     client->func = NULL;
     client->cur = NULL;
+    
     dprintf(fd, "WELCOME\n");
     return client;
 }

@@ -143,10 +143,9 @@ char **str_to_strarr(char *str, char *tok);
 void free_strarr(char **arr);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
-void check_ritual_level(my_server_t *, my_client_t *client, int level);
-void check_rit_inv(my_server_t *, my_client_t *client, inv_t ritual, int level);
-void ritual_proceed(my_server_t *, my_client_t *client, inv_t ritual,
-int level);
+void check_ritual_level(my_server_t *serv, my_client_t *client, int level);
+void check_rit_inv(my_server_t *serv, my_client_t *c, inv_t r, int level);
+void ritual_proceed(my_server_t *serv, my_client_t *c, inv_t r, int level);
 int get_team_id(my_server_t *serv, char *team);
 int check_inc(my_server_t *serv, int fd);
 void destroy_egg(my_server_t *serv, my_client_t *egg);
@@ -181,6 +180,7 @@ void gui_hatch_player(my_server_t *serv, my_client_t *client);
 void gui_talk_player(my_server_t *serv, my_client_t *client, char *message);
 void gui_spawn_resource(my_server_t *serv, int res, int x, int y);
 void gui_remove_resource(my_server_t *serv, int res, int x, int y);
+void gui_elevation_player(my_server_t *serv, my_client_t *client);
 
 // Count how many clients are in linked list.
 int count_client(my_server_t *serv);

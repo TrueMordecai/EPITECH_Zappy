@@ -18,6 +18,6 @@ void gui_remove_resource(my_server_t *serv, int res, int x, int y)
 {
     if (serv->gui_fd == -1)
         return;
-    printf("map rem %i %i %i\n", res, x, y);
+    printf("map rem %c %i %i\n", res, x, y);
     dprintf(serv->gui_fd, "map rem %c %i %i\n", res, x, y);
 }

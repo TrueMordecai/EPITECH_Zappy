@@ -17,7 +17,7 @@ const cmd_list_t cmd_list[] = {
     {"Fork", 42, &fork_egg},
     {"Set", 7, &set},
     {"Take", 7, &take},
-    {"Incantation", 300, &incantation},
+    {"Incantation", 7, &incantation},
     {"Eject", 7, &eject}
 };
 
@@ -70,6 +70,7 @@ void get_next_cmd(my_server_t *serv, my_client_t *client)
             (client->cur) ? (free(client->cur)) : (0);
             client->cur = NULL;
             client->cur = strdup(client->message_queue[0]);
+            printf("Info :: [%i, %i] dir = %i\n", client->x, client->y, client->direction);
             advance_message_queue(client);
             break;
         }
@@ -106,8 +107,10 @@ void update_clients(my_server_t *serv)
         if (cli->cooldown > 0)
             cli->cooldown--;
     for (my_client_t *cli = serv->clients; cli; cli = cli->next)
-        if (cli->func == &incantation && cli->cooldown == 0)
+        if (cli->func == &incantation && cli->cooldown == 0) {
             cli->func(serv, cli->fd);
+
+        }
     update_client(serv, serv->clients);
     for (; client; client = client->next)
         if (client->dead) {

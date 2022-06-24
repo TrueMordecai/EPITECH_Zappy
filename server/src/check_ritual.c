@@ -10,8 +10,10 @@
 void ritual_proceed(my_server_t *serv, my_client_t *client, inv_t ritual,
 int level)
 {
-    if (client->level == level)
+    if (client->level == level) {
         client->level++;
+        gui_elevation_player(serv, client);
+    }
     client->inventory->linemate -= ritual.linemate;
     client->inventory->deraumere -= ritual.deraumere;
     client->inventory->sibur -= ritual.sibur;

@@ -93,6 +93,7 @@ Player *Population::getPlayerById(std::string id)
         if (_players[i]->getId() == id)
             return (_players[i]);
     }
+    //std::cout << "Returning NULL\n";
     return (nullptr);
 }
 
