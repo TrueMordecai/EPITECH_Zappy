@@ -63,8 +63,7 @@ void take(my_server_t *serv, int fd)
     if (x > 0) {
         dprintf(fd, "ok\n");
         gui_remove_resource(serv, cmd[1][0], client->x, client->y);
-    } else {
+    } else
         dprintf(fd, "ko\n");
-    } 
     free_strarr(cmd);
 }

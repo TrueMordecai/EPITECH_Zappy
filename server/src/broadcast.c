@@ -118,10 +118,8 @@ int get_case(orientation_t dir, int path[2])
     (base[0] == 3) ? (base[1] = 2) : (0);
     (base[0] == 5) ? (base[1] = 4) : (0);
     (base[0] == 7) ? (base[1] = 6) : (0);
-    while (cur != abs(furthest)) {
+    for (;cur != abs(furthest); cur++)
         ret = (1 + cur * 2) * (1 + cur * 2);
-        cur++;
-    }
     return add_shimmy(ret + (base[1] * cur), (1 + cur * 2) * (1 + cur * 2), ret, path);
 }
 
