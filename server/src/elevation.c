@@ -59,7 +59,7 @@ void set_cd(my_server_t *serv, int fd, int starter)
 {
     my_client_t *client = get_client_from_fd(serv, fd);
 
-    client->cooldown = 300;
+    client->cooldown = INCANTATION_TIME;
     (client->cur) ? (free(client->cur)) : (0);
     client->cur = strdup("Participant");
     if (fd == starter)

@@ -40,6 +40,7 @@ name2 ... -c clientsNb\n\
 #define MENDIANE 10
 #define PHIRAS 8
 #define THYSTAME 5
+#define INCANTATION_TIME 7
 #define COMMAND_LIST_SIZE 11
 
 typedef enum orientation {

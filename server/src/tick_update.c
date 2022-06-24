@@ -17,7 +17,7 @@ const cmd_list_t cmd_list[] = {
     {"Fork", 42, &fork_egg},
     {"Set", 7, &set},
     {"Take", 7, &take},
-    {"Incantation", 7, &incantation},
+    {"Incantation", INCANTATION_TIME, &incantation},
     {"Eject", 7, &eject}
 };
 
