@@ -11,9 +11,9 @@ void set_team_aux(my_server_t *serv, int i, my_client_t *client, char **args)
 {
     client->team_name = strdup(args[0]);
     serv->team_sizes[i]--;
-    printf("Try to this fd %i information\n", client->fd);
     gui_new_player(serv, client);
     dprintf(client->fd, "%d\n", serv->team_sizes[i]);
+    printf("player pos == %d.%d looking %i\n", client->x, client->y, client->direction);
     dprintf(client->fd, "ppo %d %d %i\n", client->x, client->y, client->direction);
 }
 
@@ -43,7 +43,6 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
     my_client_t *tmp = serv->clients;
     uint i = 0;
 
-    puts("Set_team");
     for (; tmp; tmp = tmp->next) {
         if (tmp->team_name && !strcmp(tmp->team_name, args[0])) {
             set_egg(client, args, serv);
@@ -59,5 +58,4 @@ void set_team(my_client_t *client, char **args, my_server_t *serv)
         return;
     }
     set_team_aux(serv, i, client, args);
-    puts("end of Set_team");
 }

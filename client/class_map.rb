@@ -115,11 +115,11 @@ class Map
       while (posY < 0)
         posY = @sizeY - posY
       end
-      while (posX > sizeX)
-        posX -= sizeX
+      while (posX >= @sizeX)
+        posX -= @sizeX
       end
-      while (posY > sizeY)
-        posY -= sizeY
+      while (posY >= @sizeY)
+        posY -= @sizeY
       end
       @map[posX][posY].setContents(content)
     end
@@ -135,14 +135,36 @@ class Map
       while (posY < 0)
         posY = @sizeY - posY
       end
-      while (posX > sizeX)
-        posX -= sizeX
+      while (posX >= @sizeX)
+        posX -= @sizeX
       end
-      while (posY > sizeY)
-        posY -= sizeY
+      while (posY >= @sizeY)
+        posY -= @sizeY
       end
       return @map[posY][posX]
     end
-  
-    def get
+    
+    # Remove an item from a cell, usefull after "Take" success
+    # @param [Int] posX
+    # @param [Int] posX
+    # @param [String] Item to remove
+    # return [Void]
+    def removeItem(posX, posY, item)
+      @map[posY][posX].decreaseItem(item)
+    end
+    
+    # Update every cell, used for counter and forget mechanics
+    # return [Int] total forgetted cell
+    def updateCounter()
+      res = 0
+      for line in @map
+        for c in line 
+          b = c.updateCell()
+          if (b)
+            res += 1
+          end
+        end
+      end
+      return res       
+    end
   end

@@ -52,11 +52,27 @@ loop do
     ## If player wait for a response of look
     if (player.lastCommand == "Look" && commands.include?("["))
         player.updateMap(commands.tr("[]\n", ""))
-        player.map.printMap()
-        player.isReady = true
+        player.update()
+        #player.map.printMap() UNCOMMENT
+        player.setReady()
     end
-    
-    ## If commands have been well executed
+
+    ## If player wait a respons for Inventory
+    if (player.lastCommand() == "Inventory" && commands.include?("["))
+        player.updateInventory(commands.tr("[]\n", "").split(","))
+        player.setReady()
+    end
+
+    if (commands.include? "level")
+    end
+
+    ## If player receive ko
+    if (commands == "ko\n")
+        player.forceNextMove("Look")
+        player.setReady()
+    end
+
+    ## If commands have been well executed so he receive ok
     if (commands == "ok\n")
         if (player.lastCommand() == "Left" or player.lastCommand() == "Right")
             player.updateOrientation(player.lastCommand())
@@ -64,7 +80,9 @@ loop do
         if (player.lastCommand() == "Forward")
             player.updatePosition()
         end
-
+        if (player.lastCommand().include?("Take"))
+            player.takeItem(true)
+        end
         player.setReady()
     end
     net.sendCommand(player.getNextMove(), true)

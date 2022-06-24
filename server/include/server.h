@@ -180,6 +180,7 @@ void gui_hatch_player(my_server_t *serv, my_client_t *client);
 void gui_talk_player(my_server_t *serv, my_client_t *client, char *message);
 void gui_spawn_resource(my_server_t *serv, int res, int x, int y);
 void gui_remove_resource(my_server_t *serv, int res, int x, int y);
+void gui_elevation_player(my_server_t *serv, my_client_t *client);
 
 // Count how many clients are in linked list.
 int count_client(my_server_t *serv);
