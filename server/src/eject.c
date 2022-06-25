@@ -34,7 +34,7 @@ void push_client(my_server_t *serv, my_client_t *client, my_client_t *victim)
         dprintf(victim->fd, "eject: W\n");
     }
     disrupt_elevation(victim);
-    if (!strcmp(victim->cur, "hatch")) {
+    if (victim->level == 0) {
         destroy_egg(serv, victim);
     }
 }

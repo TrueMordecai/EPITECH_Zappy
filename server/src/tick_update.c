@@ -18,7 +18,8 @@ const cmd_list_t cmd_list[] = {
     {"Set", 7, &set},
     {"Take", 7, &take},
     {"Incantation", INCANTATION_TIME, &incantation},
-    {"Eject", 7, &eject}
+    {"Eject", 7, &eject},
+    {"Connect_nbr", 0, &connect_nbr}
 };
 
 fct_ptr get_cmd(char *str)
@@ -52,6 +53,17 @@ void advance_message_queue(my_client_t *client)
     client->message_queue_size--;
 }
 
+void set_func(my_client_t *client)
+{
+    client->cooldown = get_cd(client->message_queue[0]);
+    client->func = get_cmd(client->message_queue[0]);
+    (client->cur) ? (free(client->cur)) : (0);
+    client->cur = NULL;
+    client->cur = strdup(client->message_queue[0]);
+    printf("Info :: [%i, %i] dir = %i\n", client->x, client->y, client->direction);
+    advance_message_queue(client);
+}
+
 void get_next_cmd(my_server_t *serv, my_client_t *client)
 {
     client->func = NULL;
@@ -63,15 +75,14 @@ void get_next_cmd(my_server_t *serv, my_client_t *client)
             advance_message_queue(client);
             break;
         }
+        if (get_cmd(client->message_queue[0]) == connect_nbr) {
+            connect_nbr(serv, client->fd);
+            advance_message_queue(client);
+            continue;
+        }
         if (get_cmd(client->message_queue[0]) != NULL &&
             get_cmd(client->message_queue[0]) != incantation) {
-            client->cooldown = get_cd(client->message_queue[0]);
-            client->func = get_cmd(client->message_queue[0]);
-            (client->cur) ? (free(client->cur)) : (0);
-            client->cur = NULL;
-            client->cur = strdup(client->message_queue[0]);
-            printf("Info :: [%i, %i] dir = %i\n", client->x, client->y, client->direction);
-            advance_message_queue(client);
+            set_func(client);
             break;
         }
         advance_message_queue(client);

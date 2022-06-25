@@ -132,8 +132,8 @@ void send_message(my_server_t *serv, char *msg, int x, int y)
         if (client->team_name) {
             path[0] = get_shortest(x, client->x, serv->width);
             path[1] = get_shortest(y, client->y, serv->height);
-            dprintf(client->fd, "%d %s\n", get_case(client->direction, path),
-            msg);
+            dprintf(client->fd, "pbc %d %s\n",
+            get_case(client->direction, path), msg);
         }
         client = client->next;
     }

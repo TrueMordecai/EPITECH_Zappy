@@ -32,6 +32,7 @@ SRC = 	src/main.c						\
 		src/lay_egg.c			 		\
 		src/elevation.c			 		\
 		src/eject.c			 			\
+		src/connect_nbr.c			 	\
 		src/action_inventory.c
 
 NAME = zappy_server

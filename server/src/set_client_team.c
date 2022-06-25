@@ -29,7 +29,7 @@ void set_egg(my_client_t *client, char **args, my_server_t *serv)
             del_client(serv, -1);
             dprintf(tmp->fd, "%d\n", serv->team_sizes[get_team_id(serv,
             tmp->team_name)]);
-            dprintf(tmp->fd, "ppo %d %d\n", tmp->x, tmp->y);
+            dprintf(tmp->fd, "ppo %d %d %i\n", tmp->x, tmp->y, tmp->direction);
             return;
         }
         tmp = tmp->next;

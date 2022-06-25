@@ -41,7 +41,7 @@ name2 ... -c clientsNb\n\
 #define PHIRAS 8
 #define THYSTAME 5
 #define INCANTATION_TIME 7
-#define COMMAND_LIST_SIZE 11
+#define COMMAND_LIST_SIZE 12
 
 typedef enum orientation {
     NORTH = 0,
@@ -163,6 +163,8 @@ void look(my_server_t *serv, int fd);
 void inventory(my_server_t *serv, int fd);
 void incantation(my_server_t *serv, int fd);
 void eject(my_server_t *serv, int fd);
+void connect_nbr(my_server_t *serv, int fd);
+void hatch(my_server_t *serv, int fd);
 
 // inventory_to_string.c: converts inventory into printable string for look
 char *inventory_to_string(inv_t *inv);

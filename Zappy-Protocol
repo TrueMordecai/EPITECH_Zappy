@@ -1,0 +1,85 @@
+Command-Reply Sequences
+
+    Connection Establishment
+        <- Welcome
+        &- msz X Y
+
+    Connection Disbandment
+        <- Goodbye
+
+
+    Assignment
+        N ->
+            <- T
+            &- ppo X Y O
+            <- TEAM-NOT-FOUND
+        GUI GUI GUI ->
+            <- msz X Y
+
+    Movement
+        Forward ->
+            <- ok
+        Right ->
+            <- ok
+        Left ->
+            <- ok
+
+
+    Information
+        Inventory ->
+            <- [food q0, linemate q1, deraumere q2, sibur q3, mendiane q4, phiras q5, thystame q6]
+        Broadcast ->
+            <- ok
+        Look ->
+            <- [Q,...,Q]
+        Connect_nbr ->
+            <- T
+
+    Broadcast received
+        <- B M
+
+    Actions
+        Take object ->
+            <- ok
+            <- ko
+        Set object ->
+            <- ok
+            <- ko
+        Fork ->
+            <- ok
+            <- ko
+        Eject ->
+            <- ok
+            <- ko
+        Incantation ->
+            <- Elevation underway
+            <- ko
+
+    Ejection
+        <- eject: O
+
+    Incantation Success
+        <- Current level: L
+
+    Incantation Interrupted
+        <- ko
+
+Symbols and Meaning
+
+    O       Orientation: 0(N), 1(E), 2(S), 3(W)
+    X       Width or horizontal position
+    Y       Height or vertical position
+    L       Player of incantation level
+    B       Broadcast position relative to Player
+    M       Message
+    N       Team name
+    T       Number of unused slots in a team
+    Q       Contents of a tile
+
+
+Nota Bene:
+
+    The look command functions based on the player's level, the higher it is the
+    further he can see in a cone in front of himself.
+
+    Think of the range of the look command as an extra tile per level sideways and forward
