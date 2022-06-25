@@ -82,4 +82,5 @@ Nota Bene:
     The look command functions based on the player's level, the higher it is the
     further he can see in a cone in front of himself.
 
-    Think of the range of the look command as an extra tile per level sideways and forward
+    Think of the range of the look command as an extra tile per level sideways
+    and forward.

@@ -104,6 +104,7 @@ typedef struct inventory {
     int phiras;
     int thystame;
     int player;
+    int egg;
 } inv_t;
 
 typedef struct my_client {

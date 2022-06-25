@@ -19,7 +19,7 @@ inv_t *inv_dup(inv_t *inv)
     new->mendiane = inv->mendiane;
     new->phiras = inv->phiras;
     new->thystame = inv->thystame;
-
+    new->egg = inv->egg;
     return new;
 }
 
@@ -28,6 +28,7 @@ int count_total_items(inv_t *inv)
     int n = 0;
 
     n += inv->player;
+    n += inv->egg;
     n += inv->food;
     n += inv->deraumere;
     n += inv->linemate;
@@ -35,7 +36,6 @@ int count_total_items(inv_t *inv)
     n += inv->mendiane;
     n += inv->phiras;
     n += inv->thystame;
-
     return n;
 }
 
@@ -62,6 +62,10 @@ char *add_other_item(inv_t *inv)
 
 char *add_item_to_string(inv_t *inv)
 {
+    if (inv->egg > 0) {
+        inv->egg--;
+        return "egg";
+    }
     if (inv->player > 0) {
         inv->player--;
         return "player";

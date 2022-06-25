@@ -53,11 +53,14 @@ void update_player_position(my_server_t *serv)
     my_client_t *tmp = serv->clients;
 
     for (uint i = 0; i < serv->height; i++)
-        for (uint j = 0; j < serv->width; j++)
+        for (uint j = 0; j < serv->width; j++) {
+            serv->map[i][j].egg = 0;
             serv->map[i][j].player = 0;
+        }
     if (!tmp)
         return;
     for (; tmp; tmp = tmp->next)
         if (tmp->team_name)
-            serv->map[tmp->y][tmp->x].player++;
+            (tmp->level != 0) ? (serv->map[tmp->y][tmp->x].player++) :
+            (serv->map[tmp->y][tmp->x].egg++);
 }
