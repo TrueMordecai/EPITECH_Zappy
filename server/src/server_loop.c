@@ -52,7 +52,8 @@ void handle_incoming_message_sender(my_server_t *serv, int i)
             cli_fd = accept(serv->server_fd,
             (struct sockaddr *)&client, &serv->addr_len);
             FD_SET(cli_fd, &serv->fds);
-            add_client(serv, make_client(cli_fd, serv->width, serv->height));
+            add_client(serv, make_client(serv, cli_fd,
+            serv->width, serv->height));
             print_all_clients(serv, "A new client appeared");
             dprintf(cli_fd, "msz %i %i\n", serv->width, serv->height);
             return;
@@ -67,12 +68,11 @@ void check_tick(my_server_t *serv, clock_t *time)
 
     current = clock() - *time;
     if ((((float)current) / CLOCKS_PER_SEC) >= 1 / (float)serv->freq) {
-        //print_all_clients(serv, "Once every tick");
         update_player_position(serv);
         update_clients(serv);
         if (!serv->map_cooldown) {
             update_map(serv);
-            serv->map_cooldown = 16;
+            serv->map_cooldown = 20;
         } else
             serv->map_cooldown--;
         *time = clock();

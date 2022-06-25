@@ -24,7 +24,7 @@ void fork_egg(my_server_t *serv, int fd)
         dprintf(fd, "ko\n");
         return;
     }
-    egg = make_client(-2, serv->width, serv->height);
+    egg = make_client(serv, -2, serv->width, serv->height);
     egg->direction = rand()%4;
     egg->team_name = strdup(dad->team_name);
     egg->level = dad->level;

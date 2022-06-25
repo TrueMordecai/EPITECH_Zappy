@@ -86,7 +86,22 @@ char **init_message_queue(void)
     return ret;
 }
 
-my_client_t *make_client(int fd, int x, int y)
+char *get_original_name(my_server_t *serv)
+{
+    char *name = NAME[rand() % 85];
+    my_client_t *client = serv->clients;
+
+    while (client) {
+        if (!strcmp(client->name, name)) {
+            NAME[rand() % 85];
+            client = serv->clients;
+        } else
+            client = client->next;
+    }
+    return name;
+}
+
+my_client_t *make_client(my_server_t *serv, int fd, int x, int y)
 {
     my_client_t *client = malloc(sizeof(my_client_t));
 
@@ -99,7 +114,7 @@ my_client_t *make_client(int fd, int x, int y)
     client->y = 1; // TEMP
     client->direction = rand() % 4;
     client->direction = 2; // TEMP
-    client->name = strdup(NAME[rand() % 86]);
+    client->name = strdup(get_original_name(serv));
     client->inventory = generate_inventory();
     client->food = 1260;
     client->cooldown = 0;
@@ -109,7 +124,6 @@ my_client_t *make_client(int fd, int x, int y)
     client->dead = false;
     client->func = NULL;
     client->cur = NULL;
-    
     dprintf(fd, "WELCOME\n");
     return client;
 }

@@ -23,7 +23,7 @@ void make_map(my_server_t *serv)
             serv->map[i][j] = *generate_inventory();
     }
     update_map(serv);
-    serv->map_cooldown = 16;
+    serv->map_cooldown = 20;
 }
 
 my_server_t *get_server(my_server_t *serv, char **argv, int argc)
