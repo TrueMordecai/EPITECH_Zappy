@@ -87,7 +87,7 @@ void update_clients(my_server_t *serv)
     for (my_client_t *cli = serv->clients; cli; cli = cli->next)
         if (cli->func == &incantation && cli->cooldown == 0) {
             cli->func(serv, cli->fd);
-
+            cli->func = NULL;
         }
     update_client(serv, serv->clients);
     for (; client; client = client->next)
