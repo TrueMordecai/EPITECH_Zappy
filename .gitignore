@@ -8,4 +8,5 @@ vgcore*
 tests/
 test.c
 a.out
-zappy_graphical_user
+zappy_gui
+zappy_ai

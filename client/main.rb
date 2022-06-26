@@ -7,11 +7,11 @@ class String
     end
 end
 
-require_relative 'class_parsing.rb'
-require_relative 'class_network.rb'
-require_relative 'class_map.rb'
-require_relative 'class_player.rb'
-require_relative 'optionCheck.rb'
+require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_parsing.rb'
+require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_network.rb'
+require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_map.rb'
+require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_player.rb'
+require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/optionCheck.rb'
 
 STDOUT.sync = true # in case of...
 

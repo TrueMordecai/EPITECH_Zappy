@@ -35,13 +35,13 @@ class mEntity
 {
 public:
     // Create a mEntity from a path
-    mEntity(sf::String path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir = LEFT_TO_RIGHT, std::string NAME = "");
+    mEntity(std::string path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir = LEFT_TO_RIGHT, std::string NAME = "");
     
     // Create a mEntity from a already loaded sf::Texture
     mEntity(sf::Texture texture, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir = LEFT_TO_RIGHT, std::string NAME = "");
 
     // Create a small mEntity from a path, no aninimation.
-    mEntity(sf::String path, sf::IntRect rect);
+    mEntity(std::string path, sf::IntRect rect);
     
     // Create a small mEntity from a already loaded texture, no aninimation.
     mEntity(sf::Texture texture, sf::IntRect rect);

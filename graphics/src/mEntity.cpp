@@ -14,7 +14,7 @@ sf::IntRect mEntityAnimation::rect() {return (_rect);}
 int mEntityAnimation::nbFrame() {return (_nbFrame);}
 int64_t mEntityAnimation::milliseconds() {return (_milliseconds);}
 
-mEntity::mEntity(sf::String path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir/* = LEFT_TO_RIGHT*/, std::string namee /* = "DEFAULT"*/)
+mEntity::mEntity(std::string path, sf::IntRect rect, int64_t milliseconds, int nbFrame, direction_e dir/* = LEFT_TO_RIGHT*/, std::string namee /* = "DEFAULT"*/)
 {
     _texture.loadFromFile(path);
     _sprite.setTexture(_texture);
@@ -61,7 +61,7 @@ mEntity::mEntity(sf::Texture texture, sf::IntRect rect)
     _name = "";
 }
 
-mEntity::mEntity(sf::String path, sf::IntRect rect)
+mEntity::mEntity(std::string path, sf::IntRect rect)
 {
     _texture.loadFromFile(path);
     _sprite.setTexture(_texture);

@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME = zappy_graphical_user
+NAME = zappy_gui
 
 SRC =	src/main.cpp				\
 		src/Player.cpp				\
@@ -25,14 +25,14 @@ CPPFLAGS += -std=c++20 -Wextra -Wall -Wreorder -Wshadow
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) -o $(NAME) -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -lsfml-audio -g -std=c++11 $(OBJ)
+	$(CC) -o $(NAME) -lsfml-graphics -lsfml-window -lsfml-network -lsfml-system -g -std=c++11 $(OBJ)
 
 re: fclean all
 
 clean:
 	$(RM) $(OBJ)
 
-fclean:	clean 
+fclean:	clean
 	$(RM) $(NAME)
 
 .PHONY : all main clean fclean

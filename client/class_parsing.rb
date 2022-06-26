@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 
-require_relative 'class_command.rb'
+require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_command.rb'
 class Parsing
 
     EXPECT_NO_FIXED_SIZE = -99
