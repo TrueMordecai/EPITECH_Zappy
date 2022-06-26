@@ -33,9 +33,6 @@ void set_func(my_client_t *cli)
 
 void get_next_cmd(my_server_t *serv, my_client_t *client)
 {
-    client->func = NULL;
-    if (client->message_queue_size == 0)
-        return;
     while (client->message_queue[0]) {
         if (get_cmd(client->message_queue[0]) == incantation &&
         check_inc(serv, client->fd)) {
@@ -48,7 +45,7 @@ void get_next_cmd(my_server_t *serv, my_client_t *client)
             continue;
         }
         if (get_cmd(client->message_queue[0]) != NULL &&
-            get_cmd(client->message_queue[0]) != incantation) {
+        get_cmd(client->message_queue[0]) != incantation) {
             set_func(client);
             break;
         }
@@ -63,9 +60,12 @@ void update_client(my_server_t *serv, my_client_t *client)
     if (client->team_name == NULL)
         update_client(serv, client->next);
     if (client->cooldown == 0) {
-        if (client->func && client->func != &incantation)
+        if (client->func && client->func != &incantation) {
             client->func(serv, client->fd);
-        get_next_cmd(serv, client);
+            client->func = NULL;
+        }
+        if (client->message_queue_size > 0)
+            get_next_cmd(serv, client);
     }
     if (client->food == 0) {
         dprintf(client->fd, "dead\n");

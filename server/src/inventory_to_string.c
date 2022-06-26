@@ -62,10 +62,8 @@ char *add_other_item(inv_t *inv)
 
 char *add_item_to_string(inv_t *inv)
 {
-    if (inv->egg > 0) {
-        inv->egg--;
+    if (egg_presence(inv))
         return "egg";
-    }
     if (inv->player > 0) {
         inv->player--;
         return "player";

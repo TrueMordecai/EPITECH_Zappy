@@ -34,18 +34,7 @@ int add_shimmy(int cur, int max, int min, int path[2])
         shortest = path[0];
         furthest = path[1];
     }
-    if (vert == 0) {
-        if (furthest > 0)
-            add = -1 * shortest;
-        else
-            add = shortest;
-    }
-    if (vert == 1) {
-        if (furthest > 0)
-            add = shortest;
-        else
-            add = -1 * shortest;
-    }
+    add = get_add(vert, furthest, shortest);
     if (cur + add < min)
         return max + (add + 1);
     return cur + add;
@@ -72,7 +61,7 @@ int get_case(orientation_t dir, int path[2])
     (base[0] == 7) ? (base[1] = 6) : (0);
     for (;cur != abs(furthest); cur++)
         ret = (1 + cur * 2) * (1 + cur * 2);
-    return add_shimmy(ret + (base[1] * cur), (1 + cur * 2) * (1 + cur * 2), ret, path);
+    return add_shimmy(ret + (base[1] * cur), (1+cur*2)*(1+cur*2), ret, path);
 }
 
 void send_message(my_server_t *serv, char *msg, int x, int y)
@@ -81,7 +70,7 @@ void send_message(my_server_t *serv, char *msg, int x, int y)
     int path[2];
 
     while (client) {
-        if (client->team_name) {
+        if (client->team_name && client->fd > 0) {
             path[0] = get_shortest(x, client->x, serv->width);
             path[1] = get_shortest(y, client->y, serv->height);
             dprintf(client->fd, "pbc %d %s\n",

@@ -19,6 +19,11 @@ int pickup_aux(my_server_t *serv, my_client_t *client, char *cmd, int x)
         x = serv->map[client->y][client->x].thystame;
         serv->map[client->y][client->x].thystame = 0;
     }
+    if (!strcmp(cmd, "food")) {
+        client->food += 126 * serv->map[client->y][client->x].food;
+        x = serv->map[client->y][client->x].food;
+        serv->map[client->y][client->x].food = 0;
+    }
     return x;
 }
 
@@ -49,11 +54,6 @@ void take(my_server_t *serv, int fd)
     char **cmd = str_to_strarr(client->cur, " \n\r\t");
     int x = 0;
 
-    if (!strcmp(cmd[1], "food")) {
-        client->food += 126 * serv->map[client->y][client->x].food;
-        x = serv->map[client->y][client->x].food;
-        serv->map[client->y][client->x].food = 0;
-    }
     if (!strcmp(cmd[1], "linemate")) {
         client->inventory->linemate += serv->map[client->y][client->x].linemate;
         x = serv->map[client->y][client->x].linemate;

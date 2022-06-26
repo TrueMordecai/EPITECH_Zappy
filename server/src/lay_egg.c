@@ -9,9 +9,7 @@
 
 void destroy_egg(my_server_t *serv, my_client_t *egg)
 {
-    dprintf(egg->fd, "dead\n");
     egg->dead = true;
-    del_client(serv, egg->fd);
 }
 
 void hatch(my_server_t *serv, int fd)

@@ -52,4 +52,8 @@ void eject(my_server_t *serv, int fd)
             push_client(serv, client, clients);
         }
     }
+    if (pushed > 0)
+        dprintf(client->fd, "ok\n");
+    else
+        dprintf(client->fd, "ko\n");
 }

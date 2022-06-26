@@ -40,7 +40,7 @@ name2 ... -c clientsNb\n\
 #define MENDIANE 10
 #define PHIRAS 8
 #define THYSTAME 5
-#define INCANTATION_TIME 7
+#define INCANTATION_TIME 300
 #define COMMAND_LIST_SIZE 12
 
 typedef enum orientation {
@@ -154,6 +154,8 @@ int check_inv(my_client_t *client, inv_t ritual);
 char *get_original_name(my_server_t *serv);
 int get_base_x(orientation_t dir, int x);
 int get_base_y(orientation_t dir, int y);
+int egg_presence(inv_t *inv);
+int get_add(int vert, int furthest, int shortest);
 
 // Client commands
 void right(my_server_t *serv, int fd);

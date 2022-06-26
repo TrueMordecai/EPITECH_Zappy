@@ -15,7 +15,7 @@ const inv_t costs[] = {
     {.linemate = 1, .deraumere = 2, .sibur = 1, .mendiane = 3},
     {.linemate = 1, .deraumere = 2, .sibur = 3, .phiras = 1},
     {.linemate = 2, .deraumere = 2, .sibur = 2, .mendiane = 2,
-    .phiras = 2, .thystame = 1}
+        .phiras = 2, .thystame = 1}
 };
 
 int check_other_clients(my_client_t *clients, my_client_t *client, int needed,
@@ -25,9 +25,9 @@ int *fds)
 
     while (clients) {
         if (clients->x == client->x && clients->y == client-> y &&
-            clients->level >= client->level && clients->cooldown == 0
-            && check_inv(clients, costs[client->level -1]) && !clients->func &&
-            clients->fd != client->fd && !clients->message_queue[0]) {
+        clients->level >= client->level && clients->cooldown == 0
+        && check_inv(clients, costs[client->level -1]) && !clients->func &&
+        clients->fd != client->fd && !clients->message_queue[0]) {
             fds[actual] = clients->fd;
             actual++;
         }
@@ -60,7 +60,7 @@ int check_inc(my_server_t *serv, int fd)
     (client->level >= 6) ? (needed = 5) : (0);
     fds = malloc(sizeof(int) * (100));
     if (!check_inv(client, costs[client->level - 1])
-        || check_other_clients(serv->clients, client, needed, fds) < needed) {
+    || check_other_clients(serv->clients, client, needed, fds) < needed) {
         free(fds);
         dprintf(fd, "ko\n");
         return 0;
@@ -79,10 +79,10 @@ int *fds)
 
     while (clients) {
         if (clients->x == client->x && clients->y == client-> y &&
-            clients->level >= client->level && clients->cooldown == 0
-            && check_inv(clients, costs[client->level -1]) && !clients->func &&
-            clients->fd != client->fd && !clients->message_queue[0] &&
-            !strcmp(clients->cur, "Participant")) {
+        clients->level >= client->level && clients->cooldown == 0
+        && check_inv(clients, costs[client->level -1]) && !clients->func &&
+        clients->fd != client->fd && !clients->message_queue[0] &&
+        !strcmp(clients->cur, "Participant")) {
             fds[actual] = clients->fd;
             actual++;
         }
@@ -104,7 +104,7 @@ void incantation(my_server_t *s, int fd)
     (client->level >= 6) ? (needed = 5) : (0);
     fds = malloc(sizeof(int) * (100));
     if (!check_inv(client, costs[client->level - 1])
-        || check_other_clients(s->clients, client, needed, fds) < needed) {
+    || check_other_clients(s->clients, client, needed, fds) < needed) {
         free(fds);
         dprintf(fd, "ko\n");
         return;

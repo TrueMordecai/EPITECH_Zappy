@@ -23,7 +23,7 @@ void set_egg(my_client_t *client, char **args, my_server_t *serv)
 
     while (tmp != NULL) {
         if (tmp->team_name &&
-            !strcmp(tmp->team_name, args[0]) && tmp->fd == -2) {
+        !strcmp(tmp->team_name, args[0]) && tmp->fd == -2) {
             tmp->fd = client->fd;
             client->fd = -1;
             del_client(serv, -1);
