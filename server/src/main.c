@@ -69,6 +69,7 @@ int make_server(my_server_t *serv, char **argv, int argc)
     FD_ZERO(&serv->fds);
     FD_SET(serv->server_fd, &serv->fds);
     make_map(serv);
+    serv->win = false;
     return 1;
 }
 

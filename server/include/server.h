@@ -74,6 +74,7 @@ typedef struct my_server {
     fd_set tmp_fds;
     struct inventory **map;
     uint map_cooldown;
+    bool win;
     struct my_client *clients;
 } my_server_t;
 
@@ -156,6 +157,7 @@ int get_base_x(orientation_t dir, int x);
 int get_base_y(orientation_t dir, int y);
 int egg_presence(inv_t *inv);
 int get_add(int vert, int furthest, int shortest);
+void check_win(my_server_t *serv);
 
 // Client commands
 void right(my_server_t *serv, int fd);

@@ -39,6 +39,7 @@ SRC = 	src/main.c						\
 		src/elevation_cost.c			\
 		src/get_base_dir.c				\
 		src/get_cmd.c					\
+		src/check_win.c					\
 		src/print.c
 
 NAME = zappy_server

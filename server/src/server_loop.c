@@ -88,7 +88,7 @@ void server_loop(my_server_t *serv)
     time = clock();
     tv.tv_sec = 0;
     tv.tv_usec = 1;
-    while (1) {
+    while (serv->win == false) {
         serv->tmp_fds = serv->fds;
         timeout = select(FD_SETSIZE, &serv->tmp_fds, NULL, NULL, &tv);
         for (int i = 0; i < FD_SETSIZE; i++)

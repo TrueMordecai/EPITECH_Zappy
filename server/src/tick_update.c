@@ -95,4 +95,5 @@ void update_clients(my_server_t *serv)
             serv->team_sizes[get_team_id(serv, client->team_name)]++;
             del_client(serv, client->fd);
         }
+    check_win(serv);
 }
