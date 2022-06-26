@@ -14,6 +14,7 @@ SRC = 	src/main.c						\
 		src/get_client_line.c			\
 		src/tick_update.c				\
 		src/str_to_strarr.c				\
+		src/str_to_strarr_toolbox.c		\
 		src/check_ritual.c 				\
 		src/generate_map_ressources.c	\
 		src/map_info.c					\
@@ -33,7 +34,12 @@ SRC = 	src/main.c						\
 		src/elevation.c			 		\
 		src/eject.c			 			\
 		src/connect_nbr.c			 	\
-		src/action_inventory.c
+		src/action_inventory.c			\
+		src/get_original_name.c			\
+		src/elevation_cost.c			\
+		src/get_base_dir.c				\
+		src/get_cmd.c					\
+		src/print.c
 
 NAME = zappy_server
 

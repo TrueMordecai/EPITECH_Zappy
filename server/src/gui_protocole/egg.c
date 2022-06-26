@@ -27,6 +27,6 @@ void gui_hatch_player(my_server_t *serv, my_client_t *client)
 
 void gui_elevation_player(my_server_t *serv, my_client_t *client)
 {
-    printf("player up %s\n", client->name);   
-    dprintf(serv->gui_fd,"player up %s\n", client->name);
+    printf("player up %s\n", client->name);
+    dprintf(serv->gui_fd, "player up %s\n", client->name);
 }

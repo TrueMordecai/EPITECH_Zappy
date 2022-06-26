@@ -18,23 +18,6 @@ const inv_t costs[] = {
     .phiras = 2, .thystame = 1}
 };
 
-static int check_inv(my_client_t *client, inv_t ritual)
-{
-    if (client->inventory->linemate < ritual.linemate)
-        return 0;
-    if (client->inventory->deraumere < ritual.deraumere)
-        return 0;
-    if (client->inventory->sibur < ritual.sibur)
-        return 0;
-    if (client->inventory->mendiane < ritual.mendiane)
-        return 0;
-    if (client->inventory->phiras < ritual.phiras)
-        return 0;
-    if (client->inventory->thystame < ritual.thystame)
-        return 0;
-    return 1;
-}
-
 int check_other_clients(my_client_t *clients, my_client_t *client, int needed,
 int *fds)
 {
@@ -110,26 +93,26 @@ int *fds)
     return actual;
 }
 
-void incantation(my_server_t *serv, int fd)
+void incantation(my_server_t *s, int fd)
 {
     int needed = 0;
     int *fds;
-    my_client_t *client = get_client_from_fd(serv, fd);
+    my_client_t *client = get_client_from_fd(s, fd);
 
     (client->level >= 2) ? (needed = 1) : (0);
     (client->level >= 4) ? (needed = 3) : (0);
     (client->level >= 6) ? (needed = 5) : (0);
     fds = malloc(sizeof(int) * (100));
     if (!check_inv(client, costs[client->level - 1])
-        || check_other_clients(serv->clients, client, needed, fds) < needed) {
+        || check_other_clients(s->clients, client, needed, fds) < needed) {
         free(fds);
         dprintf(fd, "ko\n");
         return;
     }
     for (int i = 0; fds[i] != -1; i++) {
-        check_ritual_level(serv, get_client_from_fd(serv, fds[i]), client->level);
+        check_ritual_level(s, get_client_from_fd(s, fds[i]), client->level);
         dprintf(fds[i], "Current level: %d\n",
-        get_client_from_fd(serv, fds[i])->level);
+        get_client_from_fd(s, fds[i])->level);
     }
     return;
 }

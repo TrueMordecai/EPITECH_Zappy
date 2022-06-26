@@ -7,14 +7,14 @@
 
 #include "server.h"
 
-void set_team_aux(my_server_t *serv, int i, my_client_t *client, char **args)
+void set_team_aux(my_server_t *serv, int i, my_client_t *cli, char **args)
 {
-    client->team_name = strdup(args[0]);
+    cli->team_name = strdup(args[0]);
     serv->team_sizes[i]--;
-    gui_new_player(serv, client);
-    dprintf(client->fd, "%d\n", serv->team_sizes[i]);
-    printf("player pos == %d.%d looking %i\n", client->x, client->y, client->direction);
-    dprintf(client->fd, "ppo %d %d %i\n", client->x, client->y, client->direction);
+    gui_new_player(serv, cli);
+    dprintf(cli->fd, "%d\n", serv->team_sizes[i]);
+    printf("player pos == %d.%d looking %i\n", cli->x, cli->y, cli->direction);
+    dprintf(cli->fd, "ppo %d %d %i\n", cli->x, cli->y, cli->direction);
 }
 
 void set_egg(my_client_t *client, char **args, my_server_t *serv)

@@ -47,8 +47,8 @@ void handle_incoming_message_sender(my_server_t *serv, int i)
     struct sockaddr_in client;
     int cli_fd;
 
-    if (FD_ISSET(i, &serv->tmp_fds)) { // if message
-        if (i == serv->server_fd) { // If message from unknown source
+    if (FD_ISSET(i, &serv->tmp_fds)) {
+        if (i == serv->server_fd) {
             cli_fd = accept(serv->server_fd,
             (struct sockaddr *)&client, &serv->addr_len);
             FD_SET(cli_fd, &serv->fds);

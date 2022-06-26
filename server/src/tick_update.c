@@ -7,39 +7,6 @@
 
 #include "server.h"
 
-const cmd_list_t cmd_list[] = {
-    {"Forward", 7, &forward},
-    {"Right", 7, &right},
-    {"Left", 7, &left},
-    {"Look", 7, &look},
-    {"Inventory", 1, &inventory},
-    {"Broadcast", 7, &broadcast},
-    {"Fork", 42, &fork_egg},
-    {"Set", 7, &set},
-    {"Take", 7, &take},
-    {"Incantation", INCANTATION_TIME, &incantation},
-    {"Eject", 7, &eject},
-    {"Connect_nbr", 0, &connect_nbr}
-};
-
-fct_ptr get_cmd(char *str)
-{
-    for (int i = 0; i < COMMAND_LIST_SIZE; i++) {
-        if (strncmp(cmd_list[i].name, str, strlen(cmd_list[i].name)) == 0)
-            return cmd_list[i].fct;
-    }
-    return NULL;
-}
-
-int get_cd(char *str)
-{
-    for (int i = 0; i < COMMAND_LIST_SIZE; i++) {
-        if (strncmp(cmd_list[i].name, str, strlen(cmd_list[i].name)) == 0)
-            return cmd_list[i].cd;
-    }
-    return 0;
-}
-
 void advance_message_queue(my_client_t *client)
 {
     char *str = client->message_queue[0];
@@ -53,15 +20,15 @@ void advance_message_queue(my_client_t *client)
     client->message_queue_size--;
 }
 
-void set_func(my_client_t *client)
+void set_func(my_client_t *cli)
 {
-    client->cooldown = get_cd(client->message_queue[0]);
-    client->func = get_cmd(client->message_queue[0]);
-    (client->cur) ? (free(client->cur)) : (0);
-    client->cur = NULL;
-    client->cur = strdup(client->message_queue[0]);
-    printf("Info :: [%i, %i] dir = %i\n", client->x, client->y, client->direction);
-    advance_message_queue(client);
+    cli->cooldown = get_cd(cli->message_queue[0]);
+    cli->func = get_cmd(cli->message_queue[0]);
+    (cli->cur) ? (free(cli->cur)) : (0);
+    cli->cur = NULL;
+    cli->cur = strdup(cli->message_queue[0]);
+    printf("Info :: [%i, %i] dir = %i\n", cli->x, cli->y, cli->direction);
+    advance_message_queue(cli);
 }
 
 void get_next_cmd(my_server_t *serv, my_client_t *client)

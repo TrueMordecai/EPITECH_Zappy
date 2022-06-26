@@ -47,7 +47,7 @@ void eject(my_server_t *serv, int fd)
 
     for (; clients; clients = clients->next) {
         if (clients->x == client->x && clients->y && client->y &&
-            client->fd != clients->fd) {
+        client->fd != clients->fd) {
             pushed++;
             push_client(serv, client, clients);
         }

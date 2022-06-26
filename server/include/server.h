@@ -141,7 +141,6 @@ int check_tile(inv_t tile);
 int check_map_full(my_server_t *serv);
 int check_tile_ressource(inv_t tile, char ressource);
 void update_player_position(my_server_t *serv);
-char **str_to_strarr(char *str, char *tok);
 void free_strarr(char **arr);
 void set_team(my_client_t *client, char **args, my_server_t *serv);
 void add_to_queue(char *buf, my_client_t *client);
@@ -151,6 +150,10 @@ void ritual_proceed(my_server_t *serv, my_client_t *c, inv_t r, int level);
 int get_team_id(my_server_t *serv, char *team);
 int check_inc(my_server_t *serv, int fd);
 void destroy_egg(my_server_t *serv, my_client_t *egg);
+int check_inv(my_client_t *client, inv_t ritual);
+char *get_original_name(my_server_t *serv);
+int get_base_x(orientation_t dir, int x);
+int get_base_y(orientation_t dir, int y);
 
 // Client commands
 void right(my_server_t *serv, int fd);
@@ -166,6 +169,10 @@ void incantation(my_server_t *serv, int fd);
 void eject(my_server_t *serv, int fd);
 void connect_nbr(my_server_t *serv, int fd);
 void hatch(my_server_t *serv, int fd);
+
+// get_cmd.c
+int get_cd(char *str);
+fct_ptr get_cmd(char *str);
 
 // inventory_to_string.c: converts inventory into printable string for look
 char *inventory_to_string(inv_t *inv);
@@ -192,5 +199,16 @@ int count_client(my_server_t *serv);
 // Connect the gui.
 bool connect_gui(my_server_t *serv, char **arr, int fd);
 
+// str_to_strarr
+char **str_to_strarr(char *str, char *tok);
+int get_next_arg_index(char *str, char *tok, int index);
+char *clip_quotes(char *str);
+int str_char_cmp(char c, char *tok);
+int str_len(char *str, char *tok);
+void free_strarr(char **arr);
+
 // Debug only
 void print_all_clients(my_server_t *serv, char *message);
+void print_cell(my_server_t *serv, int x, int y);
+void print_connected_client(my_client_t *cur, int i);
+void print_arr(char **arr);

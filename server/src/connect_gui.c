@@ -66,27 +66,6 @@ void gui_server_catchup(my_server_t *s)
     for (uint i = 0; i < s->height; i++) {
         for (uint j = 0; j < s->width; j++) {
             gui_server_catchup_send(s, i, j);
-            if (s->map[i][j].linemate > 0) {
-                dprintf(s->gui_fd, "l %i %c %c\n", s->map[i][j].linemate, j + 'a', i + 'a');
-            }
-            if (s->map[i][j].deraumere > 0) {
-                dprintf(s->gui_fd, "d %i %c %c\n", s->map[i][j].deraumere, j + 'a', i + 'a');
-            }
-            if (s->map[i][j].sibur > 0) {
-                dprintf(s->gui_fd, "s %i %c %c\n", s->map[i][j].sibur, j + 'a', i + 'a');
-            }
-            if (s->map[i][j].mendiane > 0) {
-                dprintf(s->gui_fd, "m %i %c %c\n", s->map[i][j].mendiane, j + 'a', i + 'a');
-            }
-            if (s->map[i][j].phiras > 0) {
-                dprintf(s->gui_fd, "p %i %c %c\n", s->map[i][j].phiras, j + 'a', i + 'a');
-            }
-            if (s->map[i][j].thystame > 0) {
-                dprintf(s->gui_fd, "t %i %c %c\n", s->map[i][j].thystame, j + 'a', i + 'a');
-            }
-            if (s->map[i][j].food > 0) {
-                dprintf(s->gui_fd, "f %i %c %c\n", s->map[i][j].food, j + 'a', i + 'a');
-            }
         }
     }
 }
@@ -101,7 +80,6 @@ bool connect_gui(my_server_t *serv, char **arr, int fd)
         return false;
     while (cur) {
         if (cur->fd == fd) {
-            //puts("Gui fd is well set");
             serv->gui_fd = fd;
             cur->fd = -1;
             break;
@@ -110,7 +88,7 @@ bool connect_gui(my_server_t *serv, char **arr, int fd)
     }
     del_client(serv, -1);
     dprintf(serv->gui_fd, "msz %i %i\n", serv->width, serv->height);
-    sleep(1); // Useful so gui can create map
+    sleep(1);
     gui_server_catchup(serv);
     return true;
 }
