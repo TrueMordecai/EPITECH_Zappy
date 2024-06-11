@@ -45,7 +45,8 @@ Port should match the server and the -h is mandatory. However i don't think it w
   
 
 ## Preview
-![image](https://github.com/TrueMordecai/EPITECH_Zappy/assets/60859370/9380fb0a-0595-4b1e-a252-a30e3dfc5a52)
-![image](https://github.com/TrueMordecai/EPITECH_Zappy/assets/60859370/933c594e-151e-459f-ac75-5423cad06cda)
+![Image déposée](https://github.com/TrueMordecai/EPITECH_Zappy/assets/60859370/806b95a7-57c6-4dfc-ae70-38eff6b0880d)
+![Image déposée (2)](https://github.com/TrueMordecai/EPITECH_Zappy/assets/60859370/dbfa2959-b497-4472-84f3-f742526f9dfd)
+
 
 
