@@ -70,8 +70,9 @@ int good_args(int argc, char **argv)
             (!checklist.clientsNb) ? (checklist.clientsNb = 1) : (repeat = 1);
         if (!strncmp("-", argv[i], 1))
             good_args = check_arg(argc, argv, i);
-        if (good_args == false || repeat == 1)
+        if (good_args == false || repeat == 1) {
             return 0;
+        }
     }
     return check_checklist(checklist, argc, argv);
 }

@@ -45,7 +45,9 @@ void look(my_server_t *serv, int fd)
             tile = get_next_tile(serv, cli, y - n, n);
             tmp = inventory_to_string(tile);
             strcat(msg, tmp);
-            (y < (2 * n) || n + 1 <= cli->level) ? (strcat(msg, ",")) : (1);
+            if (y < (2 * n) || n + 1 <= cli->level) {
+                strcat(msg, ",");
+            }
             free(tmp);
         }
     }

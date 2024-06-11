@@ -194,7 +194,7 @@ class Player
         @map.updateCounter()
         puts ("COMPUTE AI : Im in #{@position} Looking at #{orientationToString(@orientation)}. Inventory : (#{@inventory}). HP #{@life}, cc #{@commandCount}")
         puts (countUnknownCell().to_f)
-        if (countUnknownCell().to_f > ca[stage].to_f * 0.4) # If there is more unknown cell than know one, then Look arround !
+        if (countUnknownCell().to_f > ca[stage].to_f * 0.4) # If there is more unknown cell than known one, then Look arround !
             return ("Look")
         end
         if (@commandCount % 5 == 0)

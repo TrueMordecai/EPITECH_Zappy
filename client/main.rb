@@ -7,11 +7,11 @@ class String
     end
 end
 
-require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_parsing.rb'
-require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_network.rb'
-require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_map.rb'
-require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_player.rb'
-require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/optionCheck.rb'
+require_relative './class_parsing.rb'
+require_relative './class_network.rb'
+require_relative './class_map.rb'
+require_relative './class_player.rb'
+require_relative './optionCheck.rb'
 
 STDOUT.sync = true # in case of...
 
@@ -53,7 +53,7 @@ loop do
     if (player.lastCommand == "Look" && commands.include?("["))
         player.updateMap(commands.tr("[]\n", ""))
         player.update()
-        #player.map.printMap() UNCOMMENT
+        player.map.printMap()
         player.setReady()
     end
 
@@ -72,6 +72,12 @@ loop do
         player.setReady()
     end
 
+    if (commands == "Elevation underway\n")
+        player.forceNextMove("Inventory")
+        player.setReady()
+    end
+
+
     ## If commands have been well executed so he receive ok
     if (commands == "ok\n")
         if (player.lastCommand() == "Left" or player.lastCommand() == "Right")
@@ -82,6 +88,7 @@ loop do
         end
         if (player.lastCommand().include?("Take"))
             player.takeItem(true)
+            player.forceNextMove("Look")
         end
         player.setReady()
     end

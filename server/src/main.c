@@ -83,7 +83,7 @@ int main(int argc, char **argv)
         return 0;
     }
     if (!good_args(argc, argv)) {
-        fprintf(stderr, "Error: Bad arguments\n");
+        printf("Error: Bad arguments\n");
         printf("%s", USAGE_MSG);
         return 84;
     }

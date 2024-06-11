@@ -1,4 +1,4 @@
-require_relative '/home/broke/delivery/tek2/EOY-400/B-YEP-410-NAN-4-1-zappy-emile.ettel/client/class_cell.rb'
+require_relative './class_cell.rb'
 class String
     # colorization
     def colorize(color_code)
